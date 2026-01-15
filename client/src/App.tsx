@@ -1,147 +1,114 @@
-import { useState, useEffect, useCallback } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import useEmblaCarousel from "embla-carousel-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Check,
-  X as XIcon,
-  Leaf,
-  FlaskConical,
-  XCircle,
-  Clock,
-  Gift,
-  Zap,
-  Heart,
-  Quote,
-  ChevronDown,
-  Activity,
-  Salad,
-  Ban,
-  Sparkles,
-  Star,
-  Calendar,
-} from "lucide-react";
-
-// ASSET IMPORTS
-import bikerImg from "@/assets/images/BIKER2.png";
-import meditationImg from "@/assets/images/MEDITATION.png";
-import jumpingImg from "@/assets/images/JUMPING.png";
-import logoImg from "@/assets/images/logo-black.svg";
-import squiggleImg from "@/assets/images/Screenshot 2026-01-15 at 11.36.49 am.png";
+import { useState, useEffect } from "react";
+import bikerImg from "./assets/images/BIKER2.png";
+import meditationImg from "./assets/images/MEDITATION.png";
+import logoImg from "./assets/images/logo-black.svg";
+import squiggleImg from "./assets/images/squiggle.svg";
 
 export default function Home() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
-  const [showFounderStory, setShowFounderStory] = useState(false);
 
-  // 1. KINETIC ENGINE: Track scroll position for Parallax Lifts
   useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Normalizing mouse position to a -1 to 1 range
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 2,
+        y: (e.clientY / window.innerHeight - 0.5) * 2,
+      });
+    };
+
     const handleScroll = () => setScrollY(window.scrollY);
+
+    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  const { data: countData } = useQuery({
-    queryKey: ["/api/waitlist/count"],
-    queryFn: async () => {
-      const res = await fetch("/api/waitlist/count");
-      return res.json();
-    },
-  });
-  const waitlistCount = countData?.count || 128;
-
   return (
-    <div className="min-h-screen bg-[#f3eee4] font-gutsy antialiased overflow-x-hidden uppercase">
-      
-      {/* HEADER & COUNTDOWN (Existing Logic) */}
-      <header className="bg-accent border-b-2 border-black z-[60] relative">
-        <div className="max-w-7xl mx-auto px-10 py-3 flex items-center justify-between">
-          <div className="h-7 md:h-10">
-            <img src={logoImg} alt="GUTSY" className="h-full w-auto object-contain" />
-          </div>
-          <div className="text-xs md:text-base font-medium text-black">Born in Dubai. Launching 2026</div>
-          <div className="w-10" />
+    <div className="min-h-screen bg-[#f3eee4] font-gutsy antialiased overflow-x-hidden selection:bg-[#f20028] selection:text-white">
+
+      {/* 1. STICKY NAV PILL */}
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[92%] max-w-6xl bg-white/70 backdrop-blur-xl rounded-full px-8 py-4 flex justify-between items-center border border-white/20 shadow-xl">
+        <div className="h-6 md:h-8">
+          <img src={logoImg} alt="GUTSY" className="h-full w-auto object-contain" />
         </div>
-      </header>
+        <button className="bg-black text-white px-8 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#f20028] transition-all shadow-lg">JOIN</button>
+      </nav>
 
-      {/* HERO SECTION: MOTION LAYER APPLIED */}
-      <section className="relative bg-[#f3eee4] py-12 lg:py-24 overflow-visible min-h-[90vh] flex items-center">
-        
-        {/* PARALLAX STICKERS: Dynamic "Lifts" based on scroll */}
-        <img 
-          src={bikerImg} 
-          style={{ transform: `translateY(${scrollY * 0.12}px) rotate(-5deg)` }}
-          className="absolute top-[10%] -right-12 w-[45vw] md:w-[32vw] z-20 pointer-events-none drop-shadow-2xl transition-transform duration-75 ease-out" 
-        />
-        <img 
-          src={meditationImg} 
-          style={{ transform: `translateY(${scrollY * -0.06}px) rotate(12deg)` }}
-          className="absolute bottom-[5%] -left-10 w-[35vw] md:w-[25vw] z-0 opacity-20 grayscale pointer-events-none transition-transform duration-75 ease-out" 
-        />
-        <img src={squiggleImg} className="absolute top-[20%] left-[10%] w-16 rotate-45 opacity-60 z-10 animate-pulse" />
+      {/* 2. THE BURST HERO */}
+      <section className="relative min-h-screen flex items-center justify-center pt-24 px-6 overflow-visible">
 
-        <div className="max-w-7xl mx-auto px-10 w-full z-10">
-          <div className="grid lg:grid-cols-[60%_40%] gap-10 items-center">
-            <div className="space-y-6">
-              <div className="inline-block bg-accent text-black px-3 py-2 font-bold text-sm border-2 border-black">GUT-FIRST PROTEIN</div>
-              <h1 className="text-5xl md:text-7xl lg:text-9xl font-black leading-[0.9] tracking-tighter">The lightest protein in the world</h1>
-              <p className="text-xl md:text-2xl text-muted-foreground max-w-xl normal-case font-bold">No bloat. No regret. Just clean fuel.</p>
+        {/* LAYER: DEEP BACKGROUND TEXT */}
+        <div
+          style={{ transform: `translate(${mousePos.x * 10}px, ${mousePos.y * 10}px)` }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none transition-transform duration-500 ease-out"
+        >
+          <h1 className="text-[28vw] font-black text-white leading-none tracking-tighter opacity-70 uppercase">
+            LIGHT
+          </h1>
+        </div>
 
-              <button onClick={() => setShowFounderStory(true)} className="text-primary font-black italic border-2 border-primary px-10 py-4 rounded-full hover:bg-primary hover:text-white transition-all text-xl">
-                why we built this →
-              </button>
+        {/* LAYER: THE SUBJECT (BIKER) */}
+        <div
+          style={{
+            transform: `translate(${mousePos.x * -25}px, ${(mousePos.y * -25) + (scrollY * 0.1)}px) rotate(-4deg)`
+          }}
+          className="relative z-20 w-[85vw] md:w-[48vw] transition-transform duration-300 ease-out"
+        >
+          <img
+            src={bikerImg}
+            className="w-full h-auto drop-shadow-[0_45px_55px_rgba(0,0,0,0.18)]"
+            alt="Kinetic Biker"
+          />
+          <img
+            src={squiggleImg}
+            className="absolute top-0 -left-12 w-24 rotate-12 opacity-80 animate-pulse drop-shadow-lg"
+            alt=""
+          />
+        </div>
 
-              <div className="bg-white border-4 border-black p-8 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] w-full max-w-md relative group">
-                <EmailForm variant="hero" />
-                <div 
-                   style={{ transform: `translateY(${scrollY * 0.05}px) rotate(10deg)` }}
-                   className="absolute -top-12 -right-10 bg-[#ffb300] p-5 rounded-3xl shadow-2xl font-black text-[12px] border-4 border-white animate-bounce-slow"
-                >
-                  {waitlistCount}+ JOINED
-                </div>
-              </div>
-            </div>
+        {/* LAYER: OVERLAY TYPOGRAPHY */}
+        <div
+          style={{ transform: `translate(${mousePos.x * 40}px, ${mousePos.y * 40}px)` }}
+          className="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-none transition-transform duration-200 ease-out"
+        >
+          <h2 className="text-[16vw] md:text-[13rem] font-black leading-none tracking-tightest mt-[10vh] uppercase text-center">
+            <span className="block text-black drop-shadow-xl">PROTEIN</span>
+            <span className="block text-transparent italic [webkit-text-stroke:2px_black] md:[webkit-text-stroke:4px_black] drop-shadow-sm">
+              RE-IMAGINED
+            </span>
+          </h2>
+        </div>
+
+        {/* LAYER: BOTTOM CTA FLOW */}
+        <div className="absolute bottom-12 left-0 w-full flex flex-col items-center z-50 px-6">
+          <p className="max-w-md text-center text-sm md:text-xl font-bold opacity-60 mb-10 normal-case leading-snug">
+            The lightest protein in the world. No bloating. No breakouts. Just clean, plant-based fuel.
+          </p>
+
+          <div className="w-full max-w-lg bg-white p-2 rounded-full shadow-[0_30px_60px_rgba(0,0,0,0.15)] flex border-2 border-black pointer-events-auto hover:scale-[1.02] transition-transform duration-300">
+            <input
+              type="email"
+              placeholder="ENTER YOUR EMAIL"
+              className="flex-1 bg-transparent px-8 font-black text-xs outline-none uppercase tracking-[0.2em]"
+            />
+            <button className="bg-[#f20028] text-white px-10 py-5 rounded-full font-black text-[10px] tracking-widest uppercase shadow-lg hover:bg-black transition-colors">
+              GET ACCESS
+            </button>
           </div>
         </div>
-      </section>
 
-      {/* RETAINED SECTIONS (Untouched Copy) */}
-      <ProductBenefitsSection />
-      <TwoBlendsSection />
-      <TestimonialWallSection />
-      <MidScrollCTASection />
-
-      {/* REBELLION SECTION WITH MOTION STICKER */}
-      <section id="rebellion" className="relative">
-        <FounderStorySection />
-        <img 
-          src={jumpingImg} 
-          style={{ transform: `translateY(${scrollY * -0.1}px) rotate(-8deg)` }}
-          className="absolute -bottom-10 right-10 w-52 z-40 drop-shadow-2xl pointer-events-none transition-transform duration-75 ease-out" 
+        {/* BACKGROUND ACCENTS */}
+        <img
+          src={meditationImg}
+          style={{ transform: `translate(${mousePos.x * -15}px, ${(mousePos.y * -15) + (scrollY * -0.05)}px) rotate(15deg)` }}
+          className="absolute top-[25%] left-[8%] w-[20vw] md:w-[12vw] z-10 opacity-30 grayscale pointer-events-none transition-transform duration-500 ease-out"
         />
       </section>
-
-      
-
-      <GutScienceSection />
-      <WhyGutsyWorksSection />
-      <EarlyBirdPerksSection />
-      <FAQSection />
-      <ComparisonChartSection />
-
-      <footer className="border-t-4 border-black py-20 bg-white text-center">
-        <img src={logoImg} className="h-16 mx-auto mb-8" alt="GUTSY" />
-        <p className="text-sm font-bold opacity-40 uppercase tracking-widest">© 2026 GUTSY. DUBAI BIOTECH.</p>
-      </footer>
     </div>
   );
 }
