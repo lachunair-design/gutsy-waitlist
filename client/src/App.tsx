@@ -1,103 +1,147 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import useEmblaCarousel from "embla-carousel-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Check,
+  X as XIcon,
+  Leaf,
+  FlaskConical,
+  XCircle,
+  Clock,
+  Gift,
+  Zap,
+  Heart,
+  Quote,
+  ChevronDown,
+  Activity,
+  Salad,
+  Ban,
+  Sparkles,
+  Star,
+  Calendar,
+} from "lucide-react";
 
-// 1. IMPORT ASSETS (Required for Vite in src folder)
-import biker from "./assets/images/BIKER2.png";
-import meditation from "./assets/images/MEDITATION.png";
-import logo from "./assets/images/logo-black.svg";
-import squiggle from "./assets/images/Screenshot 2026-01-15 at 11.36.49 am.png";
-import story1 from "./assets/images/Screenshot 2026-01-15 at 11.27.16 am.png";
-import story2 from "./assets/images/Screenshot 2026-01-15 at 11.26.54 am.png";
-import story3 from "./assets/images/Screenshot 2026-01-15 at 11.27.05 am.png";
+// ASSET IMPORTS
+import bikerImg from "@/assets/images/BIKER2.png";
+import meditationImg from "@/assets/images/MEDITATION.png";
+import jumpingImg from "@/assets/images/JUMPING.png";
+import logoImg from "@/assets/images/logo-black.svg";
+import squiggleImg from "@/assets/images/Screenshot 2026-01-15 at 11.36.49 am.png";
 
-const WaitlistForm = () => (
-  <form className="w-full max-w-lg relative z-30" onSubmit={(e) => e.preventDefault()}>
-    <div className="flex flex-col md:flex-row gap-0 bg-white rounded-full shadow-[0_20px_50px_rgba(242,0,40,0.15)] border border-black/5 overflow-hidden focus-within:ring-4 ring-[#f20028]/10 transition-all">
-      <input 
-        type="email" 
-        placeholder="ENTER YOUR EMAIL" 
-        className="flex-1 bg-transparent px-10 py-6 font-black text-xs outline-none uppercase tracking-[0.2em] placeholder:text-black/20"
-      />
-      <button className="bg-[#f20028] text-white px-10 py-6 font-black text-[11px] tracking-[0.2em] hover:bg-black transition-colors uppercase">
-        JOIN THE REBELLION
-      </button>
-    </div>
-  </form>
-);
+export default function Home() {
+  const [scrollY, setScrollY] = useState(0);
+  const [showFounderStory, setShowFounderStory] = useState(false);
 
-export default function App() {
-  const [waitlistCount] = useState(128);
+  // 1. KINETIC ENGINE: Track scroll position for Parallax Lifts
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const { data: countData } = useQuery({
+    queryKey: ["/api/waitlist/count"],
+    queryFn: async () => {
+      const res = await fetch("/api/waitlist/count");
+      return res.json();
+    },
+  });
+  const waitlistCount = countData?.count || 128;
 
   return (
-    <div className="min-h-screen bg-[#f3eee4] text-black font-gutsy selection:bg-[#f20028] selection:text-white antialiased overflow-x-hidden uppercase">
+    <div className="min-h-screen bg-[#f3eee4] font-gutsy antialiased overflow-x-hidden uppercase">
       
-      {/* 2. FLOATING NAV */}
-      <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-6xl bg-white/70 backdrop-blur-xl border border-white/20 rounded-full px-8 py-3 flex justify-between items-center shadow-xl">
-        <div className="h-8 md:h-10">
-          <img src={logo} alt="GUTSY" className="h-full w-auto object-contain" />
-        </div>
-        <div className="hidden md:flex gap-10 text-[9px] font-black tracking-[0.2em]">
-          <a href="#story" className="hover:text-[#f20028] transition-colors">THE REBELLION</a>
-          <a href="#science" className="hover:text-[#f20028] transition-colors">THE SCIENCE</a>
-        </div>
-        <button className="bg-black text-white px-8 py-2.5 rounded-full text-[10px] font-black hover:bg-[#f20028] transition-all">JOIN</button>
-      </nav>
-
-      {/* 3. LAYERED HERO (Unwell Style) */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-24 px-6 overflow-visible">
-        {/* Illustrations as Kinetic Stickers */}
-        <img src={biker} className="absolute top-[12%] -right-10 w-[45vw] md:w-[32vw] rotate-[-5deg] z-20 pointer-events-none drop-shadow-2xl" alt="" />
-        <img src={meditation} className="absolute bottom-[5%] -left-10 w-[35vw] md:w-[25vw] rotate-[10deg] z-0 opacity-40 grayscale" alt="" />
-        <img src={squiggle} className="absolute top-[20%] left-[15%] w-16 rotate-12 opacity-60" alt="" />
-
-        <div className="relative z-10 text-center flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-md px-5 py-2 rounded-full text-[9px] font-black mb-12 shadow-sm border border-white tracking-widest">
-             <span className="w-1.5 h-1.5 bg-[#f20028] rounded-full animate-ping"></span>
-             World's Lightest Peptides
+      {/* HEADER & COUNTDOWN (Existing Logic) */}
+      <header className="bg-accent border-b-2 border-black z-[60] relative">
+        <div className="max-w-7xl mx-auto px-10 py-3 flex items-center justify-between">
+          <div className="h-7 md:h-10">
+            <img src={logoImg} alt="GUTSY" className="h-full w-auto object-contain" />
           </div>
-          
-          <h1 className="text-[16vw] md:text-[14rem] font-black leading-[0.75] tracking-tightest mb-16 relative">
-            <span className="block">PROTEIN</span>
-            <span className="block text-transparent italic [webkit-text-stroke:2px_black] md:[webkit-text-stroke:3px_black]">RE-IMAGINED</span>
-          </h1>
-
-          <div className="max-w-xl mb-24 relative">
-             <p className="text-sm md:text-xl font-bold opacity-60 normal-case mb-12 leading-snug">
-               No bloating. No breakouts. Just hydrolyzed pea and rice peptides engineered for zero-latency absorption.
-             </p>
-             <WaitlistForm />
-             
-             {/* Unwell floating pill badge */}
-             <div className="absolute -top-16 -right-12 bg-[#ffb300] p-6 rounded-[2rem] shadow-2xl rotate-12 font-black text-[12px] border-4 border-white animate-bounce-slow">
-               {waitlistCount}+ OBSESSIVES
-             </div>
-          </div>
+          <div className="text-xs md:text-base font-medium text-black">Born in Dubai. Launching 2026</div>
+          <div className="w-10" />
         </div>
-      </section>
+      </header>
 
-      {/* 4. THE REBELLION (Bento Chapters) */}
-      <section id="story" className="relative bg-white rounded-[5rem] py-40 px-6 mx-4 -mt-10 z-30 shadow-2xl">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-7xl md:text-[10rem] font-black tracking-tightest leading-[0.85] italic mb-32 text-center">THE <span className="text-[#f20028] underline decoration-[#ffb300]">REBELLION.</span></h2>
+      {/* HERO SECTION: MOTION LAYER APPLIED */}
+      <section className="relative bg-[#f3eee4] py-12 lg:py-24 overflow-visible min-h-[90vh] flex items-center">
+        
+        {/* PARALLAX STICKERS: Dynamic "Lifts" based on scroll */}
+        <img 
+          src={bikerImg} 
+          style={{ transform: `translateY(${scrollY * 0.12}px) rotate(-5deg)` }}
+          className="absolute top-[10%] -right-12 w-[45vw] md:w-[32vw] z-20 pointer-events-none drop-shadow-2xl transition-transform duration-75 ease-out" 
+        />
+        <img 
+          src={meditationImg} 
+          style={{ transform: `translateY(${scrollY * -0.06}px) rotate(12deg)` }}
+          className="absolute bottom-[5%] -left-10 w-[35vw] md:w-[25vw] z-0 opacity-20 grayscale pointer-events-none transition-transform duration-75 ease-out" 
+        />
+        <img src={squiggleImg} className="absolute top-[20%] left-[10%] w-16 rotate-45 opacity-60 z-10 animate-pulse" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="group">
-              <img src={story2} className="aspect-[3/4] rounded-[3rem] object-cover grayscale group-hover:grayscale-0 transition-all duration-500 shadow-xl mb-8" alt="" />
-              <h3 className="font-black text-2xl italic mb-2">01 / THE BREAKING POINT</h3>
-              <p className="text-sm font-bold opacity-40 normal-case">I tested 47+ proteins. They all had the same junk: gums and fillers. My gut hated them.</p>
-            </div>
-            <div className="group md:translate-y-12">
-              <img src={story3} className="aspect-[3/4] rounded-[3rem] object-cover shadow-xl mb-8 border-4 border-[#ffb300]" alt="" />
-              <h3 className="font-black text-2xl italic mb-2">02 / WHY WE BUILT THIS</h3>
-              <p className="text-sm font-bold opacity-40 normal-case">Perfected over 200 batches for anyone tired of choosing protein over comfort.</p>
-            </div>
-            <div className="group">
-              <img src={story1} className="aspect-[3/4] rounded-[3rem] object-cover shadow-xl mb-8" alt="" />
-              <h3 className="font-black text-2xl italic mb-2 text-[#f20028]">03 / WHAT CHANGED</h3>
-              <p className="text-sm font-bold opacity-40 normal-case">No bloat. Skin cleared. For the first time, protein was the solution.</p>
+        <div className="max-w-7xl mx-auto px-10 w-full z-10">
+          <div className="grid lg:grid-cols-[60%_40%] gap-10 items-center">
+            <div className="space-y-6">
+              <div className="inline-block bg-accent text-black px-3 py-2 font-bold text-sm border-2 border-black">GUT-FIRST PROTEIN</div>
+              <h1 className="text-5xl md:text-7xl lg:text-9xl font-black leading-[0.9] tracking-tighter">The lightest protein in the world</h1>
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-xl normal-case font-bold">No bloat. No regret. Just clean fuel.</p>
+
+              <button onClick={() => setShowFounderStory(true)} className="text-primary font-black italic border-2 border-primary px-10 py-4 rounded-full hover:bg-primary hover:text-white transition-all text-xl">
+                why we built this →
+              </button>
+
+              <div className="bg-white border-4 border-black p-8 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] w-full max-w-md relative group">
+                <EmailForm variant="hero" />
+                <div 
+                   style={{ transform: `translateY(${scrollY * 0.05}px) rotate(10deg)` }}
+                   className="absolute -top-12 -right-10 bg-[#ffb300] p-5 rounded-3xl shadow-2xl font-black text-[12px] border-4 border-white animate-bounce-slow"
+                >
+                  {waitlistCount}+ JOINED
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* RETAINED SECTIONS (Untouched Copy) */}
+      <ProductBenefitsSection />
+      <TwoBlendsSection />
+      <TestimonialWallSection />
+      <MidScrollCTASection />
+
+      {/* REBELLION SECTION WITH MOTION STICKER */}
+      <section id="rebellion" className="relative">
+        <FounderStorySection />
+        <img 
+          src={jumpingImg} 
+          style={{ transform: `translateY(${scrollY * -0.1}px) rotate(-8deg)` }}
+          className="absolute -bottom-10 right-10 w-52 z-40 drop-shadow-2xl pointer-events-none transition-transform duration-75 ease-out" 
+        />
+      </section>
+
+      
+
+      <GutScienceSection />
+      <WhyGutsyWorksSection />
+      <EarlyBirdPerksSection />
+      <FAQSection />
+      <ComparisonChartSection />
+
+      <footer className="border-t-4 border-black py-20 bg-white text-center">
+        <img src={logoImg} className="h-16 mx-auto mb-8" alt="GUTSY" />
+        <p className="text-sm font-bold opacity-40 uppercase tracking-widest">© 2026 GUTSY. DUBAI BIOTECH.</p>
+      </footer>
     </div>
   );
 }
