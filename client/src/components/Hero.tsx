@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const Hero = () => {
-  const [waitlistCount, setWaitlistCount] = useState(12); // Starting at your baseline
+  const [waitlistCount, setWaitlistCount] = useState(12);
   const [email, setEmail] = useState('');
 
-  // The "Viral Ticker" logic: Fetches the real count from your Neon DB
   useEffect(() => {
     const fetchCount = async () => {
       try {
         const response = await fetch('/api/count');
         const data = await response.json();
-        setWaitlistCount(data.count); // API already includes baseline
+        setWaitlistCount(data.count);
       } catch (error) {
         console.error("Database connection failed", error);
       }
@@ -27,7 +26,7 @@ const Hero = () => {
 
       {/* Main Headline */}
       <h1 className="text-6xl md:text-9xl font-black text-black leading-none text-center uppercase mb-10 tracking-tighter">
-        Stop Being <br /> 
+        Stop Being <br />
         <span className="bg-black text-gutsyRed px-4">Weak</span>
       </h1>
 
@@ -38,7 +37,7 @@ const Hero = () => {
 
       {/* The Viral Capture Box */}
       <div className="w-full max-w-lg flex flex-col md:flex-row gap-0">
-        <input 
+        <input
           type="email"
           placeholder="ENTER YOUR EMAIL"
           className="flex-1 bg-white border-4 border-black p-5 text-xl font-bold focus:outline-none focus:bg-gutsyCream placeholder-black uppercase"
