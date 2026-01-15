@@ -13,14 +13,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const existing = await getByEmail(data.email);
     if (existing) {
-      return res.status(400).json({
-        error: "Email already registered",
-        user: existing,
+      // Return referral code so user can go to success page
+      return res.status(200).json({
+        message: "Welcome back!",
+        referralCode: existing.referralCode,
+        position: existing.position,
+        referralCount: existing.referralCount,
       });
     }
 
     const user = await addToWaitlist(data);
-    res.status(201).json(user);
+    res.status(201).json({
+      referralCode: user.referralCode,
+      position: user.position,
+      referralCount: user.referralCount,
+    });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors[0].message });

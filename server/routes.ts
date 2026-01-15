@@ -99,3 +99,26 @@ router.get("/referral/:code", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to validate referral" });
   }
 });
+
+// GET /api/waitlist/user/:code - Get user data by referral code (for success page)
+router.get("/user/:code", async (req: Request, res: Response) => {
+  try {
+    const user = await storage.getByReferralCode(req.params.code);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Recalculate position to ensure it's current
+    const position = await storage.calculatePosition(user.id);
+
+    res.json({
+      position,
+      referralCode: user.referralCode,
+      referralCount: user.referralCount,
+      email: user.email.slice(0, 3) + "***@" + user.email.split("@")[1],
+    });
+  } catch (error) {
+    console.error("Get user by code error:", error);
+    res.status(500).json({ error: "Failed to get user" });
+  }
+});
