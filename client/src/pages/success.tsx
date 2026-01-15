@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Check, Copy, Share2, MessageCircle, Mail, Instagram, ChevronRight } from "lucide-react";
-import logoImg from "@/assets/images/logo-black.svg";
+import { Check, Copy, Share2, MessageCircle, Mail, Instagram, ChevronRight, MapPin } from "lucide-react";
+import logoBlack from "@/assets/images/Gutsy Logomark black.svg";
 
 export default function Success() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -27,31 +27,23 @@ export default function Success() {
     enabled: !!referralCode,
   });
 
-  const position = userData?.position || 1;
+  const position = userData?.position || 1280;
   const referralCount = userData?.referralCount || 0;
-  const referralUrl = referralCode ? `${window.location.origin}?ref=${referralCode}` : "";
+  const referralUrl = referralCode ? `${window.location.origin}?ref=${referralCode}` : "gutsyprotein.com/join?ref=CHAMP";
 
-  // Calculate tier and progress
+  // Calculate tier and progress based on Copy Doc milestones
   const getTierInfo = () => {
-    if (position <= 10) return { current: "Top 10", next: null, nextAt: 0, color: "#f20028" };
+    if (position <= 10) return { current: "Inner Circle", next: null, nextAt: 0, color: "#f20028" };
     if (position <= 50) return { current: "Top 50", next: "Top 10", nextAt: 10, color: "#890eff" };
     if (position <= 100) return { current: "Top 100", next: "Top 50", nextAt: 50, color: "#ff5200" };
     if (position <= 500) return { current: "Top 500", next: "Top 100", nextAt: 100, color: "#ffb300" };
-    return { current: null, next: "Top 500", nextAt: 500, color: "#00b453" };
+    return { current: null, next: "Top 500", nextAt: 500, color: "#000000" };
   };
 
   const tierInfo = getTierInfo();
-  const referralsNeeded = tierInfo.nextAt ? Math.ceil((position - tierInfo.nextAt) / 5) * 3 : 0;
-
-  // Pre-written share copy
-  const shareCopy = {
-    whatsapp: `I just joined the waitlist for GUTSY - the first protein that won't wreck your gut. They're launching in Dubai in Jan. Join through my link and we both move up the list: ${referralUrl}`,
-    email: {
-      subject: "This protein powder won't destroy your stomach",
-      body: `Hey,\n\nI just signed up for GUTSY - a gut-friendly protein brand launching in Dubai.\n\nIf you've ever felt bloated after a protein shake, this is for you. They use pre-broken peptides so your body actually digests it properly.\n\nJoin through my link and we both skip ahead in line:\n${referralUrl}`
-    },
-    instagram: `No more bloated protein. Join the GUTSY waitlist: ${referralUrl}`
-  };
+  // Based on Copy Doc: Every 3 successful referrals moves you up 5 spots
+  const spotsToMove = tierInfo.nextAt ? position - tierInfo.nextAt : 0;
+  const referralsToMilestone = Math.ceil(spotsToMove / 5) * 3;
 
   const copyToClipboard = async (text: string, type: string) => {
     await navigator.clipboard.writeText(text);
@@ -59,236 +51,124 @@ export default function Success() {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const shareWhatsApp = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(shareCopy.whatsapp)}`, "_blank");
-  };
-
-  const shareEmail = () => {
-    window.open(`mailto:?subject=${encodeURIComponent(shareCopy.email.subject)}&body=${encodeURIComponent(shareCopy.email.body)}`);
-  };
-
-  const shareNative = async () => {
-    if (navigator.share) {
-      await navigator.share({
-        title: "Join the Gutsy waitlist",
-        text: shareCopy.whatsapp,
-        url: referralUrl,
-      });
-    }
-  };
-
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#f3eee4] flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-[#f20028] border-t-transparent rounded-full"></div>
+      <div className="min-h-screen bg-gutsyCream flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-4 border-gutsyRed border-t-transparent rounded-full"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f3eee4] font-gutsy">
-      {/* Navigation */}
-      <nav className="px-6 py-4">
-        <div className="max-w-2xl mx-auto flex justify-center">
-          <a href="/">
-            <img src={logoImg} alt="Gutsy" className="h-7" />
-          </a>
+    <div className="min-h-screen bg-gutsyCream text-gutsyBlack font-gutsy selection:bg-gutsyRed selection:text-white">
+      {/* HEADER */}
+      <nav className="fixed top-0 w-full z-[100] px-6 py-4 flex justify-between items-center border-b border-gutsyBlack/5 bg-gutsyCream/80 backdrop-blur-md">
+        <div className="flex flex-col">
+          <img src={logoBlack} alt="GUTSY" className="h-6 md:h-7" />
+          <span className="text-[8px] font-black uppercase tracking-[0.2em] opacity-40 mt-1 flex items-center gap-1">
+            <MapPin className="w-2 h-2" /> Born in Dubai
+          </span>
         </div>
       </nav>
 
-      <div className="px-6 py-8">
+      <div className="pt-32 pb-20 px-6">
         <div className="max-w-2xl mx-auto space-y-6">
 
-          {/* Success Card */}
-          <div className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-black/5">
-            {/* Success Icon */}
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-[#00b453] rounded-full flex items-center justify-center shadow-lg">
-                <Check className="w-8 h-8 text-white" strokeWidth={3} />
+          {/* MAIN STATUS CARD */}
+          <div className="bg-white rounded-[2.5rem] p-10 shadow-premium border border-black/5 text-center">
+            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tightest mb-4">You're on the list.</h1>
+            <p className="text-xl uppercase font-black opacity-70 mb-8">
+              You're currently <span className="text-gutsyRed">#{position}</span> in line.
+            </p>
+
+            {/* PROGRESS BAR */}
+            <div className="bg-gutsyCream rounded-2xl p-6 mb-8 text-left border border-black/5">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-[10px] font-black uppercase tracking-widest">Next Milestone: {tierInfo.next}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-gutsyRed">{referralsToMilestone} more referrals to reach</span>
+              </div>
+              <div className="h-2 bg-white rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gutsyBlack transition-all duration-1000" 
+                  style={{ width: `${Math.max(15, 100 - (spotsToMove / position * 100))}%` }}
+                />
               </div>
             </div>
 
-            {/* Heading */}
-            <div className="text-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">You're on the list.</h1>
-              <p className="text-xl text-black/60">
-                You're currently <span className="font-bold text-[#f20028]">#{position}</span> in line.
-              </p>
-            </div>
-
-            {/* Progress to next tier */}
-            {tierInfo.next && (
-              <div className="bg-[#f3eee4] rounded-2xl p-5 mb-6">
-                <div className="flex items-center justify-between mb-2 text-sm">
-                  <span className="font-medium">Progress to {tierInfo.next}</span>
-                  <span className="text-black/50">{referralsNeeded} more referrals needed</span>
-                </div>
-                <div className="h-2 bg-white rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${Math.min(100, (referralCount / (referralsNeeded + referralCount)) * 100)}%`,
-                      backgroundColor: tierInfo.color
-                    }}
-                  ></div>
-                </div>
-              </div>
-            )}
-
-            {/* Current tier badge */}
-            {tierInfo.current && (
-              <div className="text-center mb-6">
-                <span
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-white text-sm font-semibold"
-                  style={{ backgroundColor: tierInfo.color }}
-                >
-                  You're in {tierInfo.current}!
-                </span>
-              </div>
-            )}
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-[#f3eee4] rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-[#f20028]">{referralCount}</div>
-                <div className="text-sm text-black/50">Referrals</div>
-              </div>
-              <div className="bg-[#f3eee4] rounded-xl p-4 text-center">
-                <div className="text-3xl font-bold text-[#00b453]">+{referralCount * 5}</div>
-                <div className="text-sm text-black/50">Spots gained</div>
-              </div>
-            </div>
-
-            {/* Explanation */}
-            <p className="text-center text-black/60 mb-6">
+            <p className="text-sm font-black uppercase tracking-tight opacity-50 max-w-md mx-auto leading-relaxed">
               Want to jump the queue? Share your unique link. Every 3 friends who join moves you up 5 spots.
             </p>
           </div>
 
-          {/* Referral Link Card */}
-          <div className="bg-white rounded-3xl p-8 shadow-sm border border-black/5">
-            <h3 className="font-bold text-lg mb-4">Your referral link</h3>
-
-            <div className="flex gap-2 mb-6">
-              <div className="flex-1 bg-[#f3eee4] rounded-xl px-4 py-3 text-sm font-medium truncate">
-                {referralUrl || "Loading..."}
+          {/* REFERRAL LINK SECTION */}
+          <div className="bg-white rounded-[2.5rem] p-8 md:p-10 border border-black/5 shadow-premium">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-6 opacity-40">Your unique referral link</h3>
+            
+            <div className="flex flex-col md:flex-row gap-3 mb-10">
+              <div className="flex-1 bg-gutsyCream rounded-2xl px-6 py-4 text-sm font-black truncate border border-black/5">
+                {referralUrl}
               </div>
               <button
                 onClick={() => copyToClipboard(referralUrl, "link")}
-                className="bg-black text-white px-5 py-3 rounded-xl font-semibold text-sm hover:bg-[#f20028] transition-colors flex items-center gap-2"
+                className="btn-pill"
               >
-                {copied === "link" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied === "link" ? "Copied!" : "Copy"}
+                {copied === "link" ? "Copied!" : "Copy Link"}
               </button>
             </div>
 
-            {/* Share Buttons */}
-            <div className="grid grid-cols-4 gap-3">
-              <button
-                onClick={shareWhatsApp}
-                className="flex flex-col items-center gap-2 p-4 bg-[#25D366]/10 rounded-xl hover:bg-[#25D366]/20 transition-colors"
-              >
-                <MessageCircle className="w-6 h-6 text-[#25D366]" />
-                <span className="text-xs font-medium text-black/60">WhatsApp</span>
+            {/* SOCIAL GRID */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(referralUrl)}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
+                <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] font-black uppercase tracking-widest">WhatsApp</span>
               </button>
-              <button
-                onClick={() => copyToClipboard(shareCopy.instagram, "instagram")}
-                className="flex flex-col items-center gap-2 p-4 bg-[#E4405F]/10 rounded-xl hover:bg-[#E4405F]/20 transition-colors"
-              >
-                <Instagram className="w-6 h-6 text-[#E4405F]" />
-                <span className="text-xs font-medium text-black/60">
-                  {copied === "instagram" ? "Copied!" : "Instagram"}
-                </span>
+              <button onClick={() => copyToClipboard(referralUrl, "ig")} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
+                <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] font-black uppercase tracking-widest">Stories</span>
               </button>
-              <button
-                onClick={shareEmail}
-                className="flex flex-col items-center gap-2 p-4 bg-[#004eff]/10 rounded-xl hover:bg-[#004eff]/20 transition-colors"
-              >
-                <Mail className="w-6 h-6 text-[#004eff]" />
-                <span className="text-xs font-medium text-black/60">Email</span>
+              <button onClick={() => window.open(`mailto:?subject=Join GUTSY&body=${referralUrl}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
+                <Mail className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] font-black uppercase tracking-widest">Email</span>
               </button>
-              <button
-                onClick={shareNative}
-                className="flex flex-col items-center gap-2 p-4 bg-[#890eff]/10 rounded-xl hover:bg-[#890eff]/20 transition-colors"
-              >
-                <Share2 className="w-6 h-6 text-[#890eff]" />
-                <span className="text-xs font-medium text-black/60">More</span>
+              <button onClick={() => navigator.share && navigator.share({ url: referralUrl })} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
+                <Share2 className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] font-black uppercase tracking-widest">More</span>
               </button>
             </div>
           </div>
 
-          {/* Pre-written Copy Card */}
-          <div className="bg-white rounded-3xl p-8 shadow-sm border border-black/5">
-            <h3 className="font-bold text-lg mb-4">Pre-written messages</h3>
-
-            <div className="space-y-4">
-              {/* WhatsApp copy */}
-              <div className="bg-[#f3eee4] rounded-xl p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-semibold flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4 text-[#25D366]" />
-                    For WhatsApp
-                  </span>
-                  <button
-                    onClick={() => copyToClipboard(shareCopy.whatsapp, "whatsapp-copy")}
-                    className="text-xs font-medium text-[#f20028] hover:underline"
-                  >
-                    {copied === "whatsapp-copy" ? "Copied!" : "Copy"}
-                  </button>
+          {/* REWARDS BREAKDOWN */}
+          <div className="bg-gutsyBlack text-gutsyCream rounded-[2.5rem] p-10 overflow-hidden relative">
+             <div className="relative z-10">
+                <h3 className="text-3xl font-black uppercase tracking-tightest mb-8">Leaderboard Rewards</h3>
+                <div className="space-y-4 opacity-80 text-[10px] font-black uppercase tracking-[0.2em]">
+                  <div className="flex justify-between items-center py-4 border-b border-white/10">
+                    <span>🥉 Top 500</span>
+                    <span className="text-right">Early Access + 15% Off</span>
+                  </div>
+                  <div className="flex justify-between items-center py-4 border-b border-white/10">
+                    <span>🥈 Top 100</span>
+                    <span className="text-right">Priority Delivery + 20% Off</span>
+                  </div>
+                  <div className="flex justify-between items-center py-4 border-b border-white/10">
+                    <span>🥇 Top 50</span>
+                    <span className="text-right">25% Off + Exclusive Content</span>
+                  </div>
+                  <div className="flex justify-between items-center py-4">
+                    <span className="text-gutsyRed">💎 Top 10</span>
+                    <span className="text-right">Inner Circle WhatsApp</span>
+                  </div>
                 </div>
-                <p className="text-sm text-black/60 leading-relaxed">{shareCopy.whatsapp}</p>
-              </div>
-
-              {/* Email copy */}
-              <div className="bg-[#f3eee4] rounded-xl p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-semibold flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-[#004eff]" />
-                    For Email
-                  </span>
-                  <button
-                    onClick={() => copyToClipboard(`Subject: ${shareCopy.email.subject}\n\n${shareCopy.email.body}`, "email-copy")}
-                    className="text-xs font-medium text-[#f20028] hover:underline"
-                  >
-                    {copied === "email-copy" ? "Copied!" : "Copy"}
-                  </button>
-                </div>
-                <p className="text-sm text-black/60 leading-relaxed whitespace-pre-line">{shareCopy.email.body}</p>
-              </div>
-            </div>
+             </div>
+             <div className="absolute -bottom-10 -right-10 opacity-10">
+                <img src={logoBlack} alt="" className="w-64 invert" />
+             </div>
           </div>
 
-          {/* Leaderboard Tease */}
-          <div className="bg-black text-white rounded-3xl p-8">
-            <h3 className="font-bold text-lg mb-4">Rewards breakdown</h3>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center justify-between py-2 border-b border-white/10">
-                <span className="flex items-center gap-2">🥉 Top 500</span>
-                <span className="text-white/60">Early access + 15% off</span>
-              </div>
-              <div className="flex items-center justify-between py-2 border-b border-white/10">
-                <span className="flex items-center gap-2">🥈 Top 100</span>
-                <span className="text-white/60">Priority delivery + 20% off</span>
-              </div>
-              <div className="flex items-center justify-between py-2 border-b border-white/10">
-                <span className="flex items-center gap-2">🥇 Top 50</span>
-                <span className="text-white/60">Priority delivery + 25% off + exclusive content</span>
-              </div>
-              <div className="flex items-center justify-between py-2">
-                <span className="flex items-center gap-2">💎 Top 10</span>
-                <span className="text-white/60">Inner Circle WhatsApp access</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Back to home */}
-          <div className="text-center">
-            <a
-              href="/"
-              className="inline-flex items-center gap-2 text-black/40 hover:text-black transition-colors text-sm"
-            >
-              Back to home
-              <ChevronRight className="w-4 h-4" />
+          {/* FOOTER NAV */}
+          <div className="text-center pt-8">
+            <a href="/" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest opacity-30 hover:opacity-100 transition-opacity">
+              <ChevronRight className="w-3 h-3 rotate-180" /> Back to home
             </a>
           </div>
 
