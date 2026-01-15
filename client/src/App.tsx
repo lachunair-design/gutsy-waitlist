@@ -1,142 +1,143 @@
 import { useState } from "react";
-import { WaitlistForm } from "./components/WaitlistForm";
+
+const WaitlistForm = () => (
+  <form className="w-full max-w-md mx-auto relative z-20 group" onSubmit={(e) => e.preventDefault()}>
+    <div className="flex flex-col md:flex-row gap-3 bg-white p-3 rounded-[2rem] shadow-2xl border border-black/5 group-focus-within:border-gutsyRed transition-all">
+      <input 
+        type="email" 
+        placeholder="ENTER YOUR EMAIL" 
+        className="flex-1 bg-transparent px-6 py-3 font-black text-xs outline-none uppercase tracking-widest placeholder:text-black/20"
+      />
+      <button className="bg-[#f20028] text-white px-10 py-5 rounded-full font-black text-[10px] tracking-[0.2em] hover:scale-105 transition-transform uppercase shadow-lg">
+        Get Priority Access
+      </button>
+    </div>
+  </form>
+);
 
 export default function App() {
   const [waitlistCount] = useState(128);
 
   return (
-    <div className="min-h-screen bg-[#f3eee4] text-black font-gutsy selection:bg-[#f20028] selection:text-white antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-[#f3eee4] text-black font-gutsy selection:bg-[#f20028] selection:text-white antialiased overflow-x-hidden uppercase">
       
-      {/* 1. GLASSMORPHIC NAV (Inspired by Unwell) */}
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-5xl bg-white/70 backdrop-blur-xl border border-white/20 rounded-full px-8 py-3 flex justify-between items-center shadow-xl">
-        <div className="h-8">
-          <img src="/assets/logo-black.svg" alt="GUTSY" className="h-full italic font-black" />
-        </div>
-        <div className="hidden md:flex gap-10 text-[9px] font-black tracking-[0.2em] uppercase">
+      {/* 1. UNWELL-STYLE NAV */}
+      <nav className="fixed top-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-6xl bg-white/80 backdrop-blur-3xl rounded-full px-10 py-4 flex justify-between items-center shadow-premium border border-white/40">
+        <span className="text-3xl font-black italic tracking-tightest">GUTSY</span>
+        <div className="hidden md:flex gap-12 text-[10px] font-black tracking-[0.3em]">
           <a href="#rebellion" className="hover:text-[#f20028] transition-colors">THE REBELLION</a>
           <a href="#science" className="hover:text-[#f20028] transition-colors">THE SCIENCE</a>
         </div>
-        <button className="bg-[#f20028] text-white px-8 py-2.5 rounded-full text-[10px] font-black hover:scale-105 transition-transform uppercase">
-          JOIN
-        </button>
+        <a href="#join" className="bg-black text-white px-8 py-3 rounded-full text-[10px] font-black hover:bg-[#f20028] transition-all">JOIN</a>
       </nav>
 
-      {/* 2. THE FLUID HERO */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-32 overflow-hidden">
-        {/* Biker Illustration - Breaking the edge */}
-        <img src="/assets/BIKER2.png" className="absolute -right-20 top-1/4 w-[40vw] opacity-10 md:opacity-100 pointer-events-none" alt="" />
-        
-        <div className="z-10 text-center w-full max-w-7xl uppercase">
-          <div className="inline-block bg-[#ffb300] text-black px-4 py-1.5 rounded-full text-[10px] font-black mb-8 tracking-widest shadow-sm">
-            WORLD'S LIGHTEST PEPTIDES
+      {/* 2. OVERLAPPING HERO */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 px-6">
+        {/* Illustrations as Kinetic Stickers */}
+        <img src="/assets/BIKER2.png" className="absolute top-[15%] -right-20 w-[45vw] md:w-[35vw] rotate-[-8deg] z-20 pointer-events-none drop-shadow-2xl" alt="" />
+        <img src="/assets/MEDITATION.png" className="absolute bottom-[10%] -left-12 w-[35vw] md:w-[22vw] rotate-[12deg] z-20 opacity-90 drop-shadow-xl" alt="" />
+
+        <div className="relative z-10 text-center flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-md px-5 py-2 rounded-full text-[9px] font-black mb-12 shadow-sm border border-white">
+             <span className="w-2 h-2 bg-[#f20028] rounded-full animate-pulse"></span>
+             WORLD'S LIGHTEST PEPTIDES
           </div>
           
-          <h1 className="text-[14vw] md:text-[12rem] font-black leading-[0.8] tracking-tightest mb-10">
-            PROTEIN <br /> <span className="text-[#f20028]">RE-IMAGINED</span>
+          <h1 className="text-[16vw] md:text-[14rem] font-black leading-[0.75] tracking-tightest mb-16 relative select-none">
+            <span className="block">PROTEIN</span>
+            <span className="block text-[#f3eee4] [text-shadow:_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000,_2px_2px_0_#000]">RE-IMAGINED</span>
           </h1>
 
-          <div className="w-full max-w-md mx-auto relative mt-12">
-            <WaitlistForm />
-            <div className="absolute -top-12 -right-12 bg-black text-[#ffb300] px-5 py-4 rounded-3xl font-black text-[11px] rotate-6 shadow-2xl animate-bounce-slow">
-              {waitlistCount}+ JOINED
-            </div>
+          <div className="max-w-xl mb-20 relative">
+             <p className="text-sm md:text-lg font-bold opacity-60 normal-case mb-12 leading-relaxed">
+               No bloating. No breakouts. Just hydrolyzed pea and rice peptides engineered for immediate systemic fuel.
+             </p>
+             <WaitlistForm />
+             
+             {/* Unwell floating pill badge */}
+             <div className="absolute -top-16 -right-12 bg-[#ffb300] p-5 rounded-3xl shadow-2xl rotate-12 font-black text-[11px] animate-bounce-slow border-2 border-black">
+               {waitlistCount}+ OBSESSIVES JOINED
+             </div>
           </div>
         </div>
-        
-        <img src="/assets/MEDITATION.png" className="absolute -left-10 bottom-10 w-48 opacity-20" alt="" />
       </section>
 
-      {/* 3. THE REBELLION (FOUNDER STORY - CHAPTERS) */}
-      <section id="rebellion" className="py-32 px-6 bg-white rounded-[4rem] mx-4 my-10 shadow-2xl overflow-hidden relative">
-        <div className="max-w-6xl mx-auto uppercase">
-          <div className="flex flex-col items-center mb-24">
-            <h2 className="text-6xl md:text-8xl font-black italic tracking-tightest leading-none">THE <span className="text-[#f20028]">REBELLION.</span></h2>
+      {/* 3. KINETIC MARQUEE */}
+      <div className="bg-black text-white py-10 overflow-hidden flex transform -rotate-2 scale-110 z-30 relative shadow-2xl">
+        <div className="animate-marquee whitespace-nowrap flex gap-16 font-black text-4xl italic">
+          {[...Array(10)].map((_, i) => (
+            <span key={i} className="flex gap-16 items-center">
+              <span>BORN IN DUBAI</span> <span className="text-[#f20028] text-5xl">/</span>
+              <span>HYDROLYZED PEPTIDES</span> <span className="text-[#f20028] text-5xl">/</span>
+              <span>ZERO BLOAT</span> <span className="text-[#f20028] text-5xl">/</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* 4. THE REBELLION (EDITORIAL CHAPTERS) */}
+      <section id="rebellion" className="relative bg-white rounded-[5rem] py-40 px-6 mx-4 -mt-10 z-20 shadow-premium">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col items-center mb-32">
+             <h2 className="text-[12vw] font-black tracking-tightest leading-none italic mb-4">THE <span className="text-[#f20028]">REBELLION.</span></h2>
+             <p className="text-xs font-black tracking-[0.5em] opacity-30">47+ PROTEINS TESTED. 1 SOLUTION.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
             {/* CHAPTER 1 */}
-            <div className="group">
-              <div className="aspect-[4/5] bg-[#f3eee4] rounded-[3rem] overflow-hidden mb-8 relative">
-                <img src="/assets/story-2.jpg" className="w-full h-full object-cover grayscale" alt="The Struggle" />
-                <div className="absolute top-4 right-4 bg-black text-white px-3 py-1 rounded-full text-[8px]">47+ PROTEINS TESTED</div>
-              </div>
-              <h3 className="font-black text-xl italic mb-4">01 / THE BREAKING POINT</h3>
-              <p className="text-sm font-bold opacity-60 normal-case">I tested everything. Bloating, breakouts, and "chalk sludge" everywhere. My gut hated the status quo.</p>
+            <div className="group relative">
+               <div className="aspect-[3/4] rounded-[4rem] overflow-hidden mb-10 shadow-2xl relative bg-[#f3eee4]">
+                  <img src="/assets/story-2.jpg" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
+                  <div className="absolute top-8 right-8 bg-[#ffb300] px-4 py-2 rounded-full text-[9px] font-black shadow-lg">CHAPTER 01</div>
+               </div>
+               <h3 className="font-black text-2xl italic mb-4">THE BREAKING POINT</h3>
+               <p className="text-sm font-bold opacity-40 normal-case leading-relaxed">Bloating after every shake. Breakouts. I was training hard, but my gut was fighting back.</p>
             </div>
 
             {/* CHAPTER 2 */}
-            <div className="group md:translate-y-12">
-              <div className="aspect-[4/5] bg-[#f3eee4] rounded-[3rem] overflow-hidden mb-8 border-4 border-[#ffb300] relative">
-                <img src="/assets/story-3.jpg" className="w-full h-full object-cover" alt="The Purpose" />
-                <img src="/assets/JUMPING.png" className="absolute -right-4 top-1/2 w-32 -rotate-12" alt="" />
-              </div>
-              <h3 className="font-black text-xl italic mb-4">02 / WHY WE BUILT THIS</h3>
-              <p className="text-sm font-bold opacity-60 normal-case">My husband Sujith and I tested for months. 200 batches later: protein that actually fuels without fighting back.</p>
+            <div className="group relative md:translate-y-20">
+               <div className="aspect-[3/4] rounded-[4rem] overflow-hidden mb-10 shadow-2xl relative bg-[#f3eee4] border-4 border-[#f20028]">
+                  <img src="/assets/story-3.jpg" className="w-full h-full object-cover" alt="" />
+                  <img src="/assets/JUMPING.png" className="absolute -bottom-10 -right-10 w-48 drop-shadow-2xl z-20" alt="" />
+               </div>
+               <h3 className="font-black text-2xl italic mb-4">WHY WE BUILT THIS</h3>
+               <p className="text-sm font-bold opacity-40 normal-case leading-relaxed">Sujith and I spent months perfecting the tech. Peptides that pass the stomach without a fight.</p>
             </div>
 
             {/* CHAPTER 3 */}
-            <div className="group">
-              <div className="aspect-[4/5] bg-[#f3eee4] rounded-[3rem] overflow-hidden mb-8 relative">
-                <img src="/assets/story-1.jpg" className="w-full h-full object-cover" alt="The Result" />
-                <div className="absolute bottom-4 left-4 bg-[#f20028] text-white px-3 py-1 rounded-full text-[8px]">O BLOAT. O BREAKOUTS.</div>
-              </div>
-              <h3 className="font-black text-xl italic mb-4 text-[#f20028]">03 / WHAT CHANGED</h3>
-              <p className="text-sm font-bold opacity-60 normal-case">Clear skin. Steady energy. No apologies. For the first time, protein was the solution, not the problem.</p>
+            <div className="group relative">
+               <div className="aspect-[3/4] rounded-[4rem] overflow-hidden mb-10 shadow-2xl relative bg-[#f3eee4]">
+                  <img src="/assets/story-1.jpg" className="w-full h-full object-cover" alt="" />
+                  <div className="absolute bottom-8 left-8 bg-black text-white px-4 py-2 rounded-full text-[9px] font-black shadow-lg uppercase">The Result</div>
+               </div>
+               <h3 className="font-black text-2xl italic mb-4 text-[#f20028]">WHAT CHANGED</h3>
+               <p className="text-sm font-bold opacity-40 normal-case leading-relaxed">Clear skin. Steady energy. For the first time, protein was the solution, not the problem.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. SCIENCE SECTION (PEPTIDE LOGIC) */}
-      <section id="science" className="py-40 px-6 max-w-7xl mx-auto relative uppercase">
-        <img src="/assets/RUNNER2.png" className="absolute right-0 top-0 w-64 opacity-10" alt="" />
-        <div className="text-center mb-24">
-          <h2 className="text-4xl md:text-7xl font-black mb-8 italic tracking-tightest">PEPTIDE <span className="text-[#f20028]">LOGIC.</span></h2>
-          <p className="max-w-2xl mx-auto font-bold opacity-50 normal-case">Hydrolyzed pea and rice protein. Pre-broken down so your gut doesn't have to do the heavy lifting. Instant absorption. Zero latency.</p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {['NO STEVIA', 'NO LECITHINS', 'NO GUMS', 'NO FILLERS'].map(item => (
-            <div key={item} className="bg-white rounded-full py-12 px-4 border border-black/5 text-center shadow-sm">
-              <span className="text-[10px] font-black tracking-widest">{item}</span>
-            </div>
-          ))}
+      {/* 5. SCIENCE (PEPTIDE LOGIC) */}
+      <section id="science" className="py-56 px-6 max-w-7xl mx-auto relative overflow-visible">
+        <img src="/assets/RUNNER2.png" className="absolute -right-10 top-0 w-[35vw] opacity-20 rotate-[-12deg] pointer-events-none" alt="" />
+        <div className="text-center relative z-10">
+          <h2 className="text-5xl md:text-[9rem] font-black mb-12 italic tracking-tightest leading-none">PEPTIDE <span className="text-[#f20028]">LOGIC.</span></h2>
+          <p className="max-w-3xl mx-auto font-bold opacity-50 normal-case text-xl leading-snug">Hydrolyzed pea and rice protein. Pre-digested by enzymes so your body doesn't have to work overtime. Instant systemic fuel. Zero latency absorption.</p>
         </div>
       </section>
-
-      {/* 5. PRODUCT MATRIX */}
-      <section className="py-40 px-6 max-w-7xl mx-auto uppercase">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* VANILLA CALM */}
-          <div className="group bg-white rounded-[4rem] p-10 shadow-premium relative overflow-hidden">
-            <img src="/assets/VANILLA.png" className="absolute -left-10 -bottom-10 w-48 opacity-10 group-hover:opacity-100 transition-opacity" alt="" />
-            <div className="aspect-square bg-[#f3eee4] rounded-[3rem] mb-10 flex items-center justify-center">
-              <img src="/assets/vanilla-tub.png" className="w-2/3 h-auto" alt="Vanilla Calm" />
-            </div>
-            <h4 className="text-4xl font-black italic mb-2 tracking-tight">VANILLA CALM</h4>
-            <p className="text-[10px] font-black opacity-30 tracking-widest mb-8">STRESS-RELIEF + 23G PROTEIN</p>
-          </div>
-
-          {/* CACAO BOOST */}
-          <div className="group bg-white rounded-[4rem] p-10 shadow-premium relative overflow-hidden">
-            <img src="/assets/COCOA.png" className="absolute -right-10 -bottom-10 w-48 opacity-10 group-hover:opacity-100 transition-opacity" alt="" />
-            <div className="aspect-square bg-[#f8d7da] rounded-[3rem] mb-10 flex items-center justify-center">
-              <img src="/assets/cacao-tub.png" className="w-2/3 h-auto" alt="Cacao Boost" />
-            </div>
-            <h4 className="text-4xl font-black italic mb-2 tracking-tight text-[#f20028]">CACAO BOOST</h4>
-            <p className="text-[10px] font-black opacity-30 tracking-widest mb-8">ENERGY + 23G PROTEIN</p>
-          </div>
+      
+      
+      {/* 6. THE CLOSER */}
+      <footer id="join" className="bg-[#f20028] py-56 px-6 text-center text-[#f3eee4] rounded-t-[6rem] relative overflow-hidden mt-20">
+        <img src="/assets/MARATHON2 2.png" className="absolute bottom-0 left-0 w-1/2 opacity-30 pointer-events-none" alt="" />
+        <div className="relative z-10">
+           <h2 className="text-8xl md:text-[13rem] font-black tracking-tightest leading-[0.8] mb-24 italic">DON'T BE <br/>A STRANGER.</h2>
+           <WaitlistForm />
+           <div className="mt-40 flex flex-col items-center">
+              <span className="text-[12vw] font-black opacity-10 italic select-none">GUTSY</span>
+              <p className="text-[11px] font-black tracking-[1em] opacity-40 mt-12">© 2026 DUBAI / BIOTECH / POWER</p>
+           </div>
         </div>
-      </section>
-
-      {/* 6. CONVERSION FOOTER */}
-      <footer className="bg-black py-40 px-6 text-center text-white rounded-t-[5rem] uppercase relative overflow-hidden">
-        <img src="/assets/MARATHON2 2.png" className="absolute bottom-0 left-0 w-1/3 opacity-20" alt="" />
-        <h2 className="text-7xl md:text-[11rem] font-black tracking-tightest leading-[0.85] mb-20 italic">DON'T BE <br/>A STRANGER.</h2>
-        <div className="w-full max-w-md mx-auto">
-          <WaitlistForm />
-        </div>
-        <p className="text-[10px] font-black tracking-[0.6em] mt-24 opacity-20">© 2026 DUBAI / BIOTECH / POWER</p>
       </footer>
     </div>
   );
