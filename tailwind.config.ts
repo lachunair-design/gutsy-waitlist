@@ -6,35 +6,38 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Gutsy Brand Colors
-        gutsy: {
-          cream: "#F3EEE4",
-          red: "#F20028",
-          yellow: "#FFB300",
-          black: "#000000",
-        },
-        // Aliases for hero component
-        cream: "#F3EEE4",
-        gutsyRed: "#F20028",
-        gutsyCream: "#F3EEE4",
-        gutsyYellow: "#FFB300",
-        background: "#F3EEE4",
+        // Gutsy Brand Palette
+        gutsyCream: "#f3eee4",
+        gutsyBlack: "#000000",
+        gutsyRed: "#f20028",
+        gutsyYellow: "#ffb300",
+        
+        // Semantic Aliases for high-conversion UI
+        background: "#f3eee4",
         foreground: "#000000",
         primary: {
-          DEFAULT: "#F20028",
-          foreground: "#FFFFFF",
+          DEFAULT: "#f20028",
+          foreground: "#f3eee4",
         },
         accent: {
-          DEFAULT: "#FFB300",
+          DEFAULT: "#ffb300",
           foreground: "#000000",
         },
       },
       fontFamily: {
+        // Registering Uto as the primary brand font
+        gutsy: ["Uto", "sans-serif"],
         sans: ["Uto", "system-ui", "sans-serif"],
       },
+      borderRadius: {
+        // Adding fluid, rounded corners to match the Unwell/SPYLT vibe
+        "4xl": "2rem",
+        "5xl": "3.5rem",
+      },
       boxShadow: {
-        brutalist: "4px 4px 0px 0px rgba(0,0,0,1)",
-        "brutalist-sm": "2px 2px 0px 0px rgba(0,0,0,1)",
+        // Refined soft shadows for premium depth
+        'premium': '0 25px 50px -12px rgba(0, 0, 0, 0.08)',
+        'pill': '0 10px 30px -5px rgba(242, 0, 40, 0.15)',
       },
       keyframes: {
         "accordion-down": {
@@ -49,11 +52,17 @@ export default {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        // Bouncy animation for CTA buttons
+        bounceLittle: {
+          "0%, 100%": { transform: "translateY(-2%)" },
+          "50%": { transform: "translateY(0)" },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        marquee: "marquee 20s linear infinite",
+        marquee: "marquee 25s linear infinite",
+        "bounce-slow": "bounceLittle 3s ease-in-out infinite",
       },
     },
   },
