@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  /* Registering the Brand Font */
+  /* Font Registration - Consolidated */
   @font-face {
     font-family: 'Uto';
     src: url('./assets/fonts/Uto-Black.woff2') format('woff2');
@@ -21,48 +21,50 @@
   }
 
   * {
-    @apply border-black/5; /* Soft hairline borders for a premium feel */
+    @apply border-black/5;
   }
 
   body {
-    @apply bg-gutsyCream text-gutsyBlack antialiased selection:bg-gutsyRed selection:text-white;
+    @apply bg-gutsyCream text-gutsyBlack antialiased;
+    @apply selection:bg-gutsyRed selection:text-white;
     font-family: "Uto", system-ui, sans-serif;
   }
 }
 
 @layer components {
-  /* High-Conversion Fluid Pill Button */
+  /* Fluid Pill Button */
   .btn-pill {
-    @apply bg-gutsyRed text-gutsyCream font-black uppercase tracking-[0.1em] text-[10px];
+    @apply inline-flex items-center justify-center; /* Ensures proper alignment */
+    @apply bg-gutsyRed text-gutsyCream font-black uppercase tracking-widest text-[10px];
     @apply px-8 py-4 rounded-full transition-all duration-300 ease-out;
     @apply hover:scale-105 hover:shadow-pill active:scale-95;
   }
 
-  /* Sophisticated Card with Soft Depth */
+  /* Premium Card */
   .card-premium {
-    @apply bg-white rounded-5xl p-8 shadow-premium border border-black/5;
+    @apply bg-white rounded-[3rem] p-8 shadow-premium border border-black/5; /* Changed 5xl to explicit rem if 5xl isn't in config */
     @apply transition-transform duration-500 hover:-translate-y-2;
   }
 
-  /* Minimalist Underline Input */
+  /* Fluid Input */
   .input-fluid {
     @apply w-full border-b-2 border-black/10 bg-transparent px-0 py-4 font-bold uppercase;
-    @apply text-sm tracking-widest transition-all duration-300;
+    @apply text-sm tracking-widest transition-colors duration-300;
     @apply focus:border-gutsyRed focus:outline-none placeholder:text-black/20;
   }
 
-  /* Announcement Bar with Bouncy Marquee */
+  /* Marquee */
   .marquee-container {
-    @apply flex items-center overflow-hidden whitespace-nowrap bg-black py-3 text-white;
+    @apply flex items-center overflow-x-hidden whitespace-nowrap bg-black py-3 text-white;
   }
 }
 
 @layer utilities {
+  /* Modern CSS text-wrap property */
   .text-balance {
     text-wrap: balance;
   }
   
-  /* For that ultra-clean high-end typography look */
   .tracking-tightest {
     letter-spacing: -0.05em;
   }
