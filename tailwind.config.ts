@@ -13,6 +13,11 @@ export default {
           yellow: "#FFB300",
           black: "#000000",
         },
+        // Aliases for hero component
+        cream: "#F3EEE4",
+        gutsyRed: "#F20028",
+        gutsyCream: "#F3EEE4",
+        gutsyYellow: "#FFB300",
         background: "#F3EEE4",
         foreground: "#000000",
         primary: {

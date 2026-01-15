@@ -8,9 +8,9 @@ const Hero = () => {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const response = await fetch('/api/waitlist/count');
+        const response = await fetch('/api/count');
         const data = await response.json();
-        setWaitlistCount(data.count + 12); // Baseline + Real Signups
+        setWaitlistCount(data.count); // API already includes baseline
       } catch (error) {
         console.error("Database connection failed", error);
       }
