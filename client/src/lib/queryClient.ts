@@ -9,7 +9,6 @@ export const queryClient = new QueryClient({
   },
 });
 
-// Helper for API calls
 export async function apiRequest<T>(
   endpoint: string,
   options?: RequestInit
@@ -21,9 +20,16 @@ export async function apiRequest<T>(
     ...options,
   });
 
+  // Check if response is JSON to avoid "Unexpected token A" error
+  const contentType = response.headers.get("content-type");
+  
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || "Request failed");
+    if (contentType && contentType.includes("application/json")) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Request failed");
+    }
+    // If server sends HTML error page, throw a readable string instead
+    throw new Error(`Server Error: ${response.status}. Please try again later.`);
   }
 
   return response.json();
