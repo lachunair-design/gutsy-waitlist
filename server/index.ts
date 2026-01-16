@@ -1,5 +1,5 @@
 import express from "express";
-import { router } from "./routes";
+import { router } from "./routes.js"; // Explicit .js extension
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,7 +11,7 @@ app.use("/api", router);
 
 // Health check
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok" });
+  res.json({ status: "ok", service: "GUTSY Backend" });
 });
 
 app.listen(PORT, () => {
