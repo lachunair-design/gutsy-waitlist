@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { insertWaitlistSchema } from "../shared/schema";
-import { addToWaitlist, getByEmail } from "../lib/storage";
+import { addToWaitlist, getByEmail } from "../lib/storage.js";
 import { z } from "zod";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
