@@ -1,6 +1,7 @@
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from "react";
 import { cn } from "../lib/utils";
+import { ChevronDown } from "lucide-react";
 
 export const Accordion = AccordionPrimitive.Root;
 
@@ -10,7 +11,8 @@ export const AccordionItem = forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn("border-b-2 border-gutsy-black", className)}
+    /* Hairline border to match Graza style */
+    className={cn("border-b border-gutsyBlack/10", className)}
     {...props}
   />
 ));
@@ -24,25 +26,17 @@ export const AccordionTrigger = forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex flex-1 items-center justify-between py-4 font-bold uppercase tracking-wide transition-all [&[data-state=open]>svg]:rotate-180",
+        /* Editorial Typography: GUTSY font, tight tracking, heavy weight */
+        "flex flex-1 items-center justify-between py-6 text-left text-lg font-black uppercase tracking-tightest transition-all hover:text-gutsyRed [&[data-state=open]>svg]:rotate-180",
         className
       )}
       {...props}
     >
       {children}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="square"
-        className="h-5 w-5 shrink-0 transition-transform duration-200"
-      >
-        <path d="m6 9 6 6 6-6" />
-      </svg>
+      <ChevronDown 
+        className="h-5 w-5 shrink-0 text-gutsyBlack/20 transition-transform duration-300" 
+        strokeWidth={3}
+      />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>
 ));
@@ -54,10 +48,13 @@ export const AccordionContent = forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
     {...props}
   >
-    <div className={cn("pb-4 pt-0", className)}>{children}</div>
+    {/* Content follows the 'Provision' body style: uppercase and spaced out */}
+    <div className={cn("pb-6 pt-0 font-medium uppercase tracking-widest leading-relaxed text-gutsyBlack/60", className)}>
+      {children}
+    </div>
   </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = "AccordionContent";

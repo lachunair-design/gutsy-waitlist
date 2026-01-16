@@ -3,39 +3,85 @@
 @tailwind utilities;
 
 @layer base {
+  /* Font Registration - Updated with exact brand asset pathnames */
+  @font-face {
+    font-family: 'Uto';
+    src: url('./assets/fonts/Uto Black_1763533689990.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Uto';
+    src: url('./assets/fonts/Uto Bold_1763533689991.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Uto';
+    src: url('./assets/fonts/Uto Medium_1763533689991.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
   * {
-    @apply border-gutsy-black;
+    /* Graza uses very subtle hairlines */
+    @apply border-black/10;
   }
 
   body {
-    @apply bg-gutsy-cream text-gutsy-black antialiased;
-    font-family: "Uto", system-ui, sans-serif;
+    @apply bg-gutsyCream text-gutsyBlack antialiased;
+    @apply selection:bg-gutsyRed selection:text-white;
+    /* Adding a fallback serif for that Graza editorial touch */
+    font-family: "Uto", "Georgia", serif;
   }
 }
 
 @layer components {
-  /* Brutalist button base */
-  .btn-brutalist {
-    @apply border-2 border-gutsy-black font-bold uppercase tracking-wide;
-    @apply shadow-brutalist transition-all duration-100;
-    @apply hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none;
-    @apply active:translate-x-[4px] active:translate-y-[4px] active:shadow-none;
+  /* Editorial Pill Button - Thinner border, more "provision" feel */
+  .btn-pill {
+    @apply inline-flex items-center justify-center;
+    @apply bg-gutsyBlack text-gutsyCream font-black uppercase tracking-[0.2em] text-[10px];
+    @apply px-10 py-4 rounded-full transition-all duration-300;
+    @apply hover:bg-gutsyRed hover:shadow-lg active:scale-95;
   }
 
-  /* Brutalist card */
-  .card-brutalist {
-    @apply border-2 border-gutsy-black bg-white p-6 shadow-brutalist;
+  /* Provision Card - Replaces shadow with a crisp hairline border */
+  .card-premium {
+    @apply bg-white rounded-[2rem] p-10 border border-gutsyBlack/10;
+    @apply transition-all duration-500 hover:border-gutsyBlack/30;
   }
 
-  /* Brutalist input */
-  .input-brutalist {
-    @apply w-full border-2 border-gutsy-black bg-white px-4 py-3;
-    @apply focus:outline-none focus:ring-2 focus:ring-gutsy-red focus:ring-offset-2;
+  /* Hand-drawn style Input */
+  .input-fluid {
+    @apply w-full border-b border-gutsyBlack/20 bg-transparent px-0 py-4 font-medium;
+    @apply text-base tracking-tight transition-all duration-300 italic;
+    @apply focus:border-gutsyBlack focus:outline-none placeholder:text-gutsyBlack/30;
+  }
+
+  /* The "Glog" Marquee */
+  .marquee-container {
+    @apply flex items-center overflow-x-hidden whitespace-nowrap bg-gutsyYellow py-2 text-gutsyBlack;
+    @apply border-y border-gutsyBlack/10 font-black uppercase text-[10px] tracking-[0.3em];
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  /* Ultra-tight for large display headings */
+  .tracking-tightest {
+    letter-spacing: -0.06em;
+  }
+
+  /* Graza-style decorative underline */
+  .decoration-gutsy {
+    @apply underline decoration-1 underline-offset-[12px] decoration-gutsyRed/30;
   }
 }
