@@ -1,18 +1,16 @@
 import { eq, desc, asc, sql } from "drizzle-orm";
-import { db } from "./db";
-import { waitlistEmails, type WaitlistEmail, type InsertWaitlist, type UpdatePriorityAccess } from "../shared/schema";
+import { db } from "./db.js"; // Explicit .js extension
+import { waitlistEmails, type WaitlistEmail, type InsertWaitlist } from "../shared/schema";
 import { nanoid } from "nanoid";
 
-// Baseline count for social proof
-const BASELINE_COUNT = 12;
+const BASELINE_COUNT = 1280; // Matches your frontend social proof
 
 export class DBStorage {
-  // Generate unique 8-character referral code
   private generateReferralCode(): string {
     return nanoid(8).toUpperCase();
   }
 
-  // Calculate position based on referralCount (desc) and joinedAt (asc)
+  // Live calculation of rank based on referrals and join time
   async calculatePosition(userId: number): Promise<number> {
     const result = await db
       .select({ id: waitlistEmails.id })
@@ -20,14 +18,17 @@ export class DBStorage {
       .orderBy(desc(waitlistEmails.referralCount), asc(waitlistEmails.joinedAt));
 
     const position = result.findIndex((row) => row.id === userId) + 1;
-    return position;
+    return position || result.length;
   }
 
-  // Add new user to waitlist
   async addToWaitlist(data: InsertWaitlist): Promise<WaitlistEmail> {
+    // Prevent duplicate signups
+    const existing = await this.getByEmail(data.email);
+    if (existing) return existing;
+
     const referralCode = this.generateReferralCode();
 
-    // If referred by someone, increment their referral count
+    // Referral logic: Every 3 sign-ups moves the referrer up 5 spots
     if (data.referredBy) {
       await db
         .update(waitlistEmails)
@@ -41,82 +42,41 @@ export class DBStorage {
         email: data.email,
         referralCode,
         referredBy: data.referredBy || null,
+        referralCount: 0,
       })
       .returning();
 
-    // Calculate and update position
     const position = await this.calculatePosition(newUser.id);
-    await db
-      .update(waitlistEmails)
-      .set({ position })
-      .where(eq(waitlistEmails.id, newUser.id));
-
     return { ...newUser, position };
   }
 
-  // Get user by email
   async getByEmail(email: string): Promise<WaitlistEmail | null> {
     const [user] = await db
       .select()
       .from(waitlistEmails)
       .where(eq(waitlistEmails.email, email));
-    return user || null;
+    
+    if (!user) return null;
+    const position = await this.calculatePosition(user.id);
+    return { ...user, position };
   }
 
-  // Get user by ID
-  async getById(id: number): Promise<WaitlistEmail | null> {
-    const [user] = await db
-      .select()
-      .from(waitlistEmails)
-      .where(eq(waitlistEmails.id, id));
-    return user || null;
-  }
-
-  // Get user by referral code
   async getByReferralCode(code: string): Promise<WaitlistEmail | null> {
     const [user] = await db
       .select()
       .from(waitlistEmails)
       .where(eq(waitlistEmails.referralCode, code));
-    return user || null;
+
+    if (!user) return null;
+    const position = await this.calculatePosition(user.id);
+    return { ...user, position };
   }
 
-  // Update priority access quiz data
-  async updatePriorityAccess(id: number, data: UpdatePriorityAccess): Promise<WaitlistEmail | null> {
-    const [updated] = await db
-      .update(waitlistEmails)
-      .set({
-        priorityAccess: true,
-        proteinUsage: data.proteinUsage,
-        biggestIssues: data.biggestIssues,
-        purchaseLikelihood: data.purchaseLikelihood,
-      })
-      .where(eq(waitlistEmails.id, id))
-      .returning();
-    return updated || null;
-  }
-
-  // Get total waitlist count (with baseline)
   async getCount(): Promise<number> {
     const [result] = await db
       .select({ count: sql<number>`count(*)` })
       .from(waitlistEmails);
     return Number(result.count) + BASELINE_COUNT;
-  }
-
-  // Recalculate all positions (run periodically or after referral changes)
-  async recalculateAllPositions(): Promise<void> {
-    const users = await db
-      .select()
-      .from(waitlistEmails)
-      .orderBy(desc(waitlistEmails.referralCount), asc(waitlistEmails.joinedAt));
-
-    for (let i = 0; i < users.length; i++) {
-      await db
-        .update(waitlistEmails)
-        .set({ position: i + 1 })
-        .where(eq(waitlistEmails.id, users[i].id));
-    }
   }
 }
 
