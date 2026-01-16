@@ -1,5 +1,5 @@
 import { eq, desc, asc, sql } from "drizzle-orm";
-import { db } from "./_db";
+import { db } from "./db";
 import { waitlistEmails, type WaitlistEmail, type InsertWaitlist, type UpdatePriorityAccess } from "../shared/schema";
 import { nanoid } from "nanoid";
 
