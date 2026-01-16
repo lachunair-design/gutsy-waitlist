@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
-const LAUNCH_DATE = new Date("2026-01-01T00:00:00").getTime();
+// Updated Launch Date to March 15, 2026
+const LAUNCH_DATE = new Date("2026-03-15T00:00:00").getTime();
 
 export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState({
@@ -29,13 +30,13 @@ export default function Countdown() {
   }, []);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center justify-center gap-4 md:gap-8 font-gutsy">
       <TimeUnit value={timeLeft.days} label="days" />
-      <span className="text-2xl font-light text-black/20">:</span>
+      <Separator />
       <TimeUnit value={timeLeft.hours} label="hours" />
-      <span className="text-2xl font-light text-black/20">:</span>
+      <Separator />
       <TimeUnit value={timeLeft.minutes} label="min" />
-      <span className="text-2xl font-light text-black/20">:</span>
+      <Separator />
       <TimeUnit value={timeLeft.seconds} label="sec" />
     </div>
   );
@@ -43,11 +44,21 @@ export default function Countdown() {
 
 function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
-    <div className="text-center">
-      <div className="text-3xl md:text-4xl font-bold tabular-nums">
+    <div className="flex flex-col items-center">
+      <div className="text-4xl md:text-6xl font-black tabular-nums tracking-tighter text-gutsyBlack">
         {value.toString().padStart(2, "0")}
       </div>
-      <div className="text-xs text-black/40 uppercase tracking-wider">{label}</div>
+      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gutsyBlack/30 mt-1">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function Separator() {
+  return (
+    <div className="text-2xl md:text-4xl font-light text-gutsyBlack/10 self-start mt-2">
+      :
     </div>
   );
 }
