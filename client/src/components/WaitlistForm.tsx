@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "./Button";
+import { ArrowRight, Loader2, MapPin, MessageCircle, Twitter } from "lucide-react";
 import { useJoinWaitlist } from "../hooks/useWaitlist";
 import type { WaitlistEmail } from "@shared/schema";
 
@@ -21,11 +21,7 @@ export function WaitlistForm({ referralCode, onSuccess }: WaitlistFormProps) {
   const [submitted, setSubmitted] = useState(false);
   const [user, setUser] = useState<WaitlistEmail | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<EmailForm>({
+  const { register, handleSubmit, formState: { errors } } = useForm<EmailForm>({
     resolver: zodResolver(emailSchema),
   });
 
@@ -41,7 +37,7 @@ export function WaitlistForm({ referralCode, onSuccess }: WaitlistFormProps) {
       setSubmitted(true);
       onSuccess?.(result);
     } catch (error) {
-      // Error handled by mutation
+      // Error is captured by joinMutation.error
     }
   };
 
@@ -50,25 +46,41 @@ export function WaitlistForm({ referralCode, onSuccess }: WaitlistFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
-      <div className="flex flex-col gap-4 sm:flex-row">
-        <input
-          type="email"
-          placeholder="Enter your email"
-          className="input-brutalist flex-1"
-          {...register("email")}
-        />
-        <Button type="submit" disabled={joinMutation.isPending}>
-          {joinMutation.isPending ? "Joining..." : "Join Waitlist"}
-        </Button>
-      </div>
-      {errors.email && (
-        <p className="mt-2 text-sm text-gutsy-red">{errors.email.message}</p>
-      )}
-      {joinMutation.error && (
-        <p className="mt-2 text-sm text-gutsy-red">{joinMutation.error.message}</p>
-      )}
-    </form>
+    <div className="w-full max-w-lg font-gutsy">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="flex flex-col gap-3 p-3 bg-white rounded-[2.5rem] border border-black/10 shadow-premium">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="px-6 py-4 bg-transparent outline-none text-base text-gutsyBlack placeholder:text-gutsyBlack/30 font-medium"
+            {...register("email")}
+          />
+          <button 
+            type="submit" 
+            disabled={joinMutation.isPending}
+            className="bg-gutsyRed text-white px-8 py-5 rounded-[2rem] font-black uppercase text-xs tracking-widest transition-all duration-300 hover:bg-gutsyBlack flex items-center justify-center gap-3 disabled:opacity-50"
+          >
+            {joinMutation.isPending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                Join the Waitlist
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Branded Error Handling */}
+        {(errors.email || joinMutation.error) && (
+          <div className="mt-4 px-6 py-3 bg-gutsyRed/5 rounded-2xl border border-gutsyRed/10">
+            <p className="text-[10px] font-black uppercase tracking-widest text-gutsyRed text-center">
+              {errors.email?.message || joinMutation.error?.message || "Server error. Please try again later."}
+            </p>
+          </div>
+        )}
+      </form>
+    </div>
   );
 }
 
@@ -76,12 +88,12 @@ function SuccessState({ user }: { user: WaitlistEmail }) {
   const referralLink = `${window.location.origin}?ref=${user.referralCode}`;
 
   const shareOnWhatsApp = () => {
-    const text = `Join GUTSY - The Lightest Protein in the World! ${referralLink}`;
+    const text = `I just joined the waitlist for GUTSY - the first protein that won't wreck your gut. They're launching in Dubai in Jan. Join through my link and we both move up the list: ${referralLink}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   const shareOnTwitter = () => {
-    const text = `I just joined the @gutsyprotein waitlist! The lightest protein, built for your gut. Join me:`;
+    const text = `I just joined the @gutsyprotein waitlist! No bloat. No regret. Just clean fuel. Join me:`;
     window.open(
       `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(referralLink)}`,
       "_blank"
@@ -89,23 +101,39 @@ function SuccessState({ user }: { user: WaitlistEmail }) {
   };
 
   return (
-    <div className="card-brutalist w-full max-w-md text-center">
-      <h3 className="mb-2 text-2xl font-bold uppercase">You're In!</h3>
-      <p className="mb-4 text-lg">
-        Position <span className="font-bold text-gutsy-red">#{user.position}</span>
+    <div className="bg-white rounded-[2.5rem] p-10 shadow-premium border border-black/5 text-center font-gutsy">
+      <h3 className="text-4xl font-black uppercase tracking-tightest mb-4">You're on the list.</h3>
+      <p className="text-xl uppercase font-black opacity-70 mb-8">
+        You're currently <span className="text-gutsyRed">#{user.position}</span> in line.
       </p>
-      <p className="mb-6 text-sm">Share to move up the list:</p>
-      <div className="flex gap-4 justify-center">
-        <Button variant="secondary" size="sm" onClick={shareOnWhatsApp}>
+      
+      <p className="text-sm font-black uppercase tracking-tight opacity-50 mb-6">
+        Want to jump the queue? Share your unique link. Every 3 friends who join moves you up 5 spots.
+      </p>
+
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <button 
+          onClick={shareOnWhatsApp}
+          className="flex items-center justify-center gap-2 px-6 py-4 bg-gutsyCream rounded-2xl hover:bg-gutsyBlack hover:text-white transition-all text-[10px] font-black uppercase tracking-widest"
+        >
+          <MessageCircle className="w-4 h-4 text-[#25D366]" />
           WhatsApp
-        </Button>
-        <Button variant="outline" size="sm" onClick={shareOnTwitter}>
+        </button>
+        <button 
+          onClick={shareOnTwitter}
+          className="flex items-center justify-center gap-2 px-6 py-4 bg-gutsyCream rounded-2xl hover:bg-gutsyBlack hover:text-white transition-all text-[10px] font-black uppercase tracking-widest"
+        >
+          <Twitter className="w-4 h-4 text-[#1DA1F2]" />
           Twitter
-        </Button>
+        </button>
       </div>
-      <p className="mt-4 text-xs text-gray-600 break-all">
-        Your referral code: <strong>{user.referralCode}</strong>
-      </p>
+
+      <div className="mt-8 pt-8 border-t border-black/5">
+        <p className="text-[10px] font-black uppercase tracking-widest opacity-30 mb-2">Your Referral Link</p>
+        <p className="text-xs font-medium opacity-60 break-all bg-gutsyCream p-4 rounded-xl">
+          {referralLink}
+        </p>
+      </div>
     </div>
   );
 }
