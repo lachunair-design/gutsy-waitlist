@@ -37,12 +37,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       referralCount: user.referralCount,
     });
   } catch (error) {
+    console.error("Waitlist signup error:", error);
+
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: error.errors[0].message });
+      return res.status(400).json({ message: error.errors[0].message });
     }
 
-    const message = error instanceof Error ? error.message : "Failed to join waitlist";
-    console.error("Waitlist signup error:", error);
-    res.status(500).json({ error: message });
+    // Handle database connection errors
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+    if (errorMessage.includes("Database not configured")) {
+      return res.status(503).json({ message: "Service temporarily unavailable. Please try again later." });
+    }
+
+    if (errorMessage.includes("connect") || errorMessage.includes("ECONNREFUSED")) {
+      return res.status(503).json({ message: "Unable to connect to database. Please try again later." });
+    }
+
+    res.status(500).json({ message: "Failed to join waitlist. Please try again." });
   }
 }
