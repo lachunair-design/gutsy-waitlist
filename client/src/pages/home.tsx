@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, Instagram, Mail } from "lucide-react";
 import EmailForm from "@/components/EmailForm";
 import Countdown from "@/components/Countdown";
+import WelcomePopup from "@/components/WelcomePopup";
 
 import bikerImg from "@/assets/images/BIKER2.png";
 import meditationImg from "@/assets/images/MEDITATION.png";
@@ -98,6 +99,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#f3eee4] font-gutsy antialiased overflow-x-hidden">
+
+      {/* Welcome Popup */}
+      <WelcomePopup />
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
