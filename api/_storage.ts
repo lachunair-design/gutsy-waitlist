@@ -9,8 +9,16 @@ function generateReferralCode(): string {
   return nanoid(8).toUpperCase();
 }
 
+function checkDb() {
+  if (!db) {
+    throw new Error("Database not configured. Please set DATABASE_URL environment variable.");
+  }
+  return db;
+}
+
 export async function calculatePosition(userId: number): Promise<number> {
-  const result = await db
+  const database = checkDb();
+  const result = await database
     .select({ id: waitlistEmails.id })
     .from(waitlistEmails)
     .orderBy(desc(waitlistEmails.referralCount), asc(waitlistEmails.joinedAt));
@@ -19,16 +27,17 @@ export async function calculatePosition(userId: number): Promise<number> {
 }
 
 export async function addToWaitlist(data: InsertWaitlist): Promise<WaitlistEmail> {
+  const database = checkDb();
   const referralCode = generateReferralCode();
 
   if (data.referredBy) {
-    await db
+    await database
       .update(waitlistEmails)
       .set({ referralCount: sql`${waitlistEmails.referralCount} + 1` })
       .where(eq(waitlistEmails.referralCode, data.referredBy));
   }
 
-  const [newUser] = await db
+  const [newUser] = await database
     .insert(waitlistEmails)
     .values({
       email: data.email,
@@ -38,7 +47,7 @@ export async function addToWaitlist(data: InsertWaitlist): Promise<WaitlistEmail
     .returning();
 
   const position = await calculatePosition(newUser.id);
-  await db
+  await database
     .update(waitlistEmails)
     .set({ position })
     .where(eq(waitlistEmails.id, newUser.id));
@@ -47,7 +56,8 @@ export async function addToWaitlist(data: InsertWaitlist): Promise<WaitlistEmail
 }
 
 export async function getByEmail(email: string): Promise<WaitlistEmail | null> {
-  const [user] = await db
+  const database = checkDb();
+  const [user] = await database
     .select()
     .from(waitlistEmails)
     .where(eq(waitlistEmails.email, email));
@@ -55,7 +65,8 @@ export async function getByEmail(email: string): Promise<WaitlistEmail | null> {
 }
 
 export async function getById(id: number): Promise<WaitlistEmail | null> {
-  const [user] = await db
+  const database = checkDb();
+  const [user] = await database
     .select()
     .from(waitlistEmails)
     .where(eq(waitlistEmails.id, id));
@@ -63,7 +74,8 @@ export async function getById(id: number): Promise<WaitlistEmail | null> {
 }
 
 export async function getByReferralCode(code: string): Promise<WaitlistEmail | null> {
-  const [user] = await db
+  const database = checkDb();
+  const [user] = await database
     .select()
     .from(waitlistEmails)
     .where(eq(waitlistEmails.referralCode, code));
@@ -71,7 +83,8 @@ export async function getByReferralCode(code: string): Promise<WaitlistEmail | n
 }
 
 export async function updatePriorityAccess(id: number, data: UpdatePriorityAccess): Promise<WaitlistEmail | null> {
-  const [updated] = await db
+  const database = checkDb();
+  const [updated] = await database
     .update(waitlistEmails)
     .set({
       priorityAccess: true,
@@ -85,7 +98,8 @@ export async function updatePriorityAccess(id: number, data: UpdatePriorityAcces
 }
 
 export async function getCount(): Promise<number> {
-  const [result] = await db
+  const database = checkDb();
+  const [result] = await database
     .select({ count: sql<number>`count(*)` })
     .from(waitlistEmails);
   return Number(result.count) + BASELINE_COUNT;
