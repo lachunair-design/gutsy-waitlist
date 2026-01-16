@@ -1,6 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { updatePriorityAccessSchema } from "../../../shared/schema";
-import { updatePriorityAccess } from "../../../lib/storage";
+// ADD .js HERE
+import { updatePriorityAccessSchema } from "../../../shared/schema.js"; 
+// ADD .js HERE
+import { updatePriorityAccess } from "../../../lib/storage.js"; 
 import { z } from "zod";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
