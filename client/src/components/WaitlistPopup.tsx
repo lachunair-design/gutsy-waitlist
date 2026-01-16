@@ -6,17 +6,11 @@ export default function WaitlistPopup() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Check if the user has already seen the popup this session
-    const hasSeenPopup = sessionStorage.getItem("gutsy_popup_viewed");
-    
-    if (!hasSeenPopup) {
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-      }, 3000); // Opens 3 seconds after landing
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
+  // FORCED OPEN FOR TESTING: 
+  // This ignores session storage and opens immediately
+  setIsOpen(true);
+}, []);
+  
   const closePopup = () => {
     setIsOpen(false);
     sessionStorage.setItem("gutsy_popup_viewed", "true");
