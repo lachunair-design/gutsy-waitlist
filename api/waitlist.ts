@@ -4,6 +4,15 @@ import { addToWaitlist, getByEmail } from "./_storage";
 import { z } from "zod";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -13,7 +22,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const existing = await getByEmail(data.email);
     if (existing) {
-      // Return referral code so user can go to success page
       return res.status(200).json({
         message: "Welcome back!",
         referralCode: existing.referralCode,
@@ -32,7 +40,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors[0].message });
     }
+
+    const message = error instanceof Error ? error.message : "Failed to join waitlist";
     console.error("Waitlist signup error:", error);
-    res.status(500).json({ error: "Failed to join waitlist" });
+    res.status(500).json({ error: message });
   }
 }
