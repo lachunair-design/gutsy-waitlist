@@ -14,9 +14,10 @@ type EmailFormData = z.infer<typeof emailSchema>;
 
 interface EmailFormProps {
   variant?: "light" | "dark";
+  buttonText?: string;
 }
 
-export default function EmailForm({ variant = "light" }: EmailFormProps) {
+export default function EmailForm({ variant = "light", buttonText = "Join Waitlist" }: EmailFormProps) {
   const [referredBy, setReferredBy] = useState<string | null>(null);
 
   // Check for referral code in URL on mount
@@ -106,7 +107,7 @@ export default function EmailForm({ variant = "light" }: EmailFormProps) {
             </>
           ) : (
             <>
-              Join Waitlist
+              {buttonText}
               <ArrowRight className="w-4 h-4" />
             </>
           )}
