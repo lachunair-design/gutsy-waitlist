@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getByReferralCode } from "../../lib/storage";
+// ADD .js HERE
+import { getByReferralCode } from "../../lib/storage.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
