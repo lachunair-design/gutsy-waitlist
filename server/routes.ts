@@ -1,11 +1,10 @@
 import { Router, type Request, type Response } from "express";
-import { storage } from "./storage.js"; // Critical fix: added .js extension
+import { storage } from "./storage.js"; // Pointing to local folder
 import { insertWaitlistSchema } from "../shared/schema";
 import { z } from "zod";
 
 export const router = Router();
 
-// POST /api/waitlist - Signup
 router.post("/waitlist", async (req: Request, res: Response) => {
   try {
     const data = insertWaitlistSchema.parse(req.body);
@@ -19,7 +18,6 @@ router.post("/waitlist", async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/waitlist/count - Live Social Proof
 router.get("/waitlist/count", async (_req: Request, res: Response) => {
   try {
     const count = await storage.getCount();
@@ -29,21 +27,11 @@ router.get("/waitlist/count", async (_req: Request, res: Response) => {
   }
 });
 
-// GET /api/waitlist/user/:code - Success Page Data
 router.get("/waitlist/user/:code", async (req: Request, res: Response) => {
   try {
     const user = await storage.getByReferralCode(req.params.code);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json({
-      position: user.position,
-      referralCode: user.referralCode,
-      referralCount: user.referralCount,
-      // Security: masked email for display
-      email: user.email.slice(0, 3) + "***@" + user.email.split("@")[1],
-    });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch user data" });
   }
