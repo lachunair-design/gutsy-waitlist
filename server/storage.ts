@@ -1,15 +1,16 @@
 import { eq, desc, asc, sql } from "drizzle-orm";
-import { db } from "./db.js"; // Pointing to local folder
-import { waitlistEmails, type WaitlistEmail, type InsertWaitlist } from "../shared/schema";
+import { db } from "./db.js"; 
+import { waitlistEmails, type WaitlistEmail, type InsertWaitlist } from "../shared/schema.js"; // Added .js
 import { nanoid } from "nanoid";
 
-const BASELINE_COUNT = 1280;
+const BASELINE_COUNT = 1280; // Brand social proof
 
 export class DBStorage {
   private generateReferralCode(): string {
     return nanoid(8).toUpperCase();
   }
 
+  // Live calculation of rank based on referrals and join time
   async calculatePosition(userId: number): Promise<number> {
     const result = await db
       .select({ id: waitlistEmails.id })
@@ -26,6 +27,7 @@ export class DBStorage {
 
     const referralCode = this.generateReferralCode();
 
+    // Viral Rewards: +1 referral count for the person who shared the link
     if (data.referredBy) {
       await db
         .update(waitlistEmails)
