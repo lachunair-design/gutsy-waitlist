@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getByReferralCode, calculatePosition } from "../../../lib/storage";
+// ADDED .js EXTENSION HERE
+import { getByReferralCode, calculatePosition } from "../../../lib/storage.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
@@ -25,9 +26,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       position,
       referralCode: user.referralCode,
       referralCount: user.referralCount,
+      // Masked email for display security
       email: user.email.slice(0, 3) + "***@" + user.email.split("@")[1],
     });
   } catch (error) {
+    // This catch block now sends JSON, preventing the "A" error
     console.error("Get user by code error:", error);
     res.status(500).json({ error: "Failed to get user" });
   }
