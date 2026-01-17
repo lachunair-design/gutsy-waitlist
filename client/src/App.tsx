@@ -17,6 +17,8 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/success" component={Success} />
+      {/* In your App.tsx Switch component */}
+<Route path="/story" component={Story} />
       <Route>
         {/* 404 fallback */}
         <div className="min-h-screen bg-[#f3eee4] flex items-center justify-center font-gutsy">
