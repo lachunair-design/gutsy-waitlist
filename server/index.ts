@@ -1,7 +1,5 @@
 
-import "dotenv/config";
-import express from "express";
-import { router } from "./routes";
+
 import express, { type Request, type Response, type NextFunction } from "express";
 import { router } from "./routes.js";
 
