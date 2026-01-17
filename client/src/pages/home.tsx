@@ -46,19 +46,19 @@ export default function Home() {
   const faqs = [
     { 
       q: "When does it launch?", 
-      a: "April 1, 2026. Waitlist members get first access." 
+      a: "April 1, 2026. Waitlist members get first access."
     },
     { 
       q: "Is it actually easy to digest?", 
-      a: "The protein is hydrolysed, meaning it is pre-digested into smaller peptides before you drink it. This makes it easier to digest than standard protein isolates." 
+      a: "The protein is hydrolysed, meaning it is pre-digested into smaller peptides before you drink it. This makes it easier to digest than standard protein isolates."
     },
     { 
       q: "What is founder pricing?", 
-      a: "First 500 get founder pricing (25% off). Everyone else gets 15%. Your code will arrive with early access." 
+      a: "First 500 get founder pricing (25% off). Everyone else gets 15%. Your code will arrive with early access."
     },
     { 
       q: "Where do you ship?", 
-      a: "We are launching exclusively in Dubai and the UAE to start (delivery timing varies by location)." 
+      a: "We are launching exclusively in Dubai and the UAE to start (delivery timing varies by location)."
     },
   ];
 
@@ -66,7 +66,6 @@ export default function Home() {
     <div className="min-h-screen bg-gutsyCream text-gutsyBlack font-gutsy antialiased selection:bg-gutsyRed selection:text-white overflow-x-hidden">
       <WaitlistPopup />
 
-      {/* HEADER: Adjusted px-4 on mobile for better fit */}
       <nav className="fixed top-0 w-full z-[100] px-4 md:px-8 py-4 md:py-6 flex justify-between items-center border-b border-gutsyBlack/5 bg-gutsyCream/80 backdrop-blur-md">
         <div className="flex flex-col">
           <img src={logoBlack} alt="GUTSY" className="h-5 md:h-8" />
@@ -79,7 +78,6 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* HERO SECTION */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 px-6 text-center overflow-hidden">
         <div className="relative z-10 max-w-5xl">
           <h1 className="text-[14vw] md:text-[9rem] font-black leading-[0.82] tracking-tightest uppercase">
@@ -93,20 +91,21 @@ export default function Home() {
           
           <div ref={joinRef} className="mt-12 w-full max-w-lg mx-auto">
             <div className="mb-10 p-6 md:p-8 bg-white/40 rounded-[2.5rem] border border-black/5 backdrop-blur-sm shadow-premium">
+              {/* Updated Punchier Urgency Message */}
               <p className="text-[11px] md:text-sm font-black uppercase mb-6 leading-tight">
-                First 500 signups lock in founder pricing (25% off). Everyone else gets 15%.
+                First 500 lock in founder pricing (25% off). After that, it is gone.
               </p>
               <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 opacity-40">Launching April 1, 2026</p>
               <Countdown />
             </div>
-            <EmailForm buttonText="Join the waitlist" />
+            {/* Updated Email Placeholder for Early Access */}
+            <EmailForm buttonText="Join the waitlist" placeholder="Enter email for early access" />
             <p className="mt-6 text-[10px] font-black uppercase tracking-widest opacity-40">
               Join {waitlistCount.toLocaleString()}+ Health Obsessives
             </p>
           </div>
         </div>
 
-        {/* Adjusting opacity/position for mobile layout safety */}
         <div className="absolute bottom-0 right-0 w-[55vw] md:w-[25vw] pointer-events-none opacity-10 md:opacity-100 transition-opacity">
           {bikerImg ? (
             <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />
@@ -116,7 +115,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PROBLEM/SOLUTION */}
       <section className="py-24 md:py-40 px-6 bg-white border-y border-black/5">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-12 md:space-y-16">
           <h3 className="text-5xl md:text-[7rem] font-black uppercase tracking-tightest leading-[0.85]">
@@ -250,7 +248,7 @@ export default function Home() {
         <div className="max-w-2xl mx-auto space-y-10">
           <h3 className="text-4xl md:text-7xl font-black uppercase tracking-tightest leading-tight">Be first. Save more.</h3>
           <p className="text-sm font-black uppercase tracking-widest opacity-80">First 500 signups lock in founder pricing (25% off). Everyone else gets 15%.</p>
-          <EmailForm buttonText="Count me in" />
+          <EmailForm buttonText="Count me in" placeholder="Enter email for early access" />
           <p className="text-[9px] font-black uppercase tracking-widest opacity-40">No spam. Just launch updates and the occasional gut health nerd-out.</p>
         </div>
       </section>
@@ -259,8 +257,6 @@ export default function Home() {
         <div className="space-y-8 md:space-y-12">
           <img src={logoBlack} alt="GUTSY" className="h-6 md:h-8 mx-auto invert opacity-20" />
           <p className="font-black uppercase tracking-widest text-[9px] md:text-[10px] opacity-40 px-4">Made in Dubai. Built for gut-health obsessives.</p>
-          
-          {/* FOOTER NAV: Improved spacing for mobile */}
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
             <a href="/story" className="hover:text-gutsyRed transition-colors">Story</a>
             <a href="https://instagram.com/gutsyprotein" target="_blank" className="hover:text-gutsyRed transition-colors">Instagram</a>
