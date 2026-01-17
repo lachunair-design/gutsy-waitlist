@@ -46,19 +46,19 @@ export default function Home() {
   const faqs = [
     { 
       q: "When does it launch?", 
-      a: "April 1, 2026. Waitlist members get first access."
+      a: "April 1, 2026. Waitlist members get first access." 
     },
     { 
       q: "Is it actually easy to digest?", 
-      a: "The protein is hydrolysed, meaning it is pre-digested into smaller peptides before you drink it. This makes it easier to digest than standard protein isolates."
+      a: "The protein is hydrolysed, meaning it is pre-digested into smaller peptides before you drink it. This makes it easier to digest than standard protein isolates." 
     },
     { 
       q: "What is founder pricing?", 
-      a: "First 500 get founder pricing (25% off). Everyone else gets 15%. Your code will arrive with early access."
+      a: "First 500 get founder pricing (25% off). Everyone else gets 15%. Your code will arrive with early access." 
     },
     { 
       q: "Where do you ship?", 
-      a: "We are launching exclusively in Dubai and the UAE to start (delivery timing varies by location)."
+      a: "We are launching exclusively in Dubai and the UAE to start (delivery timing varies by location)." 
     },
   ];
 
@@ -91,22 +91,23 @@ export default function Home() {
           
           <div ref={joinRef} className="mt-12 w-full max-w-lg mx-auto">
             <div className="mb-10 p-6 md:p-8 bg-white/40 rounded-[2.5rem] border border-black/5 backdrop-blur-sm shadow-premium">
-              {/* Updated Punchier Urgency Message */}
               <p className="text-[11px] md:text-sm font-black uppercase mb-6 leading-tight">
                 First 500 lock in founder pricing (25% off). After that, it is gone.
               </p>
               <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 opacity-40">Launching April 1, 2026</p>
               <Countdown />
             </div>
-            {/* Updated Email Placeholder for Early Access */}
             <EmailForm buttonText="Join the waitlist" placeholder="Enter email for early access" />
-            <p className="mt-6 text-[10px] font-black uppercase tracking-widest opacity-40">
+            
+            {/* SOCIAL PROOF: Center-aligned to fix awkward spacing */}
+            <p className="mt-6 text-[10px] font-black uppercase tracking-widest opacity-40 text-center mx-auto">
               Join {waitlistCount.toLocaleString()}+ Health Obsessives
             </p>
           </div>
         </div>
 
-        <div className="absolute bottom-0 right-0 w-[55vw] md:w-[25vw] pointer-events-none opacity-10 md:opacity-100 transition-opacity">
+        {/* ILLUSTRATION: Enlarged for mobile impact (85vw) */}
+        <div className="absolute bottom-[-5%] right-[-10%] w-[85vw] md:w-[25vw] pointer-events-none opacity-10 md:opacity-100 transition-all duration-1000">
           {bikerImg ? (
             <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />
           ) : (
@@ -250,6 +251,23 @@ export default function Home() {
           <p className="text-sm font-black uppercase tracking-widest opacity-80">First 500 signups lock in founder pricing (25% off). Everyone else gets 15%.</p>
           <EmailForm buttonText="Count me in" placeholder="Enter email for early access" />
           <p className="text-[9px] font-black uppercase tracking-widest opacity-40">No spam. Just launch updates and the occasional gut health nerd-out.</p>
+        </div>
+      </section>
+
+      <section className="py-24 md:py-32 px-6 bg-white border-t border-black/5">
+        <div className="max-w-3xl mx-auto">
+          <h3 className="text-4xl font-black uppercase tracking-tightest mb-16 text-center">Common Doubts</h3>
+          <div className="divide-y divide-black/5">
+            {faqs.map((faq, i) => (
+              <div key={i} className="py-6">
+                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex justify-between items-center text-left group">
+                  <span className="text-xl font-black uppercase group-hover:text-gutsyRed transition-colors">{faq.q}</span>
+                  <ChevronDown className={`transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`} />
+                </button>
+                {openFaq === i && <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed">{faq.a}</p>}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
