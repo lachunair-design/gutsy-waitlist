@@ -28,18 +28,12 @@ export default function Success() {
   });
 
   const position = userData?.position || 1280;
+  const referralCount = userData?.referralCount || 0;
   const referralUrl = referralCode ? `${window.location.origin}?ref=${referralCode}` : "gutsyprotein.com/join?ref=CHAMP";
 
-  // Task 9: Simplified Milestone logic
-  const getMilestoneInfo = () => {
-    if (position <= 500) return { current: "Founder Tier", next: "Inner Circle", nextAt: 10, goal: "Top 10" };
-    return { current: "Waitlist", next: "Founder Pricing", nextAt: 500, goal: "Top 500" };
-  };
-
-  const milestone = getMilestoneInfo();
-  const spotsToMove = position - milestone.nextAt;
-  // Based on Rule: Every 3 signups moves you up 5 spots
-  const referralsNeeded = Math.ceil(Math.max(0, spotsToMove) / 5) * 3;
+  // Task 9: Simplified Referral Tracker Logic
+  const progressInCurrentSet = referralCount % 3;
+  const referralsToNextJump = 3 - progressInCurrentSet;
 
   const copyToClipboard = async (text: string, type: string) => {
     await navigator.clipboard.writeText(text);
@@ -77,24 +71,28 @@ export default function Success() {
               Your current spot is <span className="text-gutsyRed">#{position}</span>
             </p>
 
-            {/* PROGRESS BAR */}
+            {/* SEGMENTED PROGRESS BAR */}
             <div className="bg-gutsyCream rounded-2xl p-6 mb-8 text-left border border-black/5">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-black uppercase tracking-widest">Target: {milestone.next}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">Next Queue Jump</span>
                 <span className="text-[10px] font-black uppercase tracking-widest text-gutsyRed">
-                  {referralsNeeded > 0 ? `${referralsNeeded} more referrals to jump ahead` : "Target Reached"}
+                  {referralsToNextJump} more friend{referralsToNextJump !== 1 ? 's' : ''} to join
                 </span>
               </div>
-              <div className="h-2 bg-white rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gutsyBlack transition-all duration-1000" 
-                  style={{ width: `${Math.max(10, Math.min(100, 100 - (spotsToMove / position * 100)))}%` }}
-                />
+              <div className="h-3 flex gap-2">
+                {[1, 2, 3].map((step) => (
+                  <div 
+                    key={step}
+                    className={`h-full flex-1 rounded-full transition-all duration-500 ${
+                      progressInCurrentSet >= step ? 'bg-gutsyBlack' : 'bg-white border border-black/5'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
 
             <p className="text-sm font-black uppercase tracking-tight opacity-50 max-w-md mx-auto leading-relaxed">
-              Every 3 friends who join using your link moves you up 5 spots in the queue.
+              Every 3 friends who join moves you up 5 spots. First 500 signups lock in founder pricing (25% off).
             </p>
           </div>
 
@@ -124,7 +122,7 @@ export default function Success() {
                 <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Stories</span>
               </button>
-              <button onClick={() => window.open(`mailto:?subject=Join the GUTSY Waitlist&body=I just joined the waitlist for GUTSY protein in Dubai. Use my link to join: ${referralUrl}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
+              <button onClick={() => window.open(`mailto:?subject=Join the GUTSY Waitlist&body=I just joined the waitlist for GUTSY. The lightest protein in the world. Use my link to join: ${referralUrl}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
                 <Mail className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Email</span>
               </button>
@@ -135,18 +133,18 @@ export default function Success() {
             </div>
           </div>
 
-          {/* REWARDS BREAKDOWN: Task 9 */}
+          {/* REWARDS BREAKDOWN: Rule 2 */}
           <div className="bg-gutsyBlack text-gutsyCream rounded-[2.5rem] p-10 overflow-hidden relative">
              <div className="relative z-10">
                 <h3 className="text-3xl font-black uppercase tracking-tightest mb-8">Waitlist Rewards</h3>
                 <div className="space-y-4 opacity-80 text-[10px] font-black uppercase tracking-[0.2em]">
                   <div className="flex justify-between items-center py-4 border-b border-white/10">
                     <span>First 500</span>
-                    <span className="text-right text-gutsyRed font-black">Founder Pricing (25% Off)</span>
+                    <span className="text-right text-gutsyRed font-black">Founder Pricing (25% off)</span>
                   </div>
                   <div className="flex justify-between items-center py-4 border-b border-white/10">
-                    <span>All Waitlist</span>
-                    <span className="text-right">15% Off First Order</span>
+                    <span>Everyone Else</span>
+                    <span className="text-right">15% Discount</span>
                   </div>
                   <div className="flex justify-between items-center py-4">
                     <span>Inner Circle</span>
