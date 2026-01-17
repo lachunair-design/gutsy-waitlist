@@ -125,8 +125,9 @@ export default function Story() {
             <p className="text-3xl font-black uppercase tracking-widest">— Lakshmi, Founder</p>
           </div>
           <div className="pt-12">
-            <a href="/#join" className="btn-pill px-12 py-4">Join the waitlist</a>
-          </div>
+  {/* Linking back to the homepage hero section */}
+  <a href="/" className="btn-pill px-12 py-4 inline-block">Join the waitlist</a>
+</div>
         </section>
       </article>
 
