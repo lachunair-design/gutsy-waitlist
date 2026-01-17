@@ -2,6 +2,7 @@ import { Switch, Route } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Home from "./pages/home";
 import Success from "./pages/success";
+import Story from "./pages/story"; // Add this line
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,8 +18,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/success" component={Success} />
-      {/* In your App.tsx Switch component */}
-<Route path="/story" component={Story} />
+      <Route path="/story" component={Story} /> {/* This will now work */}
       <Route>
         {/* 404 fallback */}
         <div className="min-h-screen bg-[#f3eee4] flex items-center justify-center font-gutsy">
