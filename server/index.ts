@@ -30,6 +30,12 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`GUTSY Backend live on port ${PORT}`);
-});
+// Only start server when not in Vercel (for local development)
+if (!process.env.VERCEL) {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`GUTSY Backend live on port ${PORT}`);
+  });
+}
+
+// Export for Vercel serverless
+export default app;
