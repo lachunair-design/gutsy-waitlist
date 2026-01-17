@@ -12,6 +12,13 @@ import vanillaImg from "@/assets/images/VANILLA.png";
 import cocoaImg from "@/assets/images/COCOA.png";
 import logoBlack from "@/assets/images/Gutsy Logomark black.svg";
 
+// Helper for image placeholders
+const ImagePlaceholder = ({ className, text }: { className?: string; text?: string }) => (
+  <div className={`bg-gutsyBlack/5 flex items-center justify-center border border-dashed border-gutsyBlack/20 ${className}`}>
+    <span className="text-[10px] uppercase font-black opacity-20">{text || "Image Loading..."}</span>
+  </div>
+);
+
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const joinRef = useRef<HTMLDivElement>(null);
@@ -88,6 +95,7 @@ export default function Home() {
                 First 500 signups lock in founder pricing (25% off). Everyone else gets 15%.
               </p>
               <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 opacity-40">Launching April 1, 2026</p>
+              {/* Note: Target date in Countdown component must be updated to April 1, 2026 */}
               <Countdown />
             </div>
             <EmailForm buttonText="Join the waitlist" />
@@ -98,7 +106,11 @@ export default function Home() {
         </div>
 
         <div className="absolute bottom-0 right-0 w-[45vw] md:w-[25vw] pointer-events-none opacity-20 md:opacity-100">
-          <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />
+          {bikerImg ? (
+            <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />
+          ) : (
+            <ImagePlaceholder className="w-full aspect-square rounded-full" text="Biker Visual" />
+          )}
         </div>
       </section>
 
@@ -141,7 +153,11 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-4">
           <div className="group cursor-pointer text-left" onClick={scrollToJoin}>
             <div className="bg-[#f9f5f0] rounded-[3rem] aspect-[4/5] flex items-center justify-center border border-black/5 transition-transform duration-700 group-hover:scale-[0.98]">
-              <img src={vanillaImg} className="w-2/3 group-hover:scale-105 transition-transform duration-1000" alt="Vanilla Calm" />
+              {vanillaImg ? (
+                <img src={vanillaImg} className="w-2/3 group-hover:scale-105 transition-transform duration-1000" alt="Vanilla Calm" />
+              ) : (
+                <ImagePlaceholder className="w-full h-full rounded-[3rem]" text="Vanilla Calm" />
+              )}
             </div>
             <div className="mt-8 px-4">
               <h4 className="text-4xl font-black uppercase tracking-tighter">Vanilla Calm</h4>
@@ -151,7 +167,11 @@ export default function Home() {
           </div>
           <div className="group cursor-pointer text-left" onClick={scrollToJoin}>
             <div className="bg-[#f5f5f5] rounded-[3rem] aspect-[4/5] flex items-center justify-center border border-black/5 transition-transform duration-700 group-hover:scale-[0.98]">
-              <img src={cocoaImg} className="w-2/3 group-hover:scale-105 transition-transform duration-1000" alt="Cacao Boost" />
+              {cocoaImg ? (
+                <img src={cocoaImg} className="w-2/3 group-hover:scale-105 transition-transform duration-1000" alt="Cacao Boost" />
+              ) : (
+                <ImagePlaceholder className="w-full h-full rounded-[3rem]" text="Cacao Boost" />
+              )}
             </div>
             <div className="mt-8 px-4">
               <h4 className="text-4xl font-black uppercase tracking-tighter">Cacao Boost</h4>
@@ -206,7 +226,11 @@ export default function Home() {
 
       <section className="py-32 px-6 bg-gutsyCream">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-          <img src={meditationImg} className="rounded-[4rem] grayscale opacity-80" alt="Lakshmi" />
+          {meditationImg ? (
+            <img src={meditationImg} className="rounded-[4rem] grayscale opacity-80" alt="Lakshmi" />
+          ) : (
+            <ImagePlaceholder className="w-full aspect-square rounded-[4rem]" text="Founder Image" />
+          )}
           <div className="space-y-10">
             <h3 className="text-5xl font-black uppercase tracking-tighter">Why we built this</h3>
             <div className="space-y-6 text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed">
