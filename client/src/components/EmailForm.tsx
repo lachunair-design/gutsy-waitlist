@@ -15,9 +15,14 @@ type EmailFormData = z.infer<typeof emailSchema>;
 interface EmailFormProps {
   variant?: "light" | "dark";
   buttonText?: string;
+  placeholder?: string; // Added placeholder prop
 }
 
-export default function EmailForm({ variant = "light", buttonText = "Join Waitlist" }: EmailFormProps) {
+export default function EmailForm({ 
+  variant = "light", 
+  buttonText = "Join Waitlist",
+  placeholder = "Enter your email" // Default fallback
+}: EmailFormProps) {
   const [referredBy, setReferredBy] = useState<string | null>(null);
 
   // Check for referral code in URL on mount
@@ -84,7 +89,7 @@ export default function EmailForm({ variant = "light", buttonText = "Join Waitli
         <input
           {...form.register("email")}
           type="email"
-          placeholder="Enter your email"
+          placeholder={placeholder} // Using the dynamic placeholder prop
           className={`flex-1 px-5 py-4 bg-transparent outline-none text-base ${
             isDark
               ? "text-white placeholder:text-white/50"
@@ -131,7 +136,7 @@ export default function EmailForm({ variant = "light", buttonText = "Join Waitli
       {/* Referral indicator */}
       {referredBy && (
         <p className={`mt-3 text-sm ${isDark ? "text-white/60" : "text-black/40"}`}>
-          Referred by a friend? You'll both move up when you join!
+          Referred by a friend? You will both move up when you join!
         </p>
       )}
     </form>
