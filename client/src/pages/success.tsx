@@ -28,22 +28,18 @@ export default function Success() {
   });
 
   const position = userData?.position || 1280;
-  const referralCount = userData?.referralCount || 0;
   const referralUrl = referralCode ? `${window.location.origin}?ref=${referralCode}` : "gutsyprotein.com/join?ref=CHAMP";
 
-  // Calculate tier and progress based on Copy Doc milestones
-  const getTierInfo = () => {
-    if (position <= 10) return { current: "Inner Circle", next: null, nextAt: 0, color: "#f20028" };
-    if (position <= 50) return { current: "Top 50", next: "Top 10", nextAt: 10, color: "#890eff" };
-    if (position <= 100) return { current: "Top 100", next: "Top 50", nextAt: 50, color: "#ff5200" };
-    if (position <= 500) return { current: "Top 500", next: "Top 100", nextAt: 100, color: "#ffb300" };
-    return { current: null, next: "Top 500", nextAt: 500, color: "#000000" };
+  // Task 9: Simplified Milestone logic
+  const getMilestoneInfo = () => {
+    if (position <= 500) return { current: "Founder Tier", next: "Inner Circle", nextAt: 10, goal: "Top 10" };
+    return { current: "Waitlist", next: "Founder Pricing", nextAt: 500, goal: "Top 500" };
   };
 
-  const tierInfo = getTierInfo();
-  // Based on Copy Doc: Every 3 successful referrals moves you up 5 spots
-  const spotsToMove = tierInfo.nextAt ? position - tierInfo.nextAt : 0;
-  const referralsToMilestone = Math.ceil(spotsToMove / 5) * 3;
+  const milestone = getMilestoneInfo();
+  const spotsToMove = position - milestone.nextAt;
+  // Based on Rule: Every 3 signups moves you up 5 spots
+  const referralsNeeded = Math.ceil(Math.max(0, spotsToMove) / 5) * 3;
 
   const copyToClipboard = async (text: string, type: string) => {
     await navigator.clipboard.writeText(text);
@@ -76,27 +72,29 @@ export default function Success() {
 
           {/* MAIN STATUS CARD */}
           <div className="bg-white rounded-[2.5rem] p-10 shadow-premium border border-black/5 text-center">
-            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tightest mb-4">You're on the list.</h1>
+            <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tightest mb-4">You are on the list.</h1>
             <p className="text-xl uppercase font-black opacity-70 mb-8">
-              You're currently <span className="text-gutsyRed">#{position}</span> in line.
+              Your current spot is <span className="text-gutsyRed">#{position}</span>
             </p>
 
             {/* PROGRESS BAR */}
             <div className="bg-gutsyCream rounded-2xl p-6 mb-8 text-left border border-black/5">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-black uppercase tracking-widest">Next Milestone: {tierInfo.next}</span>
-                <span className="text-[10px] font-black uppercase tracking-widest text-gutsyRed">{referralsToMilestone} more referrals to reach</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">Target: {milestone.next}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-gutsyRed">
+                  {referralsNeeded > 0 ? `${referralsNeeded} more referrals to jump ahead` : "Target Reached"}
+                </span>
               </div>
               <div className="h-2 bg-white rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gutsyBlack transition-all duration-1000" 
-                  style={{ width: `${Math.max(15, 100 - (spotsToMove / position * 100))}%` }}
+                  style={{ width: `${Math.max(10, Math.min(100, 100 - (spotsToMove / position * 100)))}%` }}
                 />
               </div>
             </div>
 
             <p className="text-sm font-black uppercase tracking-tight opacity-50 max-w-md mx-auto leading-relaxed">
-              Want to jump the queue? Share your unique link. Every 3 friends who join moves you up 5 spots.
+              Every 3 friends who join using your link moves you up 5 spots in the queue.
             </p>
           </div>
 
@@ -118,7 +116,7 @@ export default function Success() {
 
             {/* SOCIAL GRID */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(referralUrl)}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
+              <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Join the waitlist for GUTSY. The lightest protein in the world: ${referralUrl}`)}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
                 <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-black uppercase tracking-widest">WhatsApp</span>
               </button>
@@ -126,7 +124,7 @@ export default function Success() {
                 <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Stories</span>
               </button>
-              <button onClick={() => window.open(`mailto:?subject=Join GUTSY&body=${referralUrl}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
+              <button onClick={() => window.open(`mailto:?subject=Join the GUTSY Waitlist&body=I just joined the waitlist for GUTSY protein in Dubai. Use my link to join: ${referralUrl}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
                 <Mail className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Email</span>
               </button>
@@ -137,26 +135,22 @@ export default function Success() {
             </div>
           </div>
 
-          {/* REWARDS BREAKDOWN */}
+          {/* REWARDS BREAKDOWN: Task 9 */}
           <div className="bg-gutsyBlack text-gutsyCream rounded-[2.5rem] p-10 overflow-hidden relative">
              <div className="relative z-10">
-                <h3 className="text-3xl font-black uppercase tracking-tightest mb-8">Leaderboard Rewards</h3>
+                <h3 className="text-3xl font-black uppercase tracking-tightest mb-8">Waitlist Rewards</h3>
                 <div className="space-y-4 opacity-80 text-[10px] font-black uppercase tracking-[0.2em]">
                   <div className="flex justify-between items-center py-4 border-b border-white/10">
-                    <span>🥉 Top 500</span>
-                    <span className="text-right">Early Access + 15% Off</span>
+                    <span>First 500</span>
+                    <span className="text-right text-gutsyRed font-black">Founder Pricing (25% Off)</span>
                   </div>
                   <div className="flex justify-between items-center py-4 border-b border-white/10">
-                    <span>🥈 Top 100</span>
-                    <span className="text-right">Priority Delivery + 20% Off</span>
-                  </div>
-                  <div className="flex justify-between items-center py-4 border-b border-white/10">
-                    <span>🥇 Top 50</span>
-                    <span className="text-right">25% Off + Exclusive Content</span>
+                    <span>All Waitlist</span>
+                    <span className="text-right">15% Off First Order</span>
                   </div>
                   <div className="flex justify-between items-center py-4">
-                    <span className="text-gutsyRed">💎 Top 10</span>
-                    <span className="text-right">Inner Circle WhatsApp</span>
+                    <span>Inner Circle</span>
+                    <span className="text-right">Exclusive Beta Access</span>
                   </div>
                 </div>
              </div>
