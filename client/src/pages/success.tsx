@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Check, Copy, Share2, MessageCircle, Mail, Instagram, ChevronRight, MapPin } from "lucide-react";
+import { Check, Copy, Share2, MessageCircle, Mail, Instagram, ChevronRight, MapPin, Calendar, Clock, Truck } from "lucide-react";
 import logoBlack from "@/assets/images/Gutsy Logomark black.svg";
 
 export default function Success() {
@@ -31,7 +31,6 @@ export default function Success() {
   const referralCount = userData?.referralCount || 0;
   const referralUrl = referralCode ? `${window.location.origin}?ref=${referralCode}` : "gutsyprotein.com/join?ref=CHAMP";
 
-  // Task 9: Simplified Referral Tracker Logic
   const progressInCurrentSet = referralCount % 3;
   const referralsToNextJump = 3 - progressInCurrentSet;
 
@@ -71,10 +70,9 @@ export default function Success() {
               Your current spot is <span className="text-gutsyRed">#{position}</span>
             </p>
 
-            {/* SEGMENTED PROGRESS BAR */}
             <div className="bg-gutsyCream rounded-2xl p-6 mb-8 text-left border border-black/5">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-black uppercase tracking-widest">Next Queue Jump</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-gutsyBlack/40">Next Queue Jump</span>
                 <span className="text-[10px] font-black uppercase tracking-widest text-gutsyRed">
                   {referralsToNextJump} more friend{referralsToNextJump !== 1 ? 's' : ''} to join
                 </span>
@@ -91,9 +89,12 @@ export default function Success() {
               </div>
             </div>
 
-            <p className="text-sm font-black uppercase tracking-tight opacity-50 max-w-md mx-auto leading-relaxed">
-              Every 3 friends who join moves you up 5 spots. First 500 signups lock in founder pricing (25% off).
-            </p>
+            {/* 1. EMOTIONAL REFERRAL PITCH */}
+            <div className="space-y-2 mb-4">
+              <p className="text-lg font-black uppercase tracking-tight">Know someone who quit protein because of bloat?</p>
+              <p className="text-sm font-medium uppercase opacity-60">This helps both of you.</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-gutsyRed mt-4">Every 3 friends who join = you move up 5 spots.</p>
+            </div>
           </div>
 
           {/* REFERRAL LINK SECTION */}
@@ -112,9 +113,8 @@ export default function Success() {
               </button>
             </div>
 
-            {/* SOCIAL GRID */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Join the waitlist for GUTSY. The lightest protein in the world: ${referralUrl}`)}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
+              <button onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`Know someone who quit protein because of bloat? This helps both of you. Join the GUTSY waitlist: ${referralUrl}`)}`)} className="flex flex-col items-center gap-3 p-6 bg-gutsyCream rounded-3xl hover:bg-black hover:text-white transition-all group">
                 <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-black uppercase tracking-widest">WhatsApp</span>
               </button>
@@ -133,28 +133,45 @@ export default function Success() {
             </div>
           </div>
 
-          {/* REWARDS BREAKDOWN: Rule 2 */}
-          <div className="bg-gutsyBlack text-gutsyCream rounded-[2.5rem] p-10 overflow-hidden relative">
+          {/* 2. SIMPLIFIED REWARDS */}
+          <div className="bg-gutsyBlack text-gutsyCream rounded-[2.5rem] p-10 relative overflow-hidden">
              <div className="relative z-10">
                 <h3 className="text-3xl font-black uppercase tracking-tightest mb-8">Waitlist Rewards</h3>
-                <div className="space-y-4 opacity-80 text-[10px] font-black uppercase tracking-[0.2em]">
-                  <div className="flex justify-between items-center py-4 border-b border-white/10">
-                    <span>First 500</span>
-                    <span className="text-right text-gutsyRed font-black">Founder Pricing (25% off)</span>
-                  </div>
-                  <div className="flex justify-between items-center py-4 border-b border-white/10">
-                    <span>Everyone Else</span>
-                    <span className="text-right">15% Discount</span>
-                  </div>
-                  <div className="flex justify-between items-center py-4">
-                    <span>Inner Circle</span>
-                    <span className="text-right">Exclusive Beta Access</span>
-                  </div>
-                </div>
+                <p className="text-[11px] font-black uppercase tracking-[0.2em] leading-loose">
+                  First 500 get founder pricing (25% off). Everyone else gets 15%.
+                </p>
              </div>
              <div className="absolute -bottom-10 -right-10 opacity-10">
                 <img src={logoBlack} alt="" className="w-64 invert" />
              </div>
+          </div>
+
+          {/* 3. WHAT HAPPENS NEXT (TIMELINE) */}
+          <div className="bg-white rounded-[2.5rem] p-10 border border-black/5 shadow-premium">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-10 opacity-40">What happens next</h3>
+            <div className="space-y-8">
+              <div className="flex gap-6 items-start">
+                <div className="bg-gutsyCream p-3 rounded-2xl text-gutsyRed"><Clock className="w-5 h-5" /></div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">Late March 2026</p>
+                  <p className="text-sm font-black uppercase">Early access email sent</p>
+                </div>
+              </div>
+              <div className="flex gap-6 items-start">
+                <div className="bg-gutsyCream p-3 rounded-2xl text-gutsyRed"><Calendar className="w-5 h-5" /></div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">April 1, 2026</p>
+                  <p className="text-sm font-black uppercase">Public launch</p>
+                </div>
+              </div>
+              <div className="flex gap-6 items-start">
+                <div className="bg-gutsyCream p-3 rounded-2xl text-gutsyRed"><Truck className="w-5 h-5" /></div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">April 2026</p>
+                  <p className="text-sm font-black uppercase">Orders ship (delivery timing varies by location)</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* FOOTER NAV */}
