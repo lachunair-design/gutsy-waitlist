@@ -226,24 +226,30 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24 md:py-32 px-6 bg-gutsyCream">
-        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-          {meditationImg ? (
-            <img src={meditationImg} className="rounded-[3rem] md:rounded-[4rem] grayscale opacity-80" alt="Lakshmi" />
-          ) : (
-            <ImagePlaceholder className="w-full aspect-square rounded-[3rem] md:rounded-[4rem]" text="Founder Image" />
-          )}
-          <div className="space-y-8 md:space-y-10">
-            <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Why we built this</h3>
-            <div className="space-y-6 text-base md:text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed">
-              <p>I’m Lakshmi. I quit protein powder for two years because every brand, vegan, whey, isolate, fermented, left me feeling bloated.</p>
-              <p>I spent eight years scaling food delivery and marketplace businesses across MENA. I know how to build products people want. But I could not find a protein powder I could actually stomach.</p>
-              <p>GUTSY is what I wished existed when I quit: hydrolysed protein, pre-digested for faster absorption, designed to sit lighter and be easier on digestion. Clean ingredients. Tastes like something you would actually want to drink.</p>
-            </div>
-            <p className="text-gutsyRed font-black uppercase tracking-[0.2em] text-xl md:text-2xl">Lakshmi, Founder</p>
-          </div>
-        </div>
-      </section>
+      {/* UPDATED FOUNDER NOTE */}
+<section className="py-24 md:py-32 px-6 bg-gutsyCream">
+  <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+    {meditationImg ? (
+      <img src={meditationImg} className="rounded-[3rem] md:rounded-[4rem] grayscale opacity-80" alt="Lakshmi" />
+    ) : (
+      <ImagePlaceholder className="w-full aspect-square rounded-[3rem] md:rounded-[4rem]" text="Founder Image" />
+    )}
+    <div className="space-y-8 md:space-y-10">
+      <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-gutsyRed">Why we built this</h3>
+      <div className="space-y-6 text-base md:text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed">
+        <p>I quit protein for two years. The bloating was constant. The breakouts shattered my confidence.</p>
+        <p>Then my mum was diagnosed with colon cancer.</p>
+        <p>That’s when I got paranoid about everything I was putting in my body. GUTSY is what I built when I couldn’t find protein that worked.</p>
+      </div>
+      <div className="pt-4 flex flex-col gap-6">
+        <p className="text-gutsyBlack font-black uppercase tracking-[0.2em] text-xl md:text-2xl">— Lakshmi</p>
+        <a href="/story" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gutsyRed hover:gap-4 transition-all group">
+          Read the full story <ArrowRight className="w-4 h-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
       <section className="py-24 md:py-32 px-6 bg-gutsyRed text-white text-center">
         <div className="max-w-2xl mx-auto space-y-10">
