@@ -77,9 +77,9 @@
     @apply underline decoration-1 underline-offset-[12px] decoration-gutsyRed/30;
   }
 
-  /* 1. Airport Flip Animation */
+  /* 1. Airport Flip Animation - Refined to prevent clipping */
   @keyframes slideDown {
-    0% { transform: translateY(-100%); opacity: 0; }
+    0% { transform: translateY(-70%); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
   }
 
