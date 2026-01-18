@@ -49,7 +49,7 @@ export default function Home() {
     },
   });
 
-  // REAL-TIME BASELINE: Set to 1 to reflect your current live signup
+  // REAL-TIME BASELINE: Fetches your 1 live signup
   const waitlistCount = countData?.count || 1;
 
   // REAL-TIME COUNT-UP ANIMATION
@@ -74,22 +74,10 @@ export default function Home() {
   }, [waitlistCount]);
 
   const faqs = [
-    { 
-      q: "When does it launch?", 
-      a: "April 1, 2026. Waitlist members get first access." 
-    },
-    { 
-      q: "Is it actually easy to digest?", 
-      a: "The protein is hydrolysed, meaning it is pre-digested into smaller peptides before you drink it. This makes it easier to digest than standard protein isolates." 
-    },
-    { 
-      q: "What is founder pricing?", 
-      a: "First 500 get founder pricing (25% off). Everyone else gets 15%. Your code will arrive with early access." 
-    },
-    { 
-      q: "Where do you ship?", 
-      a: "We are launching exclusively in Dubai and the UAE to start." 
-    },
+    { q: "When does it launch?", a: "April 1, 2026. Waitlist members get first access." },
+    { q: "Is it actually easy to digest?", a: "The protein is hydrolysed, pre-digested into smaller peptides before you drink it. This makes it easier to digest than standard protein isolates." },
+    { q: "What is founder pricing?", a: "First 500 get founder pricing (25% off). Everyone else gets 15%." },
+    { q: "Where do you ship?", a: "We are launching exclusively in Dubai and the UAE to start." },
   ];
 
   return (
@@ -141,7 +129,6 @@ export default function Home() {
             
             <EmailForm buttonText="Join the waitlist" placeholder="Enter email for early access" />
             
-            {/* REAL-TIME SOCIAL PROOF */}
             <p className="mt-8 text-xs md:text-sm font-black uppercase tracking-[0.2em] text-center mx-auto">
               Join <span className="text-gutsyRed text-lg md:text-xl font-black tabular-nums">
                 {displayCount.toLocaleString()}+
@@ -150,7 +137,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ILLUSTRATION: Opacity corrected (10% mobile, 100% desktop) */}
         <div className="absolute 
             bottom-[-5%] right-[-10%] w-[85vw] opacity-10 
             md:bottom-[10%] md:right-[2%] md:w-[48vw] md:opacity-10 
@@ -159,25 +145,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AUTHORITY SECTION */}
+      {/* AUTHORITY SECTION: THE WALL OF PROOF */}
       <section className="py-24 md:py-40 px-6 bg-white border-y border-black/5 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-16">
           
-          {/* Brutalist Anatomical Gut Icon */}
+          {/* Brutalist Anatomical Icon (No Smile) */}
           <div className="w-24 h-24 mb-8 flex items-center justify-center">
-            <svg viewBox="0 0 100 100" className="w-full h-full text-gutsyBlack" fill="none" stroke="currentColor" strokeWidth="3">
-              <path d="M30 40C30 25 50 20 70 30C90 40 85 75 60 85C35 95 15 80 15 55C15 45 20 40 30 40Z" className="opacity-80" />
-              <path d="M45 45C45 45 50 60 65 55" className="opacity-40" />
+            <svg viewBox="0 0 100 100" className="w-full h-full text-gutsyBlack" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M45 20C40 20 30 25 25 40C20 60 35 85 55 85C75 85 85 65 80 45C75 25 60 20 55 20" strokeLinecap="round" />
+              <path d="M45 35C45 35 50 45 60 40" strokeLinecap="round" opacity="0.4" />
+              <path d="M40 55C40 55 50 65 65 60" strokeLinecap="round" opacity="0.4" />
             </svg>
           </div>
 
-          <div className="space-y-6">
-            <h3 className="text-5xl md:text-[8rem] font-black uppercase tracking-tightest leading-[0.82]">
-              Your Gut <br /> 
-              <span className="text-gutsyRed italic font-normal lowercase">is finally</span> <br /> 
-              at peace.
-            </h3>
-          </div>
+          <h3 className="text-5xl md:text-[8rem] font-black uppercase tracking-tightest leading-[0.82]">
+            Your Gut <br /> 
+            <span className="text-gutsyRed italic font-normal lowercase">is finally</span> <br /> 
+            at peace.
+          </h3>
 
           <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center pt-12 md:pt-24">
             <div className="text-left space-y-8">
@@ -194,9 +179,6 @@ export default function Home() {
               <div className="text-8xl md:text-[10rem] font-black text-gutsyRed leading-none tracking-tightest">2X</div>
               <div className="text-3xl md:text-5xl font-black uppercase tracking-tightest mt-2">FASTER</div>
               <div className="text-xl md:text-2xl font-black uppercase opacity-40">Absorption*</div>
-              <p className="mt-6 text-[9px] md:text-[10px] font-black uppercase opacity-30 max-w-xs italic text-balance">
-                *Hydrolysed protein absorbed faster than standard isolates
-              </p>
             </div>
           </div>
         </div>
@@ -229,7 +211,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION */}
+      {/* TESTIMONIALS */}
       <section className="py-24 md:py-32 px-6 bg-white border-y border-black/5 text-center">
           <div className="max-w-7xl mx-auto space-y-16">
             <h3 className="text-3xl md:text-6xl font-black uppercase tracking-tightest text-balance">I quit protein for 2 years. GUTSY brought me back.</h3>
@@ -247,13 +229,10 @@ export default function Home() {
                 <p className="text-[10px] font-black uppercase opacity-40 tracking-widest">Priya, Dubai (Beta Tester)</p>
               </div>
             </div>
-            <div className="pt-12 border-t border-black/5">
-              <p className="text-lg md:text-2xl font-black uppercase tracking-widest text-gutsyRed">47 beta testers. 4.8/5 average rating. Launching April 2026.</p>
-            </div>
           </div>
       </section>
 
-      {/* FOUNDER STORY SECTION */}
+      {/* FOUNDER STORY */}
       <section className="py-24 md:py-32 px-6 bg-gutsyCream border-b border-black/5">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
           {meditationImg && (
@@ -263,7 +242,7 @@ export default function Home() {
             <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-gutsyRed">Why we built this</h3>
             <div className="space-y-6 text-base md:text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed text-balance">
               <p>I quit protein for two years. The bloating was constant. The breakouts shattered my confidence.</p>
-              <p className="text-gutsyBlack/100 font-bold normal-case">Then my mum was diagnosed with colon cancer.</p>
+              <p className="text-gutsyBlack/100 font-bold normal-case text-balance">Then my mum was diagnosed with colon cancer.</p>
               <p>That’s when I got paranoid about everything I was putting in my body. GUTSY is what I built when I couldn’t find protein that worked.</p>
             </div>
             <div className="pt-4 flex flex-col gap-6">
@@ -276,8 +255,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* QUESTIONS SECTION */}
-      <section className="py-24 md:py-32 px-6 bg-white border-t border-black/5">
+      {/* RED WAITLIST SECTION: RESTORED */}
+      <section className="bg-gutsyRed py-24 md:py-40 px-6 text-center text-white">
+        <div className="max-w-4xl mx-auto space-y-12">
+          <h2 className="text-5xl md:text-[7rem] font-black uppercase tracking-tightest leading-[0.85] text-balance">
+            Lock in <br /> founder pricing.
+          </h2>
+          <div className="max-w-lg mx-auto bg-white/10 p-2 rounded-full backdrop-blur-md">
+             <EmailForm buttonText="Get Access" placeholder="Enter email" invert />
+          </div>
+          <p className="text-xs md:text-sm font-black uppercase tracking-[0.2em] opacity-80">
+            First 500 only. We launch April 1st.
+          </p>
+        </div>
+      </section>
+
+      {/* QUESTIONS */}
+      <section className="py-24 md:py-32 px-6 bg-white">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-4xl font-black uppercase tracking-tightest mb-16 text-center">Questions</h3>
           <div className="divide-y divide-black/5">
