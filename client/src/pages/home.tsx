@@ -151,7 +151,7 @@ export default function Home() {
         {/* ILLUSTRATION: Fixed Positioning */}
         <div className="absolute 
             bottom-[-5%] right-[-10%] w-[85vw] opacity-10 
-            md:bottom-[10%] md:right-[2%] md:w-[48vw] md:opacity-100 
+            md:bottom-[10%] md:right-[2%] md:w-[48vw] md:opacity-10 
             pointer-events-none transition-all duration-1000 animate-slow-float">
           {bikerImg ? (
             <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />
