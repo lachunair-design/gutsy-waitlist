@@ -50,7 +50,7 @@ export default function Home() {
   });
   const waitlistCount = countData?.count || 1280;
 
-  // REAL-TIME COUNT-UP LOGIC
+  // REAL-TIME COUNT-UP LOGIC for Social Proof
   useEffect(() => {
     if (waitlistCount > 0) {
       let start = 0;
@@ -139,7 +139,6 @@ export default function Home() {
             
             <EmailForm buttonText="Join the waitlist" placeholder="Enter email for early access" />
             
-            {/* REAL-TIME SOCIAL PROOF */}
             <p className="mt-8 text-xs md:text-sm font-black uppercase tracking-[0.2em] text-center mx-auto">
               Join <span className="text-gutsyRed text-lg md:text-xl font-black tabular-nums">
                 {displayCount.toLocaleString()}+
@@ -148,7 +147,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ILLUSTRATION: Fixed Positioning */}
+        {/* ILLUSTRATION: Strategic positioning & Slow Float Movement */}
         <div className="absolute 
             bottom-[-5%] right-[-10%] w-[85vw] opacity-10 
             md:bottom-[10%] md:right-[2%] md:w-[48vw] md:opacity-10 
@@ -161,7 +160,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AUTHORITY SECTION: REFINED & CONSOLIDATED */}
+      {/* AUTHORITY SECTION: CONSOLIDATED */}
       <section className="py-24 md:py-40 px-6 bg-white border-y border-black/5 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-16">
           
@@ -178,10 +177,7 @@ export default function Home() {
             </h3>
           </div>
 
-          {/* Unified Authority Block */}
           <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center pt-12 md:pt-24">
-            
-            {/* Copy Side */}
             <div className="text-left space-y-8">
               <p className="text-lg md:text-2xl font-medium uppercase tracking-tight opacity-70 leading-relaxed text-balance">
                 Most protein powders sit in your stomach like a brick. We use <span className="font-black text-gutsyBlack">hydrolysed protein</span>, pre-digested before it hits your gut.
@@ -192,7 +188,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Stat Side */}
             <div className="flex flex-col items-center md:items-end text-center md:text-right">
               <div className="text-8xl md:text-[10rem] font-black text-gutsyRed leading-none tracking-tightest">2X</div>
               <div className="text-3xl md:text-5xl font-black uppercase tracking-tightest mt-2">FASTER</div>
@@ -274,7 +269,7 @@ export default function Home() {
           )}
           <div className="space-y-8 md:space-y-10">
             <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-gutsyRed">Why we built this</h3>
-            <div className="space-y-6 text-base md:text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed">
+            <div className="space-y-6 text-base md:text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed text-balance">
               <p>I quit protein for two years. The bloating was constant. The breakouts shattered my confidence.</p>
               <p className="text-gutsyBlack/100 font-bold normal-case">Then my mum was diagnosed with colon cancer.</p>
               <p>That’s when I got paranoid about everything I was putting in my body. GUTSY is what I built when I couldn’t find protein that worked.</p>
@@ -289,7 +284,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Questions Section */}
+      {/* FAQ */}
       <section className="py-24 md:py-32 px-6 bg-white border-t border-black/5">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-4xl font-black uppercase tracking-tightest mb-16 text-center">Questions</h3>
