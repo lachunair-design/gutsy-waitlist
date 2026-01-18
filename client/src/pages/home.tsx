@@ -291,7 +291,7 @@ export default function Home() {
       <footer className="bg-gutsyBlack text-gutsyCream py-16 md:py-24 px-6 text-center">
         <div className="space-y-12">
           <img src={logoBlack} alt="GUTSY" className="h-6 md:h-8 mx-auto invert opacity-20" />
-          <p className="font-black uppercase tracking-widest text-[10px] opacity-40 px-4">Made in Dubai. Built for gut-health obsessives.</p>
+          <p className="font-black uppercase tracking-widest text-[10px] opacity-40 px-4">Born in Dubai. Built for gut-health obsessives.</p>
           <div className="flex justify-center gap-12 text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
             <a href="/story" className="hover:text-gutsyRed transition-colors">Story</a>
             <a href="https://instagram.com/gutsyprotein" target="_blank" className="hover:text-gutsyRed hover:scale-110 transition-transform">Instagram</a>
