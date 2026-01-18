@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  /* Font Registration - Updated with exact brand asset pathnames */
+  /* Font Registration */
   @font-face {
     font-family: 'Uto';
     src: url('./assets/fonts/Uto Black_1763533689990.otf') format('opentype');
@@ -29,20 +29,17 @@
   }
 
   * {
-    /* Graza uses very subtle hairlines */
     @apply border-black/10;
   }
 
   body {
     @apply bg-gutsyCream text-gutsyBlack antialiased;
     @apply selection:bg-gutsyRed selection:text-white;
-    /* Adding a fallback serif for that Graza editorial touch */
     font-family: "Uto", "Georgia", serif;
   }
 }
 
 @layer components {
-  /* Editorial Pill Button - Thinner border, more "provision" feel */
   .btn-pill {
     @apply inline-flex items-center justify-center;
     @apply bg-gutsyBlack text-gutsyCream font-black uppercase tracking-[0.2em] text-[10px];
@@ -50,20 +47,17 @@
     @apply hover:bg-gutsyRed hover:shadow-lg active:scale-95;
   }
 
-  /* Provision Card - Replaces shadow with a crisp hairline border */
   .card-premium {
     @apply bg-white rounded-[2rem] p-10 border border-gutsyBlack/10;
     @apply transition-all duration-500 hover:border-gutsyBlack/30;
   }
 
-  /* Hand-drawn style Input */
   .input-fluid {
     @apply w-full border-b border-gutsyBlack/20 bg-transparent px-0 py-4 font-medium;
     @apply text-base tracking-tight transition-all duration-300 italic;
     @apply focus:border-gutsyBlack focus:outline-none placeholder:text-gutsyBlack/30;
   }
 
-  /* The "Glog" Marquee */
   .marquee-container {
     @apply flex items-center overflow-x-hidden whitespace-nowrap bg-gutsyYellow py-2 text-gutsyBlack;
     @apply border-y border-gutsyBlack/10 font-black uppercase text-[10px] tracking-[0.3em];
@@ -75,13 +69,43 @@
     text-wrap: balance;
   }
   
-  /* Ultra-tight for large display headings */
   .tracking-tightest {
     letter-spacing: -0.06em;
   }
 
-  /* Graza-style decorative underline */
   .decoration-gutsy {
     @apply underline decoration-1 underline-offset-[12px] decoration-gutsyRed/30;
+  }
+
+  /* 1. Airport Flip Animation */
+  @keyframes slideDown {
+    0% { transform: translateY(-100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  /* 2. Urgency Pulse Animation */
+  @keyframes pulseSubtle {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.03); opacity: 0.9; }
+  }
+
+  /* 3. Form Validation Shake */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* Animation Classes */
+  .animate-slide-down {
+    animation: slideDown 0.4s ease-in-out;
+  }
+
+  .animate-pulse-urgency {
+    animation: pulseSubtle 3s ease-in-out infinite;
+  }
+
+  .animate-shake {
+    animation: shake 0.2s ease-in-out 0s 2;
   }
 }
