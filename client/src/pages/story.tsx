@@ -43,7 +43,6 @@ export default function Story() {
           </p>
         </header>
 
-        {/* THE HOOK */}
         <section className="relative space-y-8">
           <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Bloodbath</h2>
           <div className="text-lg md:text-xl font-medium leading-relaxed opacity-90 space-y-6 normal-case">
@@ -52,7 +51,6 @@ export default function Story() {
           </div>
         </section>
 
-        {/* THE PAIN */}
         <section className="space-y-8">
           <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Friction</h2>
           <div className="text-lg md:text-xl font-medium leading-relaxed opacity-90 space-y-6 normal-case">
@@ -64,7 +62,6 @@ export default function Story() {
           </div>
         </section>
 
-        {/* THE EMOTIONAL PIVOT */}
         <section className="py-12 md:py-20 text-center">
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tightest leading-tight text-balance">
             Then my mum was <br /> 
@@ -75,7 +72,6 @@ export default function Story() {
           </p>
         </section>
 
-        {/* THE MYSTERY / BREAKTHROUGH */}
         <section className="space-y-12">
           <div className="space-y-8">
             <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The 48th Iteration</h2>
@@ -88,8 +84,8 @@ export default function Story() {
               <p>We tested 47 versions that failed. The 48th was different. Designed for lighter digestion. No compromise.</p>
             </div>
           </div>
+        </section>
 
-        {/* THE INVITATION */}
         <section className="py-24 border-t border-black/5 text-center space-y-10">
           <div className="text-xl md:text-3xl font-medium leading-relaxed opacity-90 space-y-8 normal-case text-balance">
             <p>GUTSY is for the obsessives who are tired of choosing between their goals and their comfort.</p>
