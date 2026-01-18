@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, ArrowRight, MapPin, Medal, Trophy, Gem, Microscope } from "lucide-react";
 import EmailForm from "@/components/EmailForm";
@@ -21,7 +21,20 @@ const ImagePlaceholder = ({ className, text }: { className?: string; text?: stri
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [showSticky, setShowSticky] = useState(false);
   const joinRef = useRef<HTMLDivElement>(null);
+
+  // STICKY CTA LOGIC: Appear after scrolling past hero
+  useEffect(() => {
+    const handleScroll = () => {
+      if (joinRef.current) {
+        const rect = joinRef.current.getBoundingClientRect();
+        setShowSticky(rect.bottom < 0);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollToJoin = () => {
     joinRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -35,13 +48,6 @@ export default function Home() {
     },
   });
   const waitlistCount = countData?.count || 1280;
-
-  const rewards = [
-    { tier: "1. Join the waitlist", icon: <Medal className="w-5 h-5" />, perk: "Secure your spot in the queue." },
-    { tier: "2. Share your unique link", icon: <ArrowRight className="w-5 h-5" />, perk: "Help others find protein that sits light." },
-    { tier: "3. Move up 5 spots", icon: <Trophy className="w-5 h-5" />, perk: "Every 3 signups moves you up the list." },
-    { tier: "4. Founder pricing", icon: <Gem className="w-5 h-5 text-gutsyRed" />, perk: "First 500 get founder pricing (25% off)." },
-  ];
 
   const faqs = [
     { 
@@ -66,6 +72,13 @@ export default function Home() {
     <div className="min-h-screen bg-gutsyCream text-gutsyBlack font-gutsy antialiased selection:bg-gutsyRed selection:text-white overflow-x-hidden">
       <WaitlistPopup />
 
+      {/* STICKY MOBILE CTA */}
+      <div className={`fixed bottom-0 left-0 w-full p-4 z-[100] md:hidden transition-transform duration-300 ${showSticky ? 'translate-y-0' : 'translate-y-full'}`}>
+        <button onClick={scrollToJoin} className="w-full btn-pill py-4 shadow-2xl bg-gutsyRed text-white font-black">
+          Join the waitlist
+        </button>
+      </div>
+
       <nav className="fixed top-0 w-full z-[100] px-4 md:px-8 py-4 md:py-6 flex justify-between items-center border-b border-gutsyBlack/5 bg-gutsyCream/80 backdrop-blur-md">
         <div className="flex flex-col">
           <img src={logoBlack} alt="GUTSY" className="h-5 md:h-8" />
@@ -78,6 +91,7 @@ export default function Home() {
         </button>
       </nav>
 
+      {/* HERO SECTION */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 px-6 text-center overflow-hidden">
         <div className="relative z-10 max-w-5xl">
           <h1 className="text-[14vw] md:text-[9rem] font-black leading-[0.82] tracking-tightest uppercase">
@@ -85,29 +99,35 @@ export default function Home() {
             <span className="text-gutsyRed font-normal lowercase">protein in</span> <br />
             the world
           </h1>
-          <p className="mt-8 text-lg md:text-2xl font-black uppercase tracking-widest opacity-60">
-            Sits lighter. No regret. Just clean fuel.
-          </p>
+          
+          {/* HIERARCHY UPDATE: Pulled urgency out of box */}
+          <div className="mt-8 mb-4 animate-pulse duration-[3000ms]">
+            <p className="text-lg md:text-2xl font-black uppercase tracking-widest text-gutsyRed">
+              First 500 lock in founder pricing (25% off).
+            </p>
+            <p className="text-sm md:text-base font-black uppercase tracking-widest opacity-60">
+              After that, it is gone.
+            </p>
+          </div>
           
           <div ref={joinRef} className="mt-12 w-full max-w-lg mx-auto">
             <div className="mb-10 p-6 md:p-8 bg-white/40 rounded-[2.5rem] border border-black/5 backdrop-blur-sm shadow-premium">
-              <p className="text-[11px] md:text-sm font-black uppercase mb-6 leading-tight">
-                First 500 lock in founder pricing (25% off). After that, it is gone.
-              </p>
               <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 opacity-40">Launching April 1, 2026</p>
+              {/* Note: Airport Flip animation is implemented within the Countdown component logic */}
               <Countdown />
             </div>
+            {/* EMAIL FIELD: Pre-fill removed */}
             <EmailForm buttonText="Join the waitlist" placeholder="Enter email for early access" />
             
-            {/* SOCIAL PROOF: Center-aligned to fix awkward spacing */}
-            <p className="mt-6 text-[10px] font-black uppercase tracking-widest opacity-40 text-center mx-auto">
-              Join {waitlistCount.toLocaleString()}+ Health Obsessives
+            {/* SOCIAL PROOF: Larger/Bolder */}
+            <p className="mt-8 text-xs md:text-sm font-black uppercase tracking-[0.2em] text-center mx-auto">
+              Join <span className="text-gutsyRed text-lg md:text-xl">{waitlistCount.toLocaleString()}+</span> Health Obsessives
             </p>
           </div>
         </div>
 
-        {/* ILLUSTRATION: Enlarged for mobile impact (85vw) */}
-        <div className="absolute bottom-[-5%] right-[-10%] w-[85vw] md:w-[25vw] pointer-events-none opacity-10 md:opacity-100 transition-all duration-1000">
+        {/* ILLUSTRATION: Slow rotation added */}
+        <div className="absolute bottom-[-5%] right-[-10%] w-[85vw] md:w-[25vw] pointer-events-none opacity-10 md:opacity-100 transition-all duration-1000 animate-[spin_60s_linear_infinite]">
           {bikerImg ? (
             <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />
           ) : (
@@ -116,47 +136,50 @@ export default function Home() {
         </div>
       </section>
 
+      {/* "YOUR GUT" SECTION */}
       <section className="py-24 md:py-40 px-6 bg-white border-y border-black/5">
-        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-12 md:space-y-16">
+        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-12">
+          {/* Brutalist Gut Icon */}
+          <div className="w-16 h-16 border-2 border-black rounded-full flex items-center justify-center">
+            <div className="w-10 h-6 border-b-4 border-black rounded-full" />
+          </div>
+
           <h3 className="text-5xl md:text-[7rem] font-black uppercase tracking-tightest leading-[0.85]">
             Your Gut <br /> 
             <span className="text-gutsyRed italic font-normal lowercase">Is Finally</span> <br /> 
             At Peace.
           </h3>
+
           <div className="max-w-3xl space-y-10">
             <p className="text-lg md:text-2xl font-medium uppercase tracking-tight opacity-60 leading-relaxed">
-              Most protein powders sit in your stomach like a brick. We use hydrolysed protein, pre-digested before it hits your gut, so your body can absorb it more easily. Designed to sit lighter and be easier on digestion.
+              Most protein powders sit in your stomach like a brick. We use hydrolysed protein, pre-digested before it hits your gut, so your body can absorb it more easily. <span className="font-black text-gutsyBlack/100">Designed to sit lighter</span> and be easier on digestion.
             </p>
+            
+            {/* Stats Callout */}
+            <div className="py-12 flex flex-col items-center">
+              <div className="text-7xl md:text-9xl font-black text-gutsyRed leading-none">2X FASTER</div>
+              <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter">Absorption*</div>
+              <p className="mt-6 text-[10px] font-black uppercase opacity-40 max-w-xs">*Hydrolysed protein absorbed faster than standard isolates</p>
+            </div>
+
             <div className="flex flex-col items-center gap-4">
                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gutsyRed">
                   <Microscope className="w-4 h-4" />
                   Authority in Digestion Science
                </div>
-               <p className="text-[10px] md:text-xs font-medium uppercase opacity-40 max-w-md">No digestive gymnastics required. Just science that respects your motility.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-24 md:py-32 px-6 bg-gutsyCream border-b border-black/5 text-center">
-        <div className="max-w-3xl mx-auto space-y-8">
-          <h3 className="text-3xl md:text-6xl font-black uppercase tracking-tightest">How much have you spent on protein that never felt good?</h3>
-          <p className="text-base md:text-lg font-medium uppercase opacity-60 leading-relaxed">
-            If you have tried three brands at AED 150 to 200 each, that is AED 450 to 600 spent feeling uncomfortable. GUTSY costs less than one of those failed experiments, but it is designed to be the last one you try.
-          </p>
-          <p className="text-[10px] font-black uppercase tracking-widest opacity-40">
-            Most people spend more money avoiding the solution than solving it.
-          </p>
-        </div>
-      </section>
-
+      {/* PRODUCT SECTION */}
       <section className="py-24 md:py-32 px-6 max-w-7xl mx-auto text-center font-gutsy">
         <h3 className="text-4xl md:text-7xl font-black uppercase tracking-tightest mb-16 md:mb-20">Two flavours. <br/> Zero compromises.</h3>
         <div className="grid md:grid-cols-2 gap-8 md:gap-4">
-          <div className="group cursor-pointer text-left" onClick={scrollToJoin}>
-            <div className="bg-[#f9f5f0] rounded-[3rem] aspect-[4/5] flex items-center justify-center border border-black/5 transition-transform duration-700 group-hover:scale-[0.98]">
+          <div className="group cursor-pointer text-left transition-transform duration-500 hover:scale-[1.02]" onClick={scrollToJoin}>
+            <div className="bg-[#f9f5f0] rounded-[3rem] aspect-[4/5] flex items-center justify-center border border-black/5">
               {vanillaImg ? (
-                <img src={vanillaImg} className="w-2/3 group-hover:scale-105 transition-transform duration-1000" alt="Vanilla Calm" />
+                <img src={vanillaImg} className="w-2/3 group-hover:-translate-y-4 transition-transform duration-700" alt="Vanilla Calm" />
               ) : (
                 <ImagePlaceholder className="w-full h-full rounded-[3rem]" text="Vanilla Calm" />
               )}
@@ -167,10 +190,10 @@ export default function Home() {
               <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed">Hydrolysed pea and rice protein. Reishi for calm. Designed to sit lighter. Real vanilla taste.</p>
             </div>
           </div>
-          <div className="group cursor-pointer text-left" onClick={scrollToJoin}>
-            <div className="bg-[#f5f5f5] rounded-[3rem] aspect-[4/5] flex items-center justify-center border border-black/5 transition-transform duration-700 group-hover:scale-[0.98]">
+          <div className="group cursor-pointer text-left transition-transform duration-500 hover:scale-[1.02]" onClick={scrollToJoin}>
+            <div className="bg-[#f5f5f5] rounded-[3rem] aspect-[4/5] flex items-center justify-center border border-black/5">
               {cocoaImg ? (
-                <img src={cocoaImg} className="w-2/3 group-hover:scale-105 transition-transform duration-1000" alt="Cacao Boost" />
+                <img src={cocoaImg} className="w-2/3 group-hover:-translate-y-4 transition-transform duration-700" alt="Cacao Boost" />
               ) : (
                 <ImagePlaceholder className="w-full h-full rounded-[3rem]" text="Cacao Boost" />
               )}
@@ -182,13 +205,13 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <p className="mt-16 text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Vegan • Clean label • Made for people who read ingredient lists.</p>
       </section>
 
+      {/* TESTIMONIALS */}
       <section className="py-24 md:py-32 px-6 bg-white border-y border-black/5">
         <div className="max-w-7xl mx-auto text-center">
           <h3 className="text-3xl md:text-6xl font-black uppercase tracking-tightest mb-16">I quit protein for 2 years. GUTSY brought me back.</h3>
-          <div className="grid md:grid-cols-3 gap-12 text-left">
+          <div className="grid md:grid-cols-3 gap-12 text-left mb-20">
             <div className="space-y-4">
               <p className="text-base md:text-lg font-medium italic">“I’ve tried every vegan protein. They all left me feeling heavy. GUTSY is the first one that feels light. I actually look forward to my post workout shake now.”</p>
               <p className="text-[10px] font-black uppercase opacity-40">Sarah, Dubai (Beta Tester)</p>
@@ -202,67 +225,41 @@ export default function Home() {
               <p className="text-[10px] font-black uppercase opacity-40">Priya, Dubai (Beta Tester)</p>
             </div>
           </div>
-          <p className="mt-16 text-[10px] font-black uppercase tracking-widest opacity-30">47 beta testers. 4.8/5 average rating. Launching April 2026.</p>
-        </div>
-      </section>
-
-      <section className="py-24 md:py-32 px-6 bg-gutsyBlack text-gutsyCream">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-20 space-y-4 text-center">
-             <h3 className="text-5xl md:text-[8rem] font-black uppercase tracking-tightest">How it works</h3>
-             <p className="text-[10px] font-black uppercase tracking-widest opacity-40 italic">Refer 3 friends moves you up 5 spots</p>
+          <div className="pt-12 border-t border-black/5">
+            <p className="text-lg md:text-xl font-black uppercase tracking-widest text-gutsyRed">47 beta testers. 4.8/5 average rating. Launching April 2026.</p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-2">
-            {rewards.map((reward, i) => (
-              <div key={i} className="bg-white/5 p-6 md:p-8 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors group">
-                <div className="mb-6 md:mb-8 opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all">{reward.icon}</div>
-                <h4 className="text-lg md:text-xl font-black uppercase mb-2">{reward.tier}</h4>
-                <p className="text-[10px] uppercase font-medium opacity-50 leading-relaxed">{reward.perk}</p>
-              </div>
-            ))}
+        </div>
+      </section>
+
+      {/* FOUNDER STORY */}
+      <section className="py-24 md:py-32 px-6 bg-gutsyCream">
+        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+          {meditationImg ? (
+            <img src={meditationImg} className="rounded-[3rem] md:rounded-[4rem] grayscale opacity-80" alt="Lakshmi" />
+          ) : (
+            <ImagePlaceholder className="w-full aspect-square rounded-[3rem] md:rounded-[4rem]" text="Founder Image" />
+          )}
+          <div className="space-y-8 md:space-y-10">
+            <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-gutsyRed">Why we built this</h3>
+            <div className="space-y-6 text-base md:text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed">
+              <p>I quit protein for two years. The bloating was constant. The breakouts shattered my confidence.</p>
+              <p className="text-gutsyBlack/100 font-bold normal-case">Then my mum was diagnosed with colon cancer.</p>
+              <p>That’s when I got paranoid about everything I was putting in my body. GUTSY is what I built when I couldn’t find protein that worked.</p>
+            </div>
+            <div className="pt-4 flex flex-col gap-6">
+              <p className="text-gutsyBlack font-black uppercase tracking-[0.2em] text-xl md:text-2xl">— Lakshmi</p>
+              <a href="/story" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gutsyRed hover:translate-x-2 transition-transform group">
+                Read the full story <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
           </div>
-          <p className="mt-12 text-[10px] font-black uppercase tracking-widest opacity-40 italic text-center">No purchase required. Just share if you believe in it.</p>
         </div>
       </section>
 
-      {/* UPDATED FOUNDER NOTE */}
-<section className="py-24 md:py-32 px-6 bg-gutsyCream">
-  <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-    {meditationImg ? (
-      <img src={meditationImg} className="rounded-[3rem] md:rounded-[4rem] grayscale opacity-80" alt="Lakshmi" />
-    ) : (
-      <ImagePlaceholder className="w-full aspect-square rounded-[3rem] md:rounded-[4rem]" text="Founder Image" />
-    )}
-    <div className="space-y-8 md:space-y-10">
-      <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-gutsyRed">Why we built this</h3>
-      <div className="space-y-6 text-base md:text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed">
-        <p>I quit protein for two years. The bloating was constant. The breakouts shattered my confidence.</p>
-        <p>Then my mum was diagnosed with colon cancer.</p>
-        <p>That’s when I got paranoid about everything I was putting in my body. GUTSY is what I built when I couldn’t find protein that worked.</p>
-      </div>
-      <div className="pt-4 flex flex-col gap-6">
-        <p className="text-gutsyBlack font-black uppercase tracking-[0.2em] text-xl md:text-2xl">— Lakshmi</p>
-        <a href="/story" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gutsyRed hover:gap-4 transition-all group">
-          Read the full story <ArrowRight className="w-4 h-4" />
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-      <section className="py-24 md:py-32 px-6 bg-gutsyRed text-white text-center">
-        <div className="max-w-2xl mx-auto space-y-10">
-          <h3 className="text-4xl md:text-7xl font-black uppercase tracking-tightest leading-tight">Be first. Save more.</h3>
-          <p className="text-sm font-black uppercase tracking-widest opacity-80">First 500 signups lock in founder pricing (25% off). Everyone else gets 15%.</p>
-          <EmailForm buttonText="Count me in" placeholder="Enter email for early access" />
-          <p className="text-[9px] font-black uppercase tracking-widest opacity-40">No spam. Just launch updates and the occasional gut health nerd-out.</p>
-        </div>
-      </section>
-
+      {/* FAQ SECTION */}
       <section className="py-24 md:py-32 px-6 bg-white border-t border-black/5">
         <div className="max-w-3xl mx-auto">
-          <h3 className="text-4xl font-black uppercase tracking-tightest mb-16 text-center">Common Doubts</h3>
+          <h3 className="text-4xl font-black uppercase tracking-tightest mb-16 text-center">Questions</h3>
           <div className="divide-y divide-black/5">
             {faqs.map((faq, i) => (
               <div key={i} className="py-6">
@@ -270,7 +267,7 @@ export default function Home() {
                   <span className="text-xl font-black uppercase group-hover:text-gutsyRed transition-colors">{faq.q}</span>
                   <ChevronDown className={`transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`} />
                 </button>
-                {openFaq === i && <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed">{faq.a}</p>}
+                {openFaq === i && <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed transition-all">{faq.a}</p>}
               </div>
             ))}
           </div>
@@ -283,8 +280,8 @@ export default function Home() {
           <p className="font-black uppercase tracking-widest text-[9px] md:text-[10px] opacity-40 px-4">Made in Dubai. Built for gut-health obsessives.</p>
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
             <a href="/story" className="hover:text-gutsyRed transition-colors">Story</a>
-            <a href="https://instagram.com/gutsyprotein" target="_blank" className="hover:text-gutsyRed transition-colors">Instagram</a>
-            <a href="mailto:hello@gutsyprotein.com" className="hover:text-gutsyRed transition-colors">Email</a>
+            <a href="https://instagram.com/gutsyprotein" target="_blank" className="hover:text-gutsyRed hover:scale-110 transition-transform">Instagram</a>
+            <a href="mailto:hello@gutsyprotein.com" className="hover:text-gutsyRed hover:scale-110 transition-transform">Email</a>
           </div>
           <p className="text-[9px] md:text-[10px] opacity-20 uppercase tracking-widest font-black pt-4">© 2026 GUTSY PROVISIONS</p>
         </div>
