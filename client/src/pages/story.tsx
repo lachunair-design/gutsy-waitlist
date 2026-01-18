@@ -80,12 +80,12 @@ export default function Story() {
           <div className="space-y-8">
             <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The 48th Iteration</h2>
             <div className="text-lg md:text-xl font-medium leading-relaxed opacity-90 space-y-6 normal-case">
-              <p>I spent 18 months asking one question: <i>Why does protein have to feel so heavy?</i></p>
-              <p>The answer wasn't the ingredients—it was the <b>molecular structure.</b> Standard protein requires your gut to do all the heavy lifting. We found a way to do that work before it ever hits your tongue.</p>
+              <p>I spent 8 months asking one question: <i>Why does protein have to feel so heavy?</i></p>
+              <p>The answer wasn't the ingredients—it was the <b>molecular structure.</b> Standard protein makes your gut do all the work. We do it before the powder even hits your tongue.</p>
               <p className="text-2xl md:text-4xl font-black uppercase tracking-tightest text-gutsyRed">
                 Peptides that sit as light as water.
               </p>
-              <p>We tested 47 versions that failed. The 48th was different. No gas. No fermentation. No compromise.</p>
+              <p>We tested 47 versions that failed. The 48th was different. Designed for lighter digestion. No compromise.</p>
             </div>
           </div>
 
