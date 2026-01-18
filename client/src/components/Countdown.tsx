@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 
-// Individual digit component with corrected container height to prevent clipping
+// Individual digit component with increased container height to prevent clipping
 const FlipDigit = ({ value }: { value: string }) => {
   return (
-    <div className="relative h-[1.2em] overflow-hidden leading-tight pt-1 flex items-center justify-center">
+    // Height increased to 1.5em and removed leading-tight to accommodate Uto font's tall cap height
+    <div className="relative h-[1.5em] overflow-hidden flex items-center justify-center">
       <div 
         key={value}
-        className="animate-slide-down tabular-nums"
+        // Ensure no leading (line-height) is applied to keep the number perfectly centered
+        className="animate-slide-down tabular-nums leading-none pt-2"
       >
         {value}
       </div>
@@ -54,12 +56,12 @@ export default function Countdown() {
       {Object.entries(units).map(([label, value], i) => (
         <div key={label} className="flex flex-col items-center flex-1">
           {/* Numbers: Using FlipDigit to enable the mechanical transition */}
-          <div className="text-[10vw] md:text-[4.5rem] font-black tracking-tightest tabular-nums flex items-baseline">
+          <div className="text-[10vw] md:text-[4.5rem] font-black tracking-tightest tabular-nums flex items-baseline h-full">
             <FlipDigit value={value[0]} />
             <FlipDigit value={value[1]} />
           </div>
           {/* Label: Brutalist tracking */}
-          <div className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mt-2">
+          <div className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mt-1">
             {label}
           </div>
         </div>
