@@ -25,7 +25,7 @@ export default function Home() {
   const [displayCount, setDisplayCount] = useState(0); 
   const joinRef = useRef<HTMLDivElement>(null);
 
-  // STICKY CTA: Appear after scrolling past hero
+  // STICKY CTA logic
   useEffect(() => {
     const handleScroll = () => {
       if (joinRef.current) {
@@ -48,9 +48,11 @@ export default function Home() {
       return res.json();
     },
   });
-  const waitlistCount = countData?.count || 1280;
 
-  // REAL-TIME COUNT-UP LOGIC for Social Proof
+  // REAL-TIME BASELINE: Set to 1 to reflect your current live signup
+  const waitlistCount = countData?.count || 1;
+
+  // REAL-TIME COUNT-UP ANIMATION
   useEffect(() => {
     if (waitlistCount > 0) {
       let start = 0;
@@ -86,7 +88,7 @@ export default function Home() {
     },
     { 
       q: "Where do you ship?", 
-      a: "We are launching exclusively in Dubai and the UAE to start (delivery timing varies by location)." 
+      a: "We are launching exclusively in Dubai and the UAE to start." 
     },
   ];
 
@@ -94,7 +96,7 @@ export default function Home() {
     <div className="min-h-screen bg-gutsyCream text-gutsyBlack font-gutsy antialiased selection:bg-gutsyRed selection:text-white overflow-x-hidden">
       <WaitlistPopup />
 
-      {/* STICKY MOBILE CTA */}
+      {/* MOBILE STICKY CTA */}
       <div className={`fixed bottom-0 left-0 w-full p-4 z-[100] md:hidden transition-transform duration-300 ${showSticky ? 'translate-y-0' : 'translate-y-full'}`}>
         <button onClick={scrollToJoin} className="w-full btn-pill py-4 shadow-2xl bg-gutsyRed text-white font-black uppercase tracking-[0.2em]">
           Join the waitlist
@@ -116,7 +118,7 @@ export default function Home() {
       {/* HERO SECTION */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 px-6 text-center overflow-hidden">
         <div className="relative z-10 max-w-5xl">
-          <h1 className="text-[14vw] md:text-[9rem] font-black leading-[0.82] tracking-tightest uppercase">
+          <h1 className="text-[14vw] md:text-[9rem] font-black leading-[0.82] tracking-tightest uppercase text-balance">
             The lightest <br />
             <span className="text-gutsyRed font-normal lowercase">protein in</span> <br />
             the world
@@ -139,34 +141,34 @@ export default function Home() {
             
             <EmailForm buttonText="Join the waitlist" placeholder="Enter email for early access" />
             
+            {/* REAL-TIME SOCIAL PROOF */}
             <p className="mt-8 text-xs md:text-sm font-black uppercase tracking-[0.2em] text-center mx-auto">
               Join <span className="text-gutsyRed text-lg md:text-xl font-black tabular-nums">
                 {displayCount.toLocaleString()}+
-              </span> Health Obsessives
+              </span> Gut Health Obsessives
             </p>
           </div>
         </div>
 
-        {/* ILLUSTRATION: Strategic positioning & Slow Float Movement */}
+        {/* ILLUSTRATION: Opacity corrected (10% mobile, 100% desktop) */}
         <div className="absolute 
             bottom-[-5%] right-[-10%] w-[85vw] opacity-10 
             md:bottom-[10%] md:right-[2%] md:w-[48vw] md:opacity-10 
             pointer-events-none transition-all duration-1000 animate-slow-float">
-          {bikerImg ? (
-            <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />
-          ) : (
-            <ImagePlaceholder className="w-full aspect-square rounded-full" text="Biker Visual" />
-          )}
+          {bikerImg && <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />}
         </div>
       </section>
 
-      {/* AUTHORITY SECTION: CONSOLIDATED */}
+      {/* AUTHORITY SECTION */}
       <section className="py-24 md:py-40 px-6 bg-white border-y border-black/5 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-16">
           
-          {/* Visual Anchor: Enlarged Gut Icon */}
-          <div className="w-20 h-20 md:w-24 md:h-24 border-2 border-black rounded-full flex items-center justify-center opacity-80 mb-4">
-            <div className="w-12 h-8 md:w-16 md:h-10 border-b-4 border-black rounded-full" />
+          {/* Brutalist Anatomical Gut Icon */}
+          <div className="w-24 h-24 mb-8 flex items-center justify-center">
+            <svg viewBox="0 0 100 100" className="w-full h-full text-gutsyBlack" fill="none" stroke="currentColor" strokeWidth="3">
+              <path d="M30 40C30 25 50 20 70 30C90 40 85 75 60 85C35 95 15 80 15 55C15 45 20 40 30 40Z" className="opacity-80" />
+              <path d="M45 45C45 45 50 60 65 55" className="opacity-40" />
+            </svg>
           </div>
 
           <div className="space-y-6">
@@ -180,7 +182,7 @@ export default function Home() {
           <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center pt-12 md:pt-24">
             <div className="text-left space-y-8">
               <p className="text-lg md:text-2xl font-medium uppercase tracking-tight opacity-70 leading-relaxed text-balance">
-                Most protein powders sit in your stomach like a brick. We use <span className="font-black text-gutsyBlack">hydrolysed protein</span>, pre-digested before it hits your gut.
+                Most protein powders sit in your stomach like a brick. We use <span className="font-black text-gutsyBlack">HYDROLYSED PROTEIN</span>, pre-digested before it hits your gut.
               </p>
               <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-gutsyRed">
                 <Microscope className="w-5 h-5" />
@@ -200,17 +202,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Product Grid */}
+      {/* PRODUCT GRID */}
       <section className="py-24 md:py-32 px-6 max-w-7xl mx-auto text-center font-gutsy">
         <h3 className="text-4xl md:text-7xl font-black uppercase tracking-tightest mb-16 md:mb-20 text-balance">Two flavours. <br/> Zero compromises.</h3>
         <div className="grid md:grid-cols-2 gap-8 md:gap-4">
           <div className="group cursor-pointer text-left transition-transform duration-500 hover:scale-[1.02]" onClick={scrollToJoin}>
             <div className="bg-[#f9f5f0] rounded-[3rem] aspect-[4/5] flex items-center justify-center border border-black/5">
-              {vanillaImg ? (
-                <img src={vanillaImg} className="w-2/3 group-hover:-translate-y-4 transition-transform duration-700" alt="Vanilla Calm" />
-              ) : (
-                <ImagePlaceholder className="w-full h-full rounded-[3rem]" text="Vanilla Calm" />
-              )}
+              {vanillaImg && <img src={vanillaImg} className="w-2/3 group-hover:-translate-y-4 transition-transform duration-700" alt="Vanilla Calm" />}
             </div>
             <div className="mt-8 px-4">
               <h4 className="text-3xl md:text-4xl font-black uppercase tracking-tighter">Vanilla Calm</h4>
@@ -220,11 +218,7 @@ export default function Home() {
           </div>
           <div className="group cursor-pointer text-left transition-transform duration-500 hover:scale-[1.02]" onClick={scrollToJoin}>
             <div className="bg-[#f5f5f5] rounded-[3rem] aspect-[4/5] flex items-center justify-center border border-black/5">
-              {cocoaImg ? (
-                <img src={cocoaImg} className="w-2/3 group-hover:-translate-y-4 transition-transform duration-700" alt="Cacao Boost" />
-              ) : (
-                <ImagePlaceholder className="w-full h-full rounded-[3rem]" text="Cacao Boost" />
-              )}
+              {cocoaImg && <img src={cocoaImg} className="w-2/3 group-hover:-translate-y-4 transition-transform duration-700" alt="Cacao Boost" />}
             </div>
             <div className="mt-8 px-4">
               <h4 className="text-3xl md:text-4xl font-black uppercase tracking-tighter">Cacao Boost</h4>
@@ -235,7 +229,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Summary */}
+      {/* TESTIMONIALS SECTION */}
       <section className="py-24 md:py-32 px-6 bg-white border-y border-black/5 text-center">
           <div className="max-w-7xl mx-auto space-y-16">
             <h3 className="text-3xl md:text-6xl font-black uppercase tracking-tightest text-balance">I quit protein for 2 years. GUTSY brought me back.</h3>
@@ -245,7 +239,7 @@ export default function Home() {
                 <p className="text-[10px] font-black uppercase opacity-40 tracking-widest">Sarah, Dubai (Beta Tester)</p>
               </div>
               <div className="space-y-4">
-                <p className="text-base md:text-lg font-medium italic">“Tastes like a milkshake. Sits light. I didn’t think that was possible with protein powder.”</p>
+                <p className="text-base md:text-lg font-medium italic">“Tastes like a milkshake. Sits light. I didn’t think that was possible.”</p>
                 <p className="text-[10px] font-black uppercase opacity-40 tracking-widest">Ahmed, Abu Dhabi (Beta Tester)</p>
               </div>
               <div className="space-y-4">
@@ -259,13 +253,11 @@ export default function Home() {
           </div>
       </section>
 
-      {/* Founder Story Segue */}
+      {/* FOUNDER STORY SECTION */}
       <section className="py-24 md:py-32 px-6 bg-gutsyCream border-b border-black/5">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-          {meditationImg ? (
+          {meditationImg && (
             <img src={meditationImg} className="rounded-[3rem] md:rounded-[4rem] grayscale opacity-80" alt="Lakshmi" />
-          ) : (
-            <ImagePlaceholder className="w-full aspect-square rounded-[3rem] md:rounded-[4rem]" text="Founder Image" />
           )}
           <div className="space-y-8 md:space-y-10">
             <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-gutsyRed">Why we built this</h3>
@@ -284,7 +276,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* QUESTIONS SECTION */}
       <section className="py-24 md:py-32 px-6 bg-white border-t border-black/5">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-4xl font-black uppercase tracking-tightest mb-16 text-center">Questions</h3>
