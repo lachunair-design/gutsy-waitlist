@@ -89,20 +89,6 @@ export default function Story() {
             </div>
           </div>
 
-          {/* THE TEASE BOX */}
-          <div className="p-8 md:p-12 bg-white border-2 border-black rounded-[3rem] space-y-6 shadow-premium">
-             <h4 className="text-xs font-black uppercase tracking-[0.3em] flex items-center gap-2">
-               <Sparkles className="w-4 h-4 text-gutsyRed" /> Founder Early-Access
-             </h4>
-             <p className="text-sm font-medium leading-relaxed opacity-70 normal-case">
-               We aren't releasing the full clinical profile to the public yet. We are reserving the first batch of our ultra-light formulation for the <b>Founder 500</b>.
-             </p>
-             <p className="text-[10px] font-black uppercase tracking-widest text-gutsyRed">
-               Join the waitlist to unlock the full technical spec.
-             </p>
-          </div>
-        </section>
-
         {/* THE INVITATION */}
         <section className="py-24 border-t border-black/5 text-center space-y-10">
           <div className="text-xl md:text-3xl font-medium leading-relaxed opacity-90 space-y-8 normal-case text-balance">
