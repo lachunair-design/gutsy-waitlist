@@ -55,10 +55,10 @@ export default function Story() {
             
             <div className="md:absolute md:-right-64 md:top-0 w-56 p-4 border-l-2 border-gutsyRed bg-white/50 hidden md:block">
                <p className="text-[10px] font-black uppercase tracking-widest text-gutsyRed mb-2 flex items-center gap-2 text-balance">
-                 <AlertCircle className="w-3 h-3" /> Lab Result Note
+                 <AlertCircle className="w-3 h-3" /> Clinical Log
                </p>
                <p className="text-[10px] font-medium leading-tight opacity-60 uppercase">
-                 Ferritin levels below 10 ng/mL. Clinical exhaustion was a daily reality.
+                 Ferritin levels below 10 ng/mL. Metabolic recovery was non-existent.
                </p>
             </div>
 
@@ -70,10 +70,11 @@ export default function Story() {
         <section className="space-y-8">
           <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Turn</h2>
           <div className="text-lg md:text-xl font-medium leading-relaxed opacity-90 space-y-6 normal-case">
-            <p>Then the bloating became constant. Every shake, every bar, every "gut-friendly" powder left me feeling like I’d swallowed a brick.</p>
-            <p>Then the breakouts started. Not normal breakouts—severe, painful, cystic acne across my face and back. The kind that shatters your confidence when you're trying to build a better version of yourself.</p>
+            <p>Then the bloating became constant. Every shake and every "gut-friendly" powder left me feeling like I’d swallowed a brick.</p>
+            <p>Then the breakouts started. Severe, painful, cystic acne across my face and back. The kind that shatters your confidence when you're trying to build a better version of yourself.</p>
             <p className="text-2xl md:text-3xl font-black uppercase tracking-tightest border-y border-black/5 py-12 text-center text-balance">
-              I was eating clean. Hitting macros. Doing everything "right." <span className="text-gutsyRed">But I felt worse than when I started.</span>
+              I was eating clean. Hitting macros. <br />
+              <span className="text-gutsyRed">But I felt worse than when I started.</span>
             </p>
           </div>
         </section>
@@ -96,7 +97,7 @@ export default function Story() {
             <Play className="w-6 h-6 fill-current ml-1" />
           </div>
           <h3 className="text-xl font-black uppercase tracking-tightest">A Message from Lakshmi</h3>
-          <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mt-2 italic">From Paranoia to Provision</p>
+          <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mt-2 italic">From Paranoia to Formulation</p>
         </section>
 
         {/* SCIENTIFIC BREAKTHROUGH */}
@@ -104,18 +105,18 @@ export default function Story() {
           <div className="space-y-8">
             <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Breakthrough</h2>
             <div className="text-lg md:text-xl font-medium leading-relaxed opacity-90 space-y-6 normal-case">
-              <p>Most protein powders are isolates—long chains your gut has to break down. That breakdown creates gas and bloating.</p>
+              <p>Most protein powders are isolates—long chains your gut has to break down. That breakdown creates the gas and fermentation that leads to bloating.</p>
               <p className="text-2xl md:text-4xl font-black uppercase tracking-tightest text-gutsyRed text-balance">
                 Hydrolysed protein is pre-digested.
               </p>
-              <p>The chains are already broken down into smaller peptides before you drink it. Your gut absorbs them 2x faster with zero digestive work. It's not magic. It's just science.</p>
+              <p>The chains are already broken down into smaller peptides before you drink it. Your gut absorbs them 2x faster with zero digestive work.</p>
             </div>
           </div>
 
           {/* Provision Specs Box */}
           <div className="p-8 md:p-12 bg-white border border-black rounded-[3rem] space-y-6 shadow-premium">
              <h4 className="text-xs font-black uppercase tracking-[0.3em] flex items-center gap-2">
-               <Microscope className="w-4 h-4 text-gutsyRed" /> Provision Specifications
+               <FlaskConical className="w-4 h-4 text-gutsyRed" /> Formulation Profile
              </h4>
              <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <li className="space-y-1">
@@ -123,7 +124,7 @@ export default function Story() {
                   <p className="text-sm font-bold uppercase">47 Samples Tested</p>
                 </li>
                 <li className="space-y-1">
-                  <p className="text-[10px] font-black uppercase opacity-40">Primary Tech</p>
+                  <p className="text-[10px] font-black uppercase opacity-40">Protein Tech</p>
                   <p className="text-sm font-bold uppercase">Hydrolysed Pea & Rice</p>
                 </li>
                 <li className="space-y-1">
@@ -131,7 +132,7 @@ export default function Story() {
                   <p className="text-sm font-bold uppercase">Zero Gums / Zero Fillers</p>
                 </li>
                 <li className="space-y-1">
-                   <p className="text-[10px] font-black uppercase opacity-40">Gut Support</p>
+                   <p className="text-[10px] font-black uppercase opacity-40">Bio-Availability</p>
                    <p className="text-sm font-bold uppercase">Actazin Kiwifruit Extract</p>
                 </li>
              </ul>
@@ -147,7 +148,7 @@ export default function Story() {
           </div>
           <div className="pt-12">
             <p className="text-4xl md:text-6xl font-black uppercase tracking-tightest leading-none">— Lakshmi</p>
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mt-4">Founder, Gutsy Provisions</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mt-4">Founder, Gutsy</p>
           </div>
           <div className="pt-16">
             <a href="/" className="btn-pill px-16 py-5 text-xs">Join as a Founder Member</a>
@@ -156,7 +157,7 @@ export default function Story() {
       </article>
 
       <footer className="py-12 border-t border-black/5 text-center">
-        <p className="text-[10px] opacity-20 uppercase tracking-widest font-black">© 2026 GUTSY PROVISIONS • Born in Dubai</p>
+        <p className="text-[10px] opacity-20 uppercase tracking-widest font-black">© 2026 GUTSY • A GUT FIRST BRAND</p>
       </footer>
     </div>
   );
