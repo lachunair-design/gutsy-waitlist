@@ -22,6 +22,7 @@ const ImagePlaceholder = ({ className, text }: { className?: string; text?: stri
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showSticky, setShowSticky] = useState(false);
+  const [displayCount, setDisplayCount] = useState(0); 
   const joinRef = useRef<HTMLDivElement>(null);
 
   // STICKY CTA: Appear after scrolling past hero
@@ -49,22 +50,43 @@ export default function Home() {
   });
   const waitlistCount = countData?.count || 1280;
 
+  // REAL-TIME COUNT-UP LOGIC
+  useEffect(() => {
+    if (waitlistCount > 0) {
+      let start = 0;
+      const end = waitlistCount;
+      const duration = 2000; 
+      const increment = Math.ceil(end / (duration / 16));
+      
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= end) {
+          setDisplayCount(end);
+          clearInterval(timer);
+        } else {
+          setDisplayCount(start);
+        }
+      }, 16);
+      return () => clearInterval(timer);
+    }
+  }, [waitlistCount]);
+
   const faqs = [
     { 
       q: "When does it launch?", 
-      a: "April 1, 2026. Waitlist members get first access."
+      a: "April 1, 2026. Waitlist members get first access." 
     },
     { 
       q: "Is it actually easy to digest?", 
-      a: "The protein is hydrolysed, meaning it is pre-digested into smaller peptides before you drink it. This makes it easier to digest than standard protein isolates."
+      a: "The protein is hydrolysed, meaning it is pre-digested into smaller peptides before you drink it. This makes it easier to digest than standard protein isolates." 
     },
     { 
       q: "What is founder pricing?", 
-      a: "First 500 get founder pricing (25% off). Everyone else gets 15%. Your code will arrive with early access."
+      a: "First 500 get founder pricing (25% off). Everyone else gets 15%. Your code will arrive with early access." 
     },
     { 
       q: "Where do you ship?", 
-      a: "We are launching exclusively in Dubai and the UAE to start (delivery timing varies by location)."
+      a: "We are launching exclusively in Dubai and the UAE to start (delivery timing varies by location)." 
     },
   ];
 
@@ -72,7 +94,7 @@ export default function Home() {
     <div className="min-h-screen bg-gutsyCream text-gutsyBlack font-gutsy antialiased selection:bg-gutsyRed selection:text-white overflow-x-hidden">
       <WaitlistPopup />
 
-      {/* STICKY MOBILE CTA: Appears at bottom */}
+      {/* STICKY MOBILE CTA */}
       <div className={`fixed bottom-0 left-0 w-full p-4 z-[100] md:hidden transition-transform duration-300 ${showSticky ? 'translate-y-0' : 'translate-y-full'}`}>
         <button onClick={scrollToJoin} className="w-full btn-pill py-4 shadow-2xl bg-gutsyRed text-white font-black uppercase tracking-[0.2em]">
           Join the waitlist
@@ -100,7 +122,6 @@ export default function Home() {
             the world
           </h1>
           
-          {/* URGENCY: Pulled out for prominence & Pulse added */}
           <div className="mt-8 mb-4 animate-pulse-urgency">
             <p className="text-lg md:text-2xl font-black uppercase tracking-widest text-gutsyRed">
               First 500 lock in founder pricing (25% off).
@@ -115,66 +136,70 @@ export default function Home() {
               <p className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 opacity-40">Launching April 1, 2026</p>
               <Countdown />
             </div>
-            {/* EMAIL FORM: Pre-fill removed per founder */}
+            
             <EmailForm buttonText="Join the waitlist" placeholder="Enter email for early access" />
             
-            {/* SOCIAL PROOF: Center-aligned and Bolder */}
+            {/* REAL-TIME SOCIAL PROOF */}
             <p className="mt-8 text-xs md:text-sm font-black uppercase tracking-[0.2em] text-center mx-auto">
-              Join <span className="text-gutsyRed text-lg md:text-xl font-black">{waitlistCount.toLocaleString()}+</span> Health Obsessives
+              Join <span className="text-gutsyRed text-lg md:text-xl font-black tabular-nums">
+                {displayCount.toLocaleString()}+
+              </span> Health Obsessives
             </p>
           </div>
         </div>
 
-        {/* ILLUSTRATION: Strategic positioning & Slow Float */}
+        {/* ILLUSTRATION: Fixed Positioning */}
         <div className="absolute 
-            /* Mobile */
             bottom-[-5%] right-[-10%] w-[85vw] opacity-10 
-            /* Desktop Overlap Fix */
-            md:bottom-[-2%] md:right-[-5%] md:w-[45vw] md:opacity-10 
+            md:bottom-[10%] md:right-[2%] md:w-[48vw] md:opacity-100 
             pointer-events-none transition-all duration-1000 animate-slow-float">
           {bikerImg ? (
-            <img 
-              src={bikerImg} 
-              alt="" 
-              className="w-full h-auto grayscale-[20%]" 
-            />
+            <img src={bikerImg} alt="" className="w-full h-auto grayscale-[20%]" />
           ) : (
             <ImagePlaceholder className="w-full aspect-square rounded-full" text="Biker Visual" />
           )}
         </div>
       </section>
 
-      {/* Authority Section: Gut Peace */}
-      <section className="py-24 md:py-40 px-6 bg-white border-y border-black/5">
-        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-12 md:space-y-16">
-          {/* Brutalist Gut Icon */}
-          <div className="w-16 h-16 border-2 border-black rounded-full flex items-center justify-center opacity-40">
-            <div className="w-10 h-6 border-b-4 border-black rounded-full" />
+      {/* AUTHORITY SECTION: REFINED & CONSOLIDATED */}
+      <section className="py-24 md:py-40 px-6 bg-white border-y border-black/5 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-16">
+          
+          {/* Visual Anchor: Enlarged Gut Icon */}
+          <div className="w-20 h-20 md:w-24 md:h-24 border-2 border-black rounded-full flex items-center justify-center opacity-80 mb-4">
+            <div className="w-12 h-8 md:w-16 md:h-10 border-b-4 border-black rounded-full" />
           </div>
 
-          <h3 className="text-5xl md:text-[7rem] font-black uppercase tracking-tightest leading-[0.85]">
-            Your Gut <br /> 
-            <span className="text-gutsyRed italic font-normal lowercase">Is Finally</span> <br /> 
-            At Peace.
-          </h3>
+          <div className="space-y-6">
+            <h3 className="text-5xl md:text-[8rem] font-black uppercase tracking-tightest leading-[0.82]">
+              Your Gut <br /> 
+              <span className="text-gutsyRed italic font-normal lowercase">is finally</span> <br /> 
+              at peace.
+            </h3>
+          </div>
 
-          <div className="max-w-3xl space-y-10">
-            <p className="text-lg md:text-2xl font-medium uppercase tracking-tight opacity-60 leading-relaxed">
-              Most protein powders sit in your stomach like a brick. We use hydrolysed protein, pre-digested before it hits your gut, so your body can absorb it more easily. <span className="font-black text-gutsyBlack/100">Designed to sit lighter</span> and be easier on digestion.
-            </p>
+          {/* Unified Authority Block */}
+          <div className="max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center pt-12 md:pt-24">
             
-            {/* Stats Callout */}
-            <div className="py-12 flex flex-col items-center">
-              <div className="text-7xl md:text-9xl font-black text-gutsyRed leading-none">2X FASTER</div>
-              <div className="text-3xl md:text-5xl font-black uppercase tracking-tighter">Absorption*</div>
-              <p className="mt-6 text-[10px] font-black uppercase opacity-40 max-w-xs italic">*Hydrolysed protein absorbed faster than standard isolates</p>
+            {/* Copy Side */}
+            <div className="text-left space-y-8">
+              <p className="text-lg md:text-2xl font-medium uppercase tracking-tight opacity-70 leading-relaxed text-balance">
+                Most protein powders sit in your stomach like a brick. We use <span className="font-black text-gutsyBlack">hydrolysed protein</span>, pre-digested before it hits your gut.
+              </p>
+              <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-gutsyRed">
+                <Microscope className="w-5 h-5" />
+                Authority in Digestion Science
+              </div>
             </div>
 
-            <div className="flex flex-col items-center gap-4">
-               <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gutsyRed">
-                  <Microscope className="w-4 h-4" />
-                  Authority in Digestion Science
-               </div>
+            {/* Stat Side */}
+            <div className="flex flex-col items-center md:items-end text-center md:text-right">
+              <div className="text-8xl md:text-[10rem] font-black text-gutsyRed leading-none tracking-tightest">2X</div>
+              <div className="text-3xl md:text-5xl font-black uppercase tracking-tightest mt-2">FASTER</div>
+              <div className="text-xl md:text-2xl font-black uppercase opacity-40">Absorption*</div>
+              <p className="mt-6 text-[9px] md:text-[10px] font-black uppercase opacity-30 max-w-xs italic text-balance">
+                *Hydrolysed protein absorbed faster than standard isolates
+              </p>
             </div>
           </div>
         </div>
@@ -195,7 +220,7 @@ export default function Home() {
             <div className="mt-8 px-4">
               <h4 className="text-3xl md:text-4xl font-black uppercase tracking-tighter">Vanilla Calm</h4>
               <p className="font-black text-xs text-gutsyRed mt-2 tracking-widest uppercase">23g protein • 132 kcal</p>
-              <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed">Hydrolysed pea and rice protein. Reishi for calm. Designed to sit lighter. Real vanilla taste.</p>
+              <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed text-balance">Hydrolysed pea and rice protein. Reishi for calm. Designed to sit lighter. Real vanilla taste.</p>
             </div>
           </div>
           <div className="group cursor-pointer text-left transition-transform duration-500 hover:scale-[1.02]" onClick={scrollToJoin}>
@@ -209,7 +234,7 @@ export default function Home() {
             <div className="mt-8 px-4">
               <h4 className="text-3xl md:text-4xl font-black uppercase tracking-tighter">Cacao Boost</h4>
               <p className="font-black text-xs text-gutsyRed mt-2 tracking-widest uppercase">22g protein • 137 kcal</p>
-              <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed">Hydrolysed pea and rice protein. Maca for energy. Designed to sit lighter. Smooth, not chalky.</p>
+              <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed text-balance">Hydrolysed pea and rice protein. Maca for energy. Designed to sit lighter. Smooth, not chalky.</p>
             </div>
           </div>
         </div>
@@ -218,7 +243,7 @@ export default function Home() {
       {/* Testimonials Summary */}
       <section className="py-24 md:py-32 px-6 bg-white border-y border-black/5 text-center">
           <div className="max-w-7xl mx-auto space-y-16">
-            <h3 className="text-3xl md:text-6xl font-black uppercase tracking-tightest">I quit protein for 2 years. GUTSY brought me back.</h3>
+            <h3 className="text-3xl md:text-6xl font-black uppercase tracking-tightest text-balance">I quit protein for 2 years. GUTSY brought me back.</h3>
             <div className="grid md:grid-cols-3 gap-12 text-left">
               <div className="space-y-4">
                 <p className="text-base md:text-lg font-medium italic">“I’ve tried every vegan protein. They all left me feeling heavy. GUTSY is the first one that feels light.”</p>
@@ -251,7 +276,6 @@ export default function Home() {
             <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-gutsyRed">Why we built this</h3>
             <div className="space-y-6 text-base md:text-lg font-medium uppercase tracking-tight opacity-70 leading-relaxed">
               <p>I quit protein for two years. The bloating was constant. The breakouts shattered my confidence.</p>
-              {/* Sentence case for gravity */}
               <p className="text-gutsyBlack/100 font-bold normal-case">Then my mum was diagnosed with colon cancer.</p>
               <p>That’s when I got paranoid about everything I was putting in my body. GUTSY is what I built when I couldn’t find protein that worked.</p>
             </div>
@@ -265,7 +289,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* Questions Section */}
       <section className="py-24 md:py-32 px-6 bg-white border-t border-black/5">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-4xl font-black uppercase tracking-tightest mb-16 text-center">Questions</h3>
@@ -276,7 +300,7 @@ export default function Home() {
                   <span className="text-xl font-black uppercase group-hover:text-gutsyRed transition-colors">{faq.q}</span>
                   <ChevronDown className={`transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`} />
                 </button>
-                {openFaq === i && <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed">{faq.a}</p>}
+                {openFaq === i && <p className="mt-4 text-sm font-medium uppercase opacity-50 leading-relaxed text-balance">{faq.a}</p>}
               </div>
             ))}
           </div>
