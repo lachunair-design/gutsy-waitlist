@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-// Individual digit component with increased container height to prevent clipping
+// Individual digit component with generous vertical clearance
 const FlipDigit = ({ value }: { value: string }) => {
   return (
-    // Height increased to 1.5em and removed leading-tight to accommodate Uto font's tall cap height
-    <div className="relative h-[1.5em] overflow-hidden flex items-center justify-center">
+    // Height set to 1.6em and flex-end alignment to ground the numbers
+    <div className="relative h-[1.6em] overflow-hidden flex items-end pb-1 md:pb-2">
       <div 
         key={value}
-        // Ensure no leading (line-height) is applied to keep the number perfectly centered
+        // Combined with index.css .animate-slide-down (-40% start)
         className="animate-slide-down tabular-nums leading-none pt-2"
       >
         {value}
@@ -55,13 +55,13 @@ export default function Countdown() {
     <div className="w-full flex justify-between items-center gap-2 md:gap-4 select-none">
       {Object.entries(units).map(([label, value], i) => (
         <div key={label} className="flex flex-col items-center flex-1">
-          {/* Numbers: Using FlipDigit to enable the mechanical transition */}
+          {/* Numbers: Using FlipDigit for the physical airport-board effect */}
           <div className="text-[10vw] md:text-[4.5rem] font-black tracking-tightest tabular-nums flex items-baseline h-full">
             <FlipDigit value={value[0]} />
             <FlipDigit value={value[1]} />
           </div>
-          {/* Label: Brutalist tracking */}
-          <div className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mt-1">
+          {/* Label: Small, high-authority tracking */}
+          <div className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] opacity-40 mt-1 md:mt-0">
             {label}
           </div>
         </div>
