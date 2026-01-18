@@ -130,7 +130,7 @@ export default function Home() {
             /* Mobile */
             bottom-[-5%] right-[-10%] w-[85vw] opacity-10 
             /* Desktop Overlap Fix */
-            md:bottom-[-2%] md:right-[-5%] md:w-[45vw] md:opacity-100 
+            md:bottom-[-2%] md:right-[-5%] md:w-[45vw] md:opacity-10 
             pointer-events-none transition-all duration-1000 animate-slow-float">
           {bikerImg ? (
             <img 
