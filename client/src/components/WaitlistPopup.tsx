@@ -54,7 +54,7 @@ export default function WaitlistPopup() {
           </div>
 
           <p className="text-[9px] font-black uppercase tracking-[0.2em] opacity-30">
-            Launching January 1, 2026
+            Launching April, 2026
           </p>
         </div>
       </div>
