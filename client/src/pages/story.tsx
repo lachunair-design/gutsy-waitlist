@@ -1,139 +1,162 @@
-import { ArrowLeft, MapPin, Play } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, MapPin, Play, Microscope, FlaskConical, AlertCircle } from "lucide-react";
 import logoBlack from "@/assets/images/Gutsy Logomark black.svg";
 
 export default function Story() {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const updateScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress((window.scrollY / totalHeight) * 100);
+    };
+    window.addEventListener("scroll", updateScroll);
+    return () => window.removeEventListener("scroll", updateScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gutsyCream text-gutsyBlack font-gutsy selection:bg-gutsyRed selection:text-white">
+    <div className="min-h-screen bg-gutsyCream text-gutsyBlack font-gutsy selection:bg-gutsyRed selection:text-white relative">
+      {/* Noise Overlay for tactile texture */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[9999] bg-noise" />
+      
+      {/* Progress Bar */}
+      <div 
+        className="fixed top-0 left-0 h-[2px] bg-gutsyRed z-[101] transition-all duration-150" 
+        style={{ width: `${scrollProgress}%` }} 
+      />
+
       {/* NAVIGATION */}
       <nav className="fixed top-0 w-full z-[100] px-6 py-4 flex justify-between items-center border-b border-black/5 bg-gutsyCream/80 backdrop-blur-md">
         <a href="/" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">
           <ArrowLeft className="w-3 h-3" /> Back
         </a>
         <img src={logoBlack} alt="GUTSY" className="h-5 md:h-6" />
-        <div className="w-12" /> {/* Spacer */}
+        <div className="w-12" />
       </nav>
 
       <article className="pt-32 pb-24 px-6 max-w-2xl mx-auto space-y-20 md:space-y-32">
         <header className="text-center space-y-4">
-          <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tightest leading-tight">
-            Why we built <span className="text-gutsyRed">GUTSY</span>
-          </h1>
+          <div className="overflow-hidden">
+            <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tightest leading-[0.85] animate-text-reveal">
+              The <span className="text-gutsyRed">GUTSY</span> <br /> Manifesto
+            </h1>
+          </div>
           <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] opacity-30">
-            <MapPin className="w-3 h-3" /> Dubai, UAE
+            <MapPin className="w-3 h-3" /> Dubai, UAE • Est. 2026
           </div>
         </header>
 
-        {/* SECTION 1 & 2 */}
-        <section className="space-y-8">
-          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Setup</h2>
-          <div className="text-lg md:text-xl font-medium uppercase leading-relaxed opacity-80 space-y-6">
-            <p>I was chronically exhausted.</p>
-            <p>Got my labs done—absolute bloodbath. Everything borderline or severely deficient. Iron, B12, vitamin D. The works.</p>
-            <p>I was 28 and felt 48.</p>
-          </div>
-          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed pt-12">The Fix</h2>
-          <div className="text-lg md:text-xl font-medium uppercase leading-relaxed opacity-80 space-y-6">
-            <p>So I did what you are supposed to do.</p>
-            <p>Started working out. Hit my nutrition goals. Increased protein to 100g a day. And it worked.</p>
-            <p>More energy. Lifting heavier. Better sleep. I felt amazing.</p>
-            <p className="font-black italic">For about three months.</p>
+        {/* CASE STUDY SECTION */}
+        <section className="relative space-y-8">
+          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">Case Study: 01</h2>
+          <div className="text-lg md:text-xl font-medium leading-relaxed opacity-90 space-y-6 normal-case">
+            <p>I was chronically exhausted. I was 28 and I felt 48.</p>
+            <p>I got my labs done—it was an absolute bloodbath. Everything was either borderline or severely deficient. Iron, B12, Vitamin D. The works.</p>
+            
+            <div className="md:absolute md:-right-64 md:top-0 w-56 p-4 border-l-2 border-gutsyRed bg-white/50 hidden md:block">
+               <p className="text-[10px] font-black uppercase tracking-widest text-gutsyRed mb-2 flex items-center gap-2 text-balance">
+                 <AlertCircle className="w-3 h-3" /> Lab Result Note
+               </p>
+               <p className="text-[10px] font-medium leading-tight opacity-60 uppercase">
+                 Ferritin levels below 10 ng/mL. Clinical exhaustion was a daily reality.
+               </p>
+            </div>
+
+            <p>So I did what you are supposed to do. I started working out. I hit my nutrition goals. I increased my protein to 100g a day. And it worked. For about three months.</p>
           </div>
         </section>
 
-        {/* SECTION 3 & 4 */}
+        {/* THE TURN */}
         <section className="space-y-8">
           <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Turn</h2>
-          <div className="text-lg md:text-xl font-medium uppercase leading-relaxed opacity-80 space-y-6">
-            <p>Until I didn't.</p>
-            <p>The bloating was constant. Every shake, every bar, every "gut-friendly" powder left me feeling like I'd swallowed a brick.</p>
-            <p>Then the breakouts started. Not normal breakouts—severe, painful, across my face and back. The kind that shatter your confidence.</p>
-            <p>I couldn't figure out what my body was doing. I was eating clean. Hitting my macros. Doing everything "right."</p>
-            <p>But I felt worse than when I started.</p>
-          </div>
-          
-          {/* THE DIAGNOSIS: Emotional Pivot */}
-          <div className="py-20 md:py-32 border-y border-black/5 text-center">
-            <h2 className="text-2xl md:text-4xl font-black uppercase tracking-tightest leading-tight">
-              And then my mum was <br /> 
-              diagnosed with <span className="text-gutsyRed italic">colon cancer.</span>
-            </h2>
+          <div className="text-lg md:text-xl font-medium leading-relaxed opacity-90 space-y-6 normal-case">
+            <p>Then the bloating became constant. Every shake, every bar, every "gut-friendly" powder left me feeling like I’d swallowed a brick.</p>
+            <p>Then the breakouts started. Not normal breakouts—severe, painful, cystic acne across my face and back. The kind that shatters your confidence when you're trying to build a better version of yourself.</p>
+            <p className="text-2xl md:text-3xl font-black uppercase tracking-tightest border-y border-black/5 py-12 text-center text-balance">
+              I was eating clean. Hitting macros. Doing everything "right." <span className="text-gutsyRed">But I felt worse than when I started.</span>
+            </p>
           </div>
         </section>
 
-        {/* SECTION 5 & 6 */}
-        <section className="space-y-8">
-          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Paranoia</h2>
-          <div className="text-lg md:text-xl font-medium uppercase leading-relaxed opacity-80 space-y-6">
-            <p>That’s when I got paranoid.</p>
-            <p>Not just worried—paranoid. About everything I was eating. Everything I was putting in my body.</p>
-            <p>What if the protein I’d been relying on was making things worse? What if the "clean" products I trusted weren’t actually clean?</p>
-            <p>What if I had no idea what I’d been putting in my body for years?</p>
-          </div>
-          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed pt-12">The Label Obsession</h2>
-          <div className="text-lg md:text-xl font-medium uppercase leading-relaxed opacity-80 space-y-6">
-            <p>So I started reading. Every label. Every ingredient list. Every nutrition panel.</p>
-            <p>Maltodextrin. Xanthan gum. "Natural flavours" (what does that even mean?). Sucralose. Acesulfame potassium.</p>
-            <p>I researched every additive, every sweetener, every thickening agent.</p>
-            <p>And I realized: I’d been trusting brands to tell me the truth. But most protein powders are built for taste and margin, not digestion.</p>
-            <p>The gut-friendly claims were marketing. The "clean" labels still had 15+ ingredients I couldn't pronounce.</p>
-            <p>I tried everything. Vegan isolates. Whey. Fermented pea protein. Brands that cost AED 200+ per tub. Same result. Bloating. Breakouts. Discomfort.</p>
-            <p className="font-black italic">So I quit protein entirely.</p>
-          </div>
+        {/* EMOTIONAL CENTER */}
+        <section className="py-20 md:py-32 bg-gutsyCream text-center">
+          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed mb-12">The Catalyst</h2>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tightest leading-tight text-balance">
+            And then my mum was <br /> 
+            diagnosed with <span className="text-gutsyRed italic">colon cancer.</span>
+          </h2>
+          <p className="mt-8 text-sm md:text-lg font-medium opacity-60 max-w-lg mx-auto normal-case italic text-balance">
+            That's when I stopped being "healthy" and started being paranoid. I realized I had no idea what I’d been putting in my body for years.
+          </p>
         </section>
 
-        {/* VIDEO PLACEHOLDER */}
-        <section className="aspect-video w-full bg-white/40 border border-black/5 rounded-[2rem] flex flex-col items-center justify-center text-center p-8 group cursor-pointer hover:bg-white/60 transition-all shadow-premium">
+        {/* VIDEO COMPONENT */}
+        <section className="aspect-video w-full bg-white border-2 border-black rounded-[2rem] flex flex-col items-center justify-center text-center p-8 group cursor-pointer hover:bg-gutsyCream transition-all shadow-premium">
           <div className="w-16 h-16 rounded-full bg-gutsyRed flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
             <Play className="w-6 h-6 fill-current ml-1" />
           </div>
-          <h3 className="text-xl font-black uppercase tracking-tightest">Founder Video Coming Soon</h3>
-          <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mt-2">Lakshmi explains the GUTSY journey</p>
+          <h3 className="text-xl font-black uppercase tracking-tightest">A Message from Lakshmi</h3>
+          <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mt-2 italic">From Paranoia to Provision</p>
         </section>
 
-        {/* SECTION 7 & 8 */}
-        <section className="space-y-8">
-          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Breakthrough</h2>
-          <div className="text-lg md:text-xl font-medium uppercase leading-relaxed opacity-80 space-y-6">
-            <p>For two years, I didn't touch protein powder.</p>
-            <p>But I couldn't hit my goals without it. I was back to being exhausted, under-recovered, losing progress in the gym.</p>
-            <p>So I started asking: what if the problem isn’t protein itself? What if it’s how it’s processed?</p>
-            <p className="text-gutsyRed font-black italic">That’s when I found hydrolysed protein.</p>
-            <p>Most protein powders are isolates—long chains your gut has to break down. That breakdown creates gas, fermentation, bloating.</p>
-            <p>Hydrolysed protein is different. The chains are already broken down into smaller peptides before you drink it. Your gut absorbs them faster with less digestive work.</p>
-            <p>It’s not magic. It’s just science.</p>
+        {/* SCIENTIFIC BREAKTHROUGH */}
+        <section className="space-y-12">
+          <div className="space-y-8">
+            <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Breakthrough</h2>
+            <div className="text-lg md:text-xl font-medium leading-relaxed opacity-90 space-y-6 normal-case">
+              <p>Most protein powders are isolates—long chains your gut has to break down. That breakdown creates gas and bloating.</p>
+              <p className="text-2xl md:text-4xl font-black uppercase tracking-tightest text-gutsyRed text-balance">
+                Hydrolysed protein is pre-digested.
+              </p>
+              <p>The chains are already broken down into smaller peptides before you drink it. Your gut absorbs them 2x faster with zero digestive work. It's not magic. It's just science.</p>
+            </div>
           </div>
-          <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed pt-12">The 47 Samples</h2>
-          <div className="text-lg md:text-xl font-medium uppercase leading-relaxed opacity-80 space-y-6">
-            <p>I spent eight months working with formulators. Tested 47 samples. No exaggeration—47.</p>
-            <p>Some tasted like chalk. Some still bloated me. Some had the texture of wet sand.</p>
-            <p>But eventually, we got it right.</p>
-            <p>Hydrolysed pea and rice protein. Actazin kiwifruit extract. No gums, no fillers, no artificial sweeteners.</p>
-            <p>I tested it on myself for six months. Then on friends. Then on people with the worst gut issues I could find. The feedback was consistent: sits lighter, easier to digest, no bloat.</p>
+
+          {/* Provision Specs Box */}
+          <div className="p-8 md:p-12 bg-white border border-black rounded-[3rem] space-y-6 shadow-premium">
+             <h4 className="text-xs font-black uppercase tracking-[0.3em] flex items-center gap-2">
+               <Microscope className="w-4 h-4 text-gutsyRed" /> Provision Specifications
+             </h4>
+             <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <li className="space-y-1">
+                  <p className="text-[10px] font-black uppercase opacity-40">Iteration</p>
+                  <p className="text-sm font-bold uppercase">47 Samples Tested</p>
+                </li>
+                <li className="space-y-1">
+                  <p className="text-[10px] font-black uppercase opacity-40">Primary Tech</p>
+                  <p className="text-sm font-bold uppercase">Hydrolysed Pea & Rice</p>
+                </li>
+                <li className="space-y-1">
+                  <p className="text-[10px] font-black uppercase opacity-40">Additive Control</p>
+                  <p className="text-sm font-bold uppercase">Zero Gums / Zero Fillers</p>
+                </li>
+                <li className="space-y-1">
+                   <p className="text-[10px] font-black uppercase opacity-40">Gut Support</p>
+                   <p className="text-sm font-bold uppercase">Actazin Kiwifruit Extract</p>
+                </li>
+             </ul>
           </div>
         </section>
 
-        {/* SECTION 9: INVITATION */}
+        {/* CLOSING */}
         <section className="py-24 border-t border-black/5 text-center space-y-10">
           <h2 className="text-xs font-black uppercase tracking-[0.4em] text-gutsyRed">The Invitation</h2>
-          <div className="text-xl md:text-2xl font-medium uppercase leading-relaxed opacity-80 space-y-8">
-            <p>GUTSY started with paranoia, breakouts, and 47 failed protein powders.</p>
-            <p>It’s built for people who’ve quit protein because their gut couldn’t handle it. People who are tired of choosing between hitting their goals and feeling comfortable.</p>
+          <div className="text-xl md:text-3xl font-medium leading-relaxed opacity-90 space-y-8 normal-case text-balance">
+            <p>GUTSY is for the people tired of choosing between their goals and their comfort.</p>
             <p>If you’ve tried everything and nothing works, this is for you.</p>
           </div>
           <div className="pt-12">
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-6 italic">Made in Dubai. Built for gut-health obsessives.</p>
-            <p className="text-3xl font-black uppercase tracking-widest">— Lakshmi, Founder</p>
+            <p className="text-4xl md:text-6xl font-black uppercase tracking-tightest leading-none">— Lakshmi</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mt-4">Founder, Gutsy Provisions</p>
           </div>
-          <div className="pt-12">
-  {/* Linking back to the homepage hero section */}
-  <a href="/" className="btn-pill px-12 py-4 inline-block">Join the waitlist</a>
-</div>
+          <div className="pt-16">
+            <a href="/" className="btn-pill px-16 py-5 text-xs">Join as a Founder Member</a>
+          </div>
         </section>
       </article>
 
-      {/* SIMPLE FOOTER */}
       <footer className="py-12 border-t border-black/5 text-center">
-        <p className="text-[10px] opacity-20 uppercase tracking-widest font-black">© 2026 GUTSY PROVISIONS</p>
+        <p className="text-[10px] opacity-20 uppercase tracking-widest font-black">© 2026 GUTSY PROVISIONS • Born in Dubai</p>
       </footer>
     </div>
   );
