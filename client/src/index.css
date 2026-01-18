@@ -79,7 +79,7 @@
 
   /* 1. Airport Flip Animation - Refined to prevent clipping */
   @keyframes slideDown {
-    0% { transform: translateY(-70%); opacity: 0; }
+    0% { transform: translateY(-40%); opacity: 0; }
     100% { transform: translateY(0); opacity: 1; }
   }
 
@@ -96,9 +96,15 @@
     75% { transform: translateX(5px); }
   }
 
+  /* 4. Biker Floating Movement */
+  @keyframes slowFloat {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-20px) translateX(-10px); }
+  }
+
   /* Animation Classes */
   .animate-slide-down {
-    animation: slideDown 0.4s ease-in-out;
+    animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .animate-pulse-urgency {
@@ -107,5 +113,9 @@
 
   .animate-shake {
     animation: shake 0.2s ease-in-out 0s 2;
+  }
+
+  .animate-slow-float {
+    animation: slowFloat 8s ease-in-out infinite;
   }
 }
